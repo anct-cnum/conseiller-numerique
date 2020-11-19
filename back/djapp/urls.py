@@ -17,13 +17,11 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
-from djapp import views
+from . import views
 
 
 urlpatterns = [
     path('', views.home),
-    path('sysinfo', views.sysinfo),
-    path('sysinfo', views.sysinfo),
     path('api/coaches.add', views.CoachAddView.as_view()),
     path('api/hostorganizations.add', views.HostOrganizationAddView.as_view()),
     path('api/matchings.get_by_key/<str:key>', views.MatchingGetView.as_view()),

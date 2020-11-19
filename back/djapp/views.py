@@ -24,15 +24,6 @@ def home(request):
     return HttpResponse('Ok')
 
 
-def sysinfo(request):
-    s = 'Python: {}\n'.format(sys.version)
-    for name, value in request.headers.items():
-        s += '{}: {}\n'.format(name, value)
-    s += 'IP: {}\n'.format(ipware.get_client_ip(request))
-    logger.info('sysinfo %s', s)
-    return HttpResponse(s)
-
-
 def process_matchings(request, matchings):
     for coach, host in matchings:
         m = Matching.objects.create(coach=coach, host=host)
