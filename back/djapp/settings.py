@@ -23,7 +23,7 @@ if TESTING:
 
 # Clever Cloud hosting
 if 'POSTGRESQL_ADDON_URI' in os.environ:
-    os.environ['DJAPP_DB_URL'] = os.environ.get('POSTGRESQL_ADDON_URI').replace('postgresql:', 'postgis:')
+    os.environ['DJAPP_DB_URL'] = os.environ.get('POSTGRESQL_ADDON_URI')
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -131,7 +131,7 @@ WSGI_APPLICATION = 'djapp.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(config.getstr('db.url')),
+    'default': dj_database_url.parse(config.getstr('db.url').replace('postgresql:', 'postgis:')),
 }
 
 
