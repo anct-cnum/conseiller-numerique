@@ -15,22 +15,31 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from . import views
 
 
 urlpatterns = [
     path('', views.home),
-    path('api/coaches.add', views.CoachAddView.as_view()),
-    path('api/hostorganizations.add', views.HostOrganizationAddView.as_view()),
-    path('api/matchings.get_by_key/<str:key>', views.MatchingGetView.as_view()),
-    path('api/matchings.coach_accept/<str:key>', views.matching_coach_accept, name='matching-coach-accept'),
-    path('api/matchings.coach_reject/<str:key>', views.matching_coach_reject, name='matching-coach-reject'),
-    path('api/matchings.host_accept/<str:key>', views.matching_host_accept, name='matching-host-accept'),
-    path('api/matchings.host_reject/<str:key>', views.matching_host_reject, name='matching-host-reject'),
     path('admin/', admin.site.urls),
 ]
+
+
+if settings.MAINTENANCE:
+    urlpatterns += [
+        re_path('api/.*', views.api_maintenance),
+    ]
+else:
+    urlpatterns += [
+        path('api/coaches.add', views.CoachAddView.as_view()),
+        path('api/hostorganizations.add', views.HostOrganizationAddView.as_view()),
+        path('api/matchings.get_by_key/<str:key>', views.MatchingGetView.as_view()),
+        path('api/matchings.coach_accept/<str:key>', views.matching_coach_accept, name='matching-coach-accept'),
+        path('api/matchings.coach_reject/<str:key>', views.matching_coach_reject, name='matching-coach-reject'),
+        path('api/matchings.host_accept/<str:key>', views.matching_host_accept, name='matching-host-accept'),
+        path('api/matchings.host_reject/<str:key>', views.matching_host_reject, name='matching-host-reject'),
+    ]
 
 
 if settings.DEBUG:

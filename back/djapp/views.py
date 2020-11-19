@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -22,6 +23,12 @@ logger = logging.getLogger(__name__)
 
 def home(request):
     return HttpResponse('Ok')
+
+
+@api_view(['GET', 'POST', 'DELETE', 'PUT', 'PATCH'])
+def api_maintenance(request):
+    return Response({'non_field_errors': ['Site en cours de maintenance, essayez à nouveau plus tard.']},
+                    status=status.HTTP_400_BAD_REQUEST)
 
 
 def process_matchings(request, matchings):

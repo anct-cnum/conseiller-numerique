@@ -34,6 +34,8 @@ config = getconf.ConfigGetter('djapp', ['./local_settings.ini'])
 ENV = config.getstr('djapp.env')
 FRONT_URL = config.getstr('djapp.front_url')
 
+MAINTENANCE = config.getbool('djapp.maintenance', False)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
