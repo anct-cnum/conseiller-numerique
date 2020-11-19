@@ -8,8 +8,8 @@ RewriteEngine On
 
 
 # Redirect all domains to a single one
-Rewritecond %{HTTP_HOST} !^app\.conseiller-numerique\.gouv\.fr
-RewriteRule ^(.*)$ https://app.conseiller-numerique.gouv.fr/$1 [R=301,L]
+Rewritecond %{HTTP_HOST} !^{{HOST_ESCAPED}}
+RewriteRule ^(.*)$ https://{{HOST}}/$1 [R=301,L]
 
 
 # -- REDIRECTION to https (optional):
