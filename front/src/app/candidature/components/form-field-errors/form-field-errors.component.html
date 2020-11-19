@@ -1,0 +1,24 @@
+<div *ngIf="showError()" class="invalid-feedback" [style.display]="'block'">
+  <div *ngFor="let error of field.errors | keyvalue">
+    <div [ngSwitch]="error.key">
+      <div *ngSwitchCase="'required'">
+        Ce champs est requis.
+      </div>
+      <div *ngSwitchCase="'minlength'">
+        Nombre minimum de caractères requis : {{ error.value.requiredLength }}
+      </div>
+      <div *ngSwitchCase="'maxlength'">
+        Nombre max de caractères : {{ error.value.requiredLength }}
+      </div>
+      <div *ngSwitchCase="'email'">
+        Email invalide
+      </div>
+      <div *ngSwitchCase="'phone'">
+        Numéro de téléphone invalide
+      </div>
+      <div *ngSwitchDefault>
+        {{ error.key }} {{ error.value | json }}
+      </div>
+    </div>
+  </div>
+</div>

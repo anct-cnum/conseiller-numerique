@@ -1,0 +1,41 @@
+@import 'bootstrap_variables';
+@import '~bootstrap/scss/bootstrap';
+
+/*
+ * Doc sur la personnalisation : https://getbootstrap.com/docs/4.5/getting-started/theming/
+ * Liste des variables disponibles: https://themestr.app/customize
+ */
+
+
+h1, h2 {
+  font-weight: 900;
+}
+
+h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+.ng-touched.ng-invalid, .ng-dirty.ng-invalid {
+  @extend .is-invalid;
+}
+
+.navbar {
+  box-shadow: 0 1rem 1rem 0 rgba(0, 0, 0, 0.1), 0 0.5rem 1rem -1rem rgba(0, 0, 0, 0.32);
+  min-height: 100px;
+}
+
+.nav-link {
+  font-size: 14px;
+}
+
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav .nav-link {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+}
+
+
+.text-gray {
+  color: $gray-700;
+}

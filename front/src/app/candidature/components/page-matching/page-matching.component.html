@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="col mt-5">
+
+    <h1>Contact</h1>
+
+    <div *ngIf="matching">
+      <div *ngIf="mode === 'host'">
+        <ng-container *ngTemplateOutlet="tplCoach; context: {coach: matching.coach}"></ng-container>
+      </div>
+
+      <div *ngIf="mode !== 'host'">
+        <ng-container *ngTemplateOutlet="tplHost; context: {host: matching.host}"></ng-container>
+      </div>
+    </div>
+
+    <div *ngIf="debug">
+      <p>Mode : {{ mode }}</p>
+      <pre>{{ matching | json }}</pre>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #tplCoach let-coach="coach">
+  <p>
+    Vous pouvez contacter {{ coach.firstName }} {{ coach.lastName }}
+    par email : {{ coach.email }}
+    <span *ngIf="coach.phone">ou par téléphone au {{ coach.phone }}</span>
+  </p>
+  <p>
+    <b>Disponible :</b> à partir de {{ coach.startDate | date:"dd/MM/yyyy" }}<br/>
+    <b>Mobilité : </b> {{ coach.firstName }} a déclaré être prêt à se déplacer à {{ coach.maxDistance }}Km<br/>
+    <b>Expérience :</b> {{ getBooleanText(coach.hasExperience) }}<br/>
+    <b>Diplôme dans la formation au numérique : </b>
+    <span *ngIf="coach.situationGraduated">{{ coach.formation }}</span>
+    <span *ngIf="!coach.situationGraduated">aucun</span>
+    <br/>
+    <b>Situation : </b>
+    <span *ngIf="coach.situationGraduated">Diplômé</span>
+    <span *ngIf="coach.situationLooking">Demandeur d'emploi.</span>
+    <span *ngIf="coach.situationJob">En emploi.</span>
+    <span *ngIf="coach.situationLearning">En formation.</span>
+  </p>
+</ng-template>
+
+<ng-template #tplHost let-host="host">
+
+  <p>
+    Vous pouvez contacter {{ host.contactFirstName }} {{ host.contactLastName }}
+    au sein de {{ host.name }} ({{ host.zipCode }}) par email {{ host.contactEmail }}
+    <span *ngIf="host.contactPhone">ou par téléphone au {{ host.contactPhone }}</span>
+  </p>
+</ng-template>

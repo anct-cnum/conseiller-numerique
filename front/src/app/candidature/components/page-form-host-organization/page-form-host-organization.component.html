@@ -1,0 +1,202 @@
+<div class="container">
+  <div class="col mt-5">
+
+    <h1 class="text-center text-primary font-weight-bold" style="font-size: 55px">Je souhaite engager<br/>un conseiller numérique</h1>
+
+    <form class="form mt-5" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ol>
+
+        <li class="py-3">
+          <div class="form-group">
+            <h5>Vous êtes ? <span class="text-danger">*</span></h5>
+            <app-form-field-errors [field]="form.controls.type"></app-form-field-errors>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" formControlName="type" id="inputType1" value="COMMUNE">
+              <label class="form-check-label" for="inputType1">
+                Une commune
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" formControlName="type" id="inputType2" value="DEPARTEMENT">
+              <label class="form-check-label" for="inputType2">
+                Un département
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" formControlName="type" id="inputType3" value="REGION">
+              <label class="form-check-label" for="inputType3">
+                Une région
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" formControlName="type" id="inputType4" value="EPCI">
+              <label class="form-check-label" for="inputType4">
+                Un établissement public de coopération intercommunale
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" formControlName="type" id="inputType5" value="COLLECTIVITE">
+              <label class="form-check-label" for="inputType5">
+                Une collectivité à statut particulier
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" formControlName="type" id="inputType6" value="PRIVATE">
+              <label class="form-check-label" for="inputType6">
+                Une structure privée
+              </label>
+              <div class="small text-muted">
+                Merci pour votre intérêt, votre structure est éligible au dispositif.
+                En attendant notre retour avec les modalités exactes du conventionnement,
+                limité à 24 mois, nous vous invitons à démarrer la recherche de candidat(e)s.
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="py-3">
+          <h5>Avez-vous déjà identifié un candidat pour le poste de conseiller numérique ?  <span class="text-danger">*</span></h5>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" formControlName="hasCandidate" id="inputHasApplicanteYes" [value]="true">
+            <label class="form-check-label" for="inputHasApplicanteYes">
+              Oui
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" formControlName="hasCandidate" id="inputHasApplicanteNo" [value]="false">
+            <label class="form-check-label" for="inputHasApplicanteNo">
+              Non
+            </label>
+          </div>
+          <div class="small text-muted">
+            Si oui, merci d’inviter votre futur conseiller numérique à s’inscrire sur la plateforme.
+          </div>
+          <app-form-field-errors [field]="form.controls.hasCandidate"></app-form-field-errors>
+        </li>
+
+        <li class="py-3">
+          <h5>À partir de quand êtes vous prêt à accueillir votre conseiller numérique ? <span class="text-danger">*</span></h5>
+          <app-form-field-errors [field]="form.controls.startDate"></app-form-field-errors>
+          <app-form-control-prettydatechoice formControlName="startDate"></app-form-control-prettydatechoice>
+        </li>
+
+        <li class="py-3">
+          <div class="form-group">
+            <label for="inputOrganizationName"><h5>Quel est le nom de votre structure ? <span class="text-danger">*</span></h5></label>
+            <input type="text" class="form-control" formControlName="name" id="inputOrganizationName">
+            <app-form-field-errors [field]="form.controls.name"></app-form-field-errors>
+          </div>
+        </li>
+
+        <app-form-field-zipcode
+          key="zipCode"
+          label="Indiquez le code postal de votre structure"
+          helpText="Saississez le nom ou le code postal de votre commune."
+          [required]="true"
+          [form]="form"
+        ></app-form-field-zipcode>
+
+        <app-form-field-input
+          key="contactFirstName"
+          label="Quel est votre prénom ?"
+          [required]="true"
+          [form]="form"
+        ></app-form-field-input>
+
+        <app-form-field-input
+          key="contactLastName"
+          label="Quel est votre nom ?"
+          [required]="true"
+          [form]="form"
+        ></app-form-field-input>
+
+        <app-form-field-input
+          key="contactJob"
+          label="Votre fonction"
+          [required]="true"
+          [form]="form"
+        ></app-form-field-input>
+
+        <app-form-field-input
+          key="contactEmail"
+          label="Votre email ?"
+          [required]="true"
+          [form]="form"
+        ></app-form-field-input>
+
+        <app-form-field-input
+          key="contactPhone"
+          [required]="false"
+          [form]="form"
+        >
+          <span label>Téléphone <small>(facultatif)</small></span>
+        </app-form-field-input>
+
+        <li class="py-3">
+          <h5>En tant que structure accueillante, vous vous engagez à&nbsp;<span class="text-danger">*</span></h5>
+          <div class="small my-2">
+            • Assurer que le conseiller réalise des activités de montée en compétences du public (ateliers numériques, initiations au numérique), gratuites.
+            <br/>
+            • Qu'il consacre une partie de son temps aux rencontres locales et nationales organisées pour la communauté et la formation continue, etc.
+            <br/>
+            • Qu'il revête une tenue vestimentaire dédiée fournie par l'Etat.
+            <br/>
+            • Tout mettre en oeuvre pour sélectionner le candidat dans un délai maximum d'un mois sur la plateforme.
+            <br/>
+            • Signer dans les 15 jours suivants un contrat avec ce candidat,
+            <br/>
+            • Laisser partir le conseiller numérique en formation initiale ou continue.
+            <br/>
+            • Mettre à sa disposition les moyens et équipements pour réaliser sa mission (ordinateur, téléphone portable, voiture si nécessaire).
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" formControlName="checkboxConfirm" id="inputCbConfirmEngagement">
+            <label class="form-check-label" for="inputCbConfirmEngagement">
+              Je confirme avoir lu et pris connaissance des conditions d’engagement.
+            </label>
+            <app-form-field-errors [field]="form.controls.checkboxConfirm"></app-form-field-errors>
+          </div>
+        </li>
+
+        <hr class="my-5"/>
+
+        <div class="row">
+          <div class="offset-md-2 col-md-8" *ngIf="form.controls.startDate.value && form.controls.zipCode.value">
+            <h5>En résumé</h5>
+            <p class="text-primary">
+              Vous cherchez à engager un conseiller numérique à partir
+              du {{ form.controls.startDate.value?.date | date:"dd/MM/yyyy" }}
+              à {{ form.controls.zipCode.value?.name }}.
+            </p>
+            <p>
+              <re-captcha formControlName="recaptcha"></re-captcha>
+              <app-form-field-errors [field]="form.controls.recaptcha"></app-form-field-errors>
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="errorMessages.length > 0" class="alert alert-danger mt-5">
+          <ol>
+            <li *ngFor="let msg of errorMessages">
+              {{ msg }}
+            </li>
+          </ol>
+        </div>
+
+        <div class="text-center mt-5">
+          <button [ladda]="ladda" type="submit" class="btn btn-primary">Envoyer votre candidature</button>
+        </div>
+
+      </ol>
+    </form>
+
+    <div *ngIf="debug">
+      status: {{ form.status }}
+      <br/>
+      <pre>{{ form.value | json }}</pre>
+      <pre>{{ form.errors | json }}</pre>
+      <pre>{{ getInvalidDetails() | json }}</pre>
+    </div>
+
+  </div>
+</div>

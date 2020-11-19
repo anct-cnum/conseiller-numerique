@@ -1,0 +1,22 @@
+<li class="py-3">
+  <div class="form-group" [formGroup]="form">
+    <label [for]="'input-' + key">
+      <h5>
+        {{ label }}<ng-content select="[label]"></ng-content><span *ngIf="required" class="text-danger">&nbsp;*</span>
+      </h5>
+    </label>
+    <div *ngIf="helpText" class="small text-muted mb-3">
+      {{ helpText }}
+    </div>
+    <ng-select [formControlName]="key" [id]="'input-' + key"
+               [markFirst]="false"
+               [items]="zipCodes$ | async"
+               [loading]="zipCodesLoading"
+               [typeahead]="zipCodesInput$"
+               loadingText="Chargement..."
+               notFoundText="Aucun résultat"
+    >
+    </ng-select>
+    <app-form-field-errors [field]="form.get(key)"></app-form-field-errors>
+  </div>
+</li>

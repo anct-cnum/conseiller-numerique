@@ -1,0 +1,121 @@
+@import 'bootstrap_custom';
+
+$fa-font-path : '~@fortawesome/fontawesome-free/webfonts';
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+
+
+@import '~ngx-toastr/toastr.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~ladda/dist/ladda-themeless.min.css";
+
+
+/*
+ * Colors
+ */
+.bg-lightgrey {
+  background-color: lightgrey !important;
+}
+
+label {
+  display: inline;
+}
+
+/*
+ * Text
+ */
+.text-xs {
+  font-size: 70%;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+
+/*
+ * Other
+ */
+
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+h5 .badge {
+  vertical-align: middle;
+  margin-top: -0.5em;
+}
+
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+
+
+/*
+ * Loaders
+ * https://www.pexels.com/blog/css-only-loaders/
+ */
+.loadingbar {
+  height: 4px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #ddd;
+}
+.loadingbar:before{
+  display: block;
+  position: absolute;
+  content: "";
+  left: -200px;
+  width: 200px;
+  height: 4px;
+  background-color: #2980b9;
+  animation: loadingbar 1s linear infinite;
+}
+
+@keyframes loadingbar {
+    from {left: -200px; width: 30%;}
+    50% {width: 30%;}
+    70% {width: 70%;}
+    80% { left: 50%;}
+    95% {left: 120%;}
+    to {left: 100%;}
+}
+
+
+/*
+ * Loaders.css https://connoratherton.com/loaders
+ */
+.square-spin {
+    display: inline-block;
+    div {
+        border: 1px solid black;
+    }
+}
+
+.ball-pulse {
+    div {
+        background-color: black;
+    }
+}
+
+.loader-small.loader-inner {
+  transform: scale(0.5, 0.5);
+}
+
+
+/**
+ * Toastr
+ */
+/* https://stackoverflow.com/a/53989699 */
+#toast-container > div {
+    opacity:1;
+}
+

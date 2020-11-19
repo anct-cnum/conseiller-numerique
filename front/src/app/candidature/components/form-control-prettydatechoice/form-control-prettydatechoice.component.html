@@ -1,0 +1,25 @@
+<div class="rounded-lg px-5 py-4 comp-radio-buttons-container">
+  <div class="row">
+
+    <ng-container *ngFor="let option of options; let last=last">
+      <div class="col-md-6">
+          <label class="form-check-label p-3 rounded-lg bg-white comp-radio-button comp-radio-button-label"
+                 [class.mb-3]="!last"
+                 [for]="'input-' + option.key">
+            <input class="form-check-input" type="radio"
+                   [attr.id]="'input-' + option.key"
+                   [value]="option.key"
+                   [(ngModel)]="key"
+                   (ngModelChange)="notify()">
+            {{ option.label }}
+          </label>
+      </div>
+    </ng-container>
+
+    <div [class.d-none]="valueKey !== 'other'" class="comp-datepicker-container mx-auto mt-4">
+      <ngb-datepicker [(ngModel)]="valueDate"></ngb-datepicker>
+    </div>
+
+  </div>
+  <!--pre>{{ value | json }}</pre-->
+</div>

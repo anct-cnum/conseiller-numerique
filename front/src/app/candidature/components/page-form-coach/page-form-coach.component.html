@@ -1,0 +1,212 @@
+<div class="container">
+  <div class="col mt-5">
+
+    <h1 class="text-center text-primary font-weight-bold" style="font-size: 55px">Je veux devenir<br/>conseiller numérique</h1>
+
+    <form class="form mt-5" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ol>
+
+        <li class="py-3">
+          <div class="form-group" formGroupName="situation">
+            <h5>Êtes-vous actuellement dans l'une des situations suivantes ? <span class="text-danger">*</span></h5>
+            <app-form-field-errors [field]="form.get('situation')"></app-form-field-errors>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="looking" id="inputStatus1">
+              <label class="form-check-label" for="inputStatus1">
+                Demandeur d'emploi
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="job" id="inputStatus2">
+              <label class="form-check-label" for="inputStatus2">
+                En emploi
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="learning" id="inputStatus3">
+              <label class="form-check-label" for="inputStatus3">
+                En formation
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" formControlName="graduated" id="inputStatus4">
+              <label class="form-check-label" for="inputStatus4">
+                Diplômé dans le secteur de la médiation numérique (formation
+                certifiante ou non)
+              </label>
+              <div *ngIf="form.get('situation.graduated').value">
+                <input type="text" [formControl]="form.controls.formation" class="form-control">
+                <app-form-field-errors [field]="form.controls.formation"></app-form-field-errors>
+                <small class="form-text text-muted">
+                  Précisez le nom de votre diplôme, formation certifiante, modules de formation de médiation, numérique /accompagnement au numérique des publics.
+                </small>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="py-3">
+          <div class="form-group">
+            <h5>Avez-vous une expérience professionnelle de médiation numérique ? <span class="text-danger">*</span></h5>
+            <div class="small text-muted mb-2">
+              Accompagnement de personnes vers l’autonomie dans leurs usages de technologies, services et médias numériques.
+            </div>
+            <app-form-field-errors [field]="form.controls.hasExperience"></app-form-field-errors>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="hasExperience" id="inputExpYes" [value]="true">
+              <label class="form-check-label" for="inputExpYes">
+                Oui
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="hasExperience" id="inputExpNo" [value]="false">
+              <label class="form-check-label" for="inputExpNo">
+                Non
+              </label>
+            </div>
+          </div>
+        </li>
+
+        <app-form-field-zipcode
+          key="zipCode"
+          label="Votre lieu d'habitation"
+          helpText="Saississez le nom ou le code postal de votre commune."
+          [required]="true"
+          [form]="form"
+        ></app-form-field-zipcode>
+
+        <li class="py-3">
+          <div class="form-group">
+            <h5>Depuis ce lieu, pour un emploi et une formation de conseiller numérique , vous êtes prêt(e) à vous déplacer à&nbsp;: <span class="text-danger">*</span></h5>
+            <app-form-field-errors [field]="form.controls.maxDistance"></app-form-field-errors>
+            <div class="form-check form-check-inline mx-4">
+              <input class="form-check-input" type="radio" formControlName="maxDistance" id="inputMaxDistance5" [value]="5">
+              <label class="form-check-label" for="inputMaxDistance5">
+                5km
+              </label>
+            </div>
+            <div class="form-check form-check-inline mx-4">
+              <input class="form-check-input" type="radio" formControlName="maxDistance" id="inputMaxDistance10" [value]="10">
+              <label class="form-check-label" for="inputMaxDistance10">
+                10km
+              </label>
+            </div>
+            <div class="form-check form-check-inline mx-4">
+              <input class="form-check-input" type="radio" formControlName="maxDistance" id="inputMaxDistance15" [value]="15">
+              <label class="form-check-label" for="inputMaxDistance15">
+                15km
+              </label>
+            </div>
+            <div class="form-check form-check-inline mx-4">
+              <input class="form-check-input" type="radio" formControlName="maxDistance" id="inputMaxDistance20" [value]="20">
+              <label class="form-check-label" for="inputMaxDistance20">
+                20km
+              </label>
+            </div>
+            <div class="form-check form-check-inline mx-4">
+              <input class="form-check-input" type="radio" formControlName="maxDistance" id="inputMaxDistance40" [value]="40">
+              <label class="form-check-label" for="inputMaxDistance40">
+                40km
+              </label>
+            </div>
+            <div class="form-check form-check-inline mx-4">
+              <input class="form-check-input" type="radio" formControlName="maxDistance" id="inputMaxDistance100" [value]="100">
+              <label class="form-check-label" for="inputMaxDistance100">
+                100km
+              </label>
+            </div>
+            <div class="form-check form-check-inline mx-4">
+              <input class="form-check-input" type="radio" formControlName="maxDistance" id="inputMaxDistanceNoLimit" [value]="2000">
+              <label class="form-check-label" for="inputMaxDistanceNoLimit">
+                France entière
+              </label>
+            </div>
+          </div>
+        </li>
+
+        <li class="py-3">
+          <div class="form-group">
+            <h5>À quel moment êtes-vous prêt(e) à démarrer le job et la formation de conseiller numérique&nbsp;? <span class="text-danger">*</span></h5>
+            <div class="small text-muted mb-3">
+              Attention ! Vous vous engagez auprès des recruteurs.
+            </div>
+            <app-form-field-errors [field]="form.controls.startDate"></app-form-field-errors>
+            <app-form-control-prettydatechoice formControlName="startDate"></app-form-control-prettydatechoice>
+          </div>
+        </li>
+
+        <app-form-field-input
+          key="firstName"
+          label="Quel est votre prénom ?"
+          [required]="true"
+          [form]="form"
+        ></app-form-field-input>
+
+        <app-form-field-input
+          key="lastName"
+          label="Quel est votre nom ?"
+          [required]="true"
+          [form]="form"
+        ></app-form-field-input>
+
+        <app-form-field-input
+          key="email"
+          label="Votre email ?"
+          [required]="true"
+          [form]="form"
+        ></app-form-field-input>
+
+        <app-form-field-input
+          label="Augmentez vos chances d’être contacté(e) par une structure accueillante en renseignant votre numéro de téléphone"
+          key="phone"
+          [required]="false"
+          [form]="form"
+        >
+        </app-form-field-input>
+
+      </ol>
+
+      <hr class="my-5"/>
+
+      <div class="row">
+        <div class="offset-md-2 col-md-8">
+        <h5>En résumé</h5>
+        <p class="text-primary">
+          Vous recherchez une certification et un emploi de conseiller numérique à partir
+          du {{ form.controls.startDate.value?.date | date:"dd/MM/yyyy" }}.
+        </p>
+        <p class="text-muted">
+          Votre choix vous engage à transmettre vos coordonnées, répondre aux sollicitations des structures
+          accueillantes, vous présenter aux entretiens, et accepter de fournir des éléments administratifs
+          pour finaliser votre dossier de candidature.
+        </p>
+        <p>
+          <re-captcha formControlName="recaptcha"></re-captcha>
+          <app-form-field-errors [field]="form.controls.recaptcha"></app-form-field-errors>
+        </p>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessages.length > 0" class="alert alert-danger mt-5">
+        <ol>
+          <li *ngFor="let msg of errorMessages">
+            {{ msg }}
+          </li>
+        </ol>
+      </div>
+
+      <div class="text-center mt-5">
+        <button [ladda]="ladda" type="submit" class="btn btn-primary">Envoyer votre candidature</button>
+      </div>
+    </form>
+
+    <div *ngIf="debug">
+      status: {{ form.status }}
+      <br/>
+      <pre>{{ form.value | json }}</pre>
+      <pre>{{ form.errors | json }}</pre>
+      <pre>{{ getInvalidDetails() | json }}</pre>
+    </div>
+
+  </div>
+</div>
