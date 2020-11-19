@@ -30,7 +30,7 @@ class Matcher:
         qs = qs.filter(nb_matchings__lt=self.MAX_MATCHINGS)
         return qs
 
-    def _matchings(self, coaches: list[models.Coach], hosts: list[models.HostOrganization]):
+    def _matchings(self, coaches, hosts):
         res = []
         for coach in coaches:
             for host in hosts:
