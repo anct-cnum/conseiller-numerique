@@ -1,0 +1,11 @@
+/venv/
+/node_modules/
+/local_settings.ini
+__pycache__
+/.idea/
+.~lock*
+/media/
+.coverage
+.pytest_cache/
+.clever.json
+
