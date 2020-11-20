@@ -45,10 +45,9 @@
               <label class="form-check-label" for="inputType6">
                 Une structure privée
               </label>
-              <div class="small text-muted">
-                Merci pour votre intérêt, votre structure est éligible au dispositif.
-                En attendant notre retour avec les modalités exactes du conventionnement,
-                limité à 24 mois, nous vous invitons à démarrer la recherche de candidat(e)s.
+              <div *ngIf="form.value.type === 'PRIVATE'" class="small text-muted">
+                Merci pour votre intérêt. L’AMI précisant les modalités opérationnelles pour votre structure
+                sera publié prochainement
               </div>
             </div>
           </div>
