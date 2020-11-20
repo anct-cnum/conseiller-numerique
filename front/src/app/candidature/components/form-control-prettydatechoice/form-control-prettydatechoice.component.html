@@ -17,9 +17,8 @@
     </ng-container>
 
     <div [class.d-none]="valueKey !== 'other'" class="comp-datepicker-container mx-auto mt-4">
-      <ngb-datepicker [(ngModel)]="valueDate"></ngb-datepicker>
+      <ngb-datepicker [(ngModel)]="valueDate" (ngModelChange)="notify()"></ngb-datepicker>
     </div>
 
   </div>
-  <!--pre>{{ value | json }}</pre-->
 </div>
