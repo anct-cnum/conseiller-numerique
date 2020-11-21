@@ -7,7 +7,7 @@ from djapp import models
 
 
 class Matcher:
-    MAX_MATCHINGS = 3
+    MAX_MATCHINGS = 0  # For now do not perform any matching
 
     def __init__(self):
         pass

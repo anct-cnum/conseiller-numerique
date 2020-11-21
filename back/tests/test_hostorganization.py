@@ -43,13 +43,14 @@ class HostOrganizationTestCase(TestCase):
              'location': {'type': 'Point', 'coordinates': [-0.5874, 44.8572]}},
             res_data,
         )
-        self.assertEqual(len(mail.outbox), 3)
+        #self.assertEqual(len(mail.outbox), 3)
+        self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Confirmation de l\'enregistrement de votre candidature')
         self.assertEqual(mail.outbox[0].to, [data['contact_email']])
-        self.assertEqual(mail.outbox[1].subject, 'Amazing Organization est prête à vous accueillir')
-        self.assertEqual(mail.outbox[1].to, [coach.email])
-        self.assertEqual(mail.outbox[2].subject, 'John Doe est disponible pour le poste de conseiller numérique')
-        self.assertEqual(mail.outbox[2].to, [data['contact_email']])
+        #self.assertEqual(mail.outbox[1].subject, 'Amazing Organization est prête à vous accueillir')
+        #self.assertEqual(mail.outbox[1].to, [coach.email])
+        #self.assertEqual(mail.outbox[2].subject, 'John Doe est disponible pour le poste de conseiller numérique')
+        #self.assertEqual(mail.outbox[2].to, [data['contact_email']])
 
     def test_post_invalid_zip_code(self):
 
