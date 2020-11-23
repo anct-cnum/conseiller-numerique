@@ -41,7 +41,7 @@ class Matcher:
         res.sort(key=lambda x: x[2])
         return res
 
-    def get_matchings_for_coach(self, coach: models.Coach, limit=10):
+    def get_matchings_for_coach(self, coach: models.Coach):
         coach = self.get_queryset_coaches().filter(pk=coach.pk).first()
         if not coach:
             return []
