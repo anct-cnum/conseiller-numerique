@@ -10,7 +10,6 @@ from rest_framework.decorators import api_view
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import ipware
 
 from djapp.serializers import CoachSerializer, HostOrganizationSerializer, MatchingReadSerialzier
 from .biz import email_factory
@@ -29,12 +28,6 @@ def home(request):
 def api_maintenance(request):
     return Response({'non_field_errors': ['Site en cours de maintenance, essayez à nouveau plus tard.']},
                     status=status.HTTP_400_BAD_REQUEST)
-
-
-def process_matchings(matchings):
-    for coach, host in matchings:
-        m = Matching.objects.create(coach=coach, host=host)
-        email_factory.send_matching(m)
 
 
 class CoachAddView(APIView):
