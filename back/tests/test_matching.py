@@ -1,3 +1,4 @@
+from django.core import mail
 from django.test import TestCase
 
 from djapp.models import HostOrganization
@@ -38,11 +39,10 @@ class CoachTestCase(TestCase):
 
         matcher = Matcher()
         matchings = matcher.get_matchings_for_coach(coach)
-        self.assertEqual([], matchings)
-        #self.assertEqual(
-        #    [host1, host2, host3],
-        #    [host for _, host in matchings],
-        #)
+        self.assertEqual(
+            [host1, host2, host3],
+            [host for _, host in matchings],
+        )
 
     def test_host_matching(self):
         host = HostOrganizationFactory(type=HostOrganization.Type.COMMUNE, zip_code='75013', start_date='2020-11-20')
@@ -69,8 +69,26 @@ class CoachTestCase(TestCase):
 
         matcher = Matcher()
         matchings = matcher.get_matchings_for_host(host)
-        self.assertEqual([], matchings)
-        #self.assertEqual(
-        #    [coach1, coach2, coach3],
-        #    [coach for coach, _ in matchings],
-        #)
+        self.assertEqual(
+            [coach1, coach2, coach3],
+            [coach for coach, _ in matchings],
+        )
+
+    def test_run_process_for_host(self):
+        host = HostOrganizationFactory(
+            name='Amazing Organization',
+            type=HostOrganization.Type.COMMUNE, zip_code='33000', start_date='2020-11-15',
+        )
+        coach = CoachFactory(
+            first_name='John', last_name='Doe',
+            situation_graduated=True, zip_code='33000', max_distance=5, start_date='2020-11-15',
+        )
+
+        matcher = Matcher()
+        matcher.run_process_for_host(host)
+
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertEqual(mail.outbox[0].subject, 'Amazing Organization est prête à vous accueillir')
+        self.assertEqual(mail.outbox[0].to, [coach.email])
+        self.assertEqual(mail.outbox[1].subject, 'John Doe est disponible pour le poste de conseiller numérique')
+        self.assertEqual(mail.outbox[1].to, [host.contact_email])

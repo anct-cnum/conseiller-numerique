@@ -1,13 +1,17 @@
+from urllib.parse import urljoin
+
+from django.conf import settings
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import Distance as D
 from django.db.models import Q, F, Count
 from django.urls import reverse
 
 from djapp import models
+from djapp.biz import email_factory
 
 
 class Matcher:
-    MAX_MATCHINGS = 0  # For now do not perform any matching
+    MAX_MATCHINGS = 3
 
     def __init__(self):
         pass
@@ -71,18 +75,18 @@ class Matcher:
             res.append((coach, host))
         return res
 
-
-def build_matching_coach_accept_url(request, matching: models.Matching):
-    return request.build_absolute_uri(reverse('matching-coach-accept', kwargs={'key': matching.key}))
-
-
-def build_matching_coach_reject_url(request, matching: models.Matching):
-    return request.build_absolute_uri(reverse('matching-coach-reject', kwargs={'key': matching.key}))
+    def run_process_for_host(self, host):
+        """Find matchings and send emails"""
+        matchings = self.get_matchings_for_host(host)
+        db_matchings = process_matchings(matchings)
+        return db_matchings
 
 
-def build_matching_host_accept_url(request, matching: models.Matching):
-    return request.build_absolute_uri(reverse('matching-host-accept', kwargs={'key': matching.key}))
-
-
-def build_matching_host_reject_url(request, matching: models.Matching):
-    return request.build_absolute_uri(reverse('matching-host-reject', kwargs={'key': matching.key}))
+def process_matchings(matchings):
+    """Create Matching models and send emails"""
+    db_matchings = []
+    for coach, host in matchings:
+        m = models.Matching.objects.create(coach=coach, host=host)
+        email_factory.send_matching(m)
+        db_matchings.append(m)
+    return db_matchings

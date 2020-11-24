@@ -31,10 +31,10 @@ def api_maintenance(request):
                     status=status.HTTP_400_BAD_REQUEST)
 
 
-def process_matchings(request, matchings):
+def process_matchings(matchings):
     for coach, host in matchings:
         m = Matching.objects.create(coach=coach, host=host)
-        email_factory.send_matching(request, m)
+        email_factory.send_matching(m)
 
 
 class CoachAddView(APIView):
@@ -46,9 +46,9 @@ class CoachAddView(APIView):
         if serializer.is_valid():
             coach = serializer.save()
             email_factory.send_coach_confirmation(coach)
-            matcher = Matcher()
-            matchings = matcher.get_matchings_for_coach(coach)
-            process_matchings(request, matchings)
+            # matcher = Matcher()
+            # matchings = matcher.get_matchings_for_coach(coach)
+            # process_matchings(request, matchings)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -62,9 +62,9 @@ class HostOrganizationAddView(APIView):
         if serializer.is_valid():
             host = serializer.save()
             email_factory.send_host_confirmation(host)
-            matcher = Matcher()
-            matchings = matcher.get_matchings_for_host(host)
-            process_matchings(request, matchings)
+            # matcher = Matcher()
+            # matchings = matcher.get_matchings_for_host(host)
+            # process_matchings(request, matchings)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

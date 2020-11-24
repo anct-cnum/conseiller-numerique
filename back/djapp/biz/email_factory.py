@@ -1,5 +1,7 @@
-from djapp.biz.matching import build_matching_host_reject_url, build_matching_host_accept_url, \
-    build_matching_coach_reject_url, build_matching_coach_accept_url
+from urllib.parse import urljoin
+
+from django.conf import settings
+from django.urls import reverse
 from djapp.utils.emails import Email
 
 from djapp import models
@@ -20,7 +22,7 @@ def send_host_confirmation(host: models.HostOrganization):
     Email('confirmation_host').send(host.contact_email, context)
 
 
-def send_matching(request, matching: models.Matching):
+def send_matching(matching: models.Matching):
     context = {
         'coachfirstname': matching.coach.first_name,
         'coachlastname': matching.coach.last_name,
@@ -32,12 +34,28 @@ def send_matching(request, matching: models.Matching):
         'startdate': matching.host.start_date.strftime('%d/%m/%Y'),
     }
     coach_context = dict(**context, **{
-        'coachaccepturl': build_matching_coach_accept_url(request, matching),
-        'coachrejecturl': build_matching_coach_reject_url(request, matching),
+        'coachaccepturl': build_matching_coach_accept_url(matching),
+        'coachrejecturl': build_matching_coach_reject_url(matching),
     })
     host_context = dict(**context, **{
-        'hostaccepturl': build_matching_host_accept_url(request, matching),
-        'hostrejecturl': build_matching_host_reject_url(request, matching),
+        'hostaccepturl': build_matching_host_accept_url(matching),
+        'hostrejecturl': build_matching_host_reject_url(matching),
     })
     Email('matching_coach').send(matching.coach.email, coach_context)
     Email('matching_host').send(matching.host.contact_email, host_context)
+
+
+def build_matching_coach_accept_url(matching: models.Matching):
+    return urljoin(settings.SITE_URL, reverse('matching-coach-accept', kwargs={'key': matching.key}))
+
+
+def build_matching_coach_reject_url(matching: models.Matching):
+    return urljoin(settings.SITE_URL, reverse('matching-coach-reject', kwargs={'key': matching.key}))
+
+
+def build_matching_host_accept_url(matching: models.Matching):
+    return urljoin(settings.SITE_URL, reverse('matching-host-accept', kwargs={'key': matching.key}))
+
+
+def build_matching_host_reject_url(matching: models.Matching):
+    return urljoin(settings.SITE_URL, reverse('matching-host-reject', kwargs={'key': matching.key}))

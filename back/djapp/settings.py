@@ -16,9 +16,7 @@ import getconf
 import dj_database_url
 
 
-TESTING = 'test' in sys.argv
-if TESTING:
-    print('TESTING')
+TESTING = False
 
 
 # Clever Cloud hosting
@@ -56,6 +54,9 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+
+SITE_URL = config.getstr('djapp.site_url', '')
 
 
 # Application definition
