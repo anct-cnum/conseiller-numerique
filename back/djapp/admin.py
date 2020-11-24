@@ -33,10 +33,12 @@ class HostOrganizationAdmin(admin.ModelAdmin):
     def run_matchings(self, request, queryset):
         n_error = 0
         n_success = 0
+        n_matchings = 0
         matcher = Matcher()
         for host in queryset:
             try:
-                matcher.run_process_for_host(host)
+                matchings = matcher.run_process_for_host(host)
+                n_matchings += len(matchings)
                 n_success += 1
             except Exception as ex:
                 n_error += 1
@@ -44,14 +46,13 @@ class HostOrganizationAdmin(admin.ModelAdmin):
                 self.message_user(request, (
                     'Erreur de traitement sur #%s - %s: %s'
                 ) % (host.pk, host.name, ex), messages.ERROR)
-        if n_error == 0:
-            self.message_user(request, (
-                '%s structure(s) traitée(s) avec succès'
-            ) % (n_success,), messages.SUCCESS)
-        else:
-            self.message_user(request, (
-                '%s erreur(s), %s structure(s) traitée(s) avec succès'
-            ) % (n_error, n_success), messages.ERROR)
+
+        msg = f'{n_success} structure(s) traitée(s) avec succès, {n_matchings} matching(s)'
+        level = messages.SUCCESS
+        if n_error != 0:
+            msg = f'{n_error} erreur(s), ' + msg
+            level = messages.ERROR
+        self.message_user(request, msg, level)
     run_matchings.short_description = 'Lancer le matching'
 
 
