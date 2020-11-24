@@ -20,13 +20,6 @@ class User(AbstractUser):
 
 class Coach(models.Model):
 
-    parent = models.ForeignKey(
-        'self',
-        models.SET_NULL,
-        null=True,
-        blank=True,
-    )
-
     situation_looking = models.BooleanField()
     situation_job = models.BooleanField()
     situation_learning = models.BooleanField()
@@ -40,6 +33,9 @@ class Coach(models.Model):
     last_name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=20, blank=True)
+
+    email_confirmation_key = models.CharField(max_length=50, default=random_key_50, unique=True)
+    email_confirmed = models.DateTimeField(null=True, blank=True)
 
     # computed
     location = gis_models.PointField(geography=True)

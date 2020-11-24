@@ -33,6 +33,7 @@ if settings.MAINTENANCE:
 else:
     urlpatterns += [
         path('api/coaches.add', views.CoachAddView.as_view()),
+        path('api/coach.confirm_email', views.CoachConfirmEmailView.as_view()),
         path('api/hostorganizations.add', views.HostOrganizationAddView.as_view()),
         path('api/matchings.get_by_key/<str:key>', views.MatchingGetView.as_view()),
         path('api/matchings.coach_accept/<str:key>', views.matching_coach_accept, name='matching-coach-accept'),

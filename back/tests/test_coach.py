@@ -1,8 +1,12 @@
+import datetime
+
 from django.test import TestCase
 from django.core import mail
 
 from djapp.models import HostOrganization
-from tests.factories import HostOrganizationFactory
+from djapp.views import CoachConfirmEmailView
+from freezegun import freeze_time
+from tests.factories import HostOrganizationFactory, CoachFactory
 
 
 class CoachTestCase(TestCase):
@@ -77,3 +81,29 @@ class CoachTestCase(TestCase):
         self.assertEqual(400, res.status_code)
         res_data = res.json()
         self.assertEqual({'zip_code': ['Code postal invalide']}, res_data)
+
+    def test_confirm_email(self):
+        coach = CoachFactory()
+
+        data = {
+            'key': coach.email_confirmation_key,
+        }
+        res = self.client.post('/api/coach.confirm_email', data=data)
+        self.assertEqual(200, res.status_code)
+        res_data = res.json()
+        self.assertEqual({'success': True}, res_data)
+        coach.refresh_from_db()
+        self.assertIsNotNone(coach.email_confirmed)
+
+    def test_confirm_email_fail_on_expiration(self):
+        creation = datetime.datetime(2020, 8, 22)
+        with freeze_time(creation):
+            coach = CoachFactory()
+
+        data = {
+            'key': coach.email_confirmation_key,
+        }
+        with freeze_time(creation + datetime.timedelta(hours=CoachConfirmEmailView.EXPIRATION_LINK_HOURS + 1)):
+            res = self.client.post('/api/coach.confirm_email', data=data)
+        self.assertEqual(400, res.status_code)
+        self.assertEqual({'non_field_errors': ["Le lien de confirmation a expiré"]}, res.json())

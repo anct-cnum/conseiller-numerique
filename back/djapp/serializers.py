@@ -88,3 +88,7 @@ class MatchingReadSerialzier(serializers.ModelSerializer):
         read_only_fields = (
             'created',
         )
+
+
+class CoachConfirmEmailSerializer(serializers.Serializer):
+    key = serializers.CharField(required=True)
