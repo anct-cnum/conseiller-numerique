@@ -10,13 +10,15 @@ from djapp import models
 def send_coach_confirmation(coach: models.Coach):
     context = {
         'firstname': coach.first_name,
+        'confirmemail': build_confirm_coach_url(coach),
     }
     Email('confirmation_coach').send(coach.email, context)
 
 
 def send_host_confirmation(host: models.HostOrganization):
     context = {
-        'firstname': host.contact_first_name,
+        'contactfirstname': host.contact_first_name,
+        'contactlastname': host.contact_first_name,
         'name': host.name,
     }
     Email('confirmation_host').send(host.contact_email, context)
@@ -59,3 +61,7 @@ def build_matching_host_accept_url(matching: models.Matching):
 
 def build_matching_host_reject_url(matching: models.Matching):
     return urljoin(settings.SITE_URL, reverse('matching-host-reject', kwargs={'key': matching.key}))
+
+
+def build_confirm_coach_url(coach: models.Coach):
+    return urljoin(settings.FRONT_URL, f'/candidature/coach/confirm/email/{coach.email_confirmation_key}')
