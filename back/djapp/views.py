@@ -60,6 +60,7 @@ class CoachConfirmEmailView(APIView):
             expiration_time = now - datetime.timedelta(hours=self.EXPIRATION_LINK_HOURS)
             coach = Coach.objects.filter(email_confirmation_key=data['key'], created__gte=expiration_time).first()
             if coach is None:
+                logger.warning('Confirm email token has expired or is invalid: %r', data['key'])
                 return Response({'non_field_errors': ["Le lien de confirmation a expiré"]}, status=status.HTTP_400_BAD_REQUEST)
             logger.info('Confirm email %s for coach %s', coach.email, coach.pk)
             coach.email_confirmed = now
