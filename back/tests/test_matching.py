@@ -16,24 +16,25 @@ class CoachTestCase(TestCase):
             start_date='2020-11-15',
         )
 
-        host1 = HostOrganizationFactory(type=HostOrganization.Type.COMMUNE, zip_code='75015', start_date='2020-11-20')
-        host2 = HostOrganizationFactory(type=HostOrganization.Type.COMMUNE, zip_code='75011', start_date='2020-11-20')
-        host3 = HostOrganizationFactory(type=HostOrganization.Type.COMMUNE, zip_code='94200', start_date='2020-11-20')
+        def valid_host_data(**overrides):
+            default = dict(type=HostOrganization.Type.COMMUNE, zip_code='75015', start_date='2020-11-20')
+            default.update(overrides)
+            return default
+
+        host1 = HostOrganizationFactory(**valid_host_data())
+        host2 = HostOrganizationFactory(**valid_host_data(zip_code='75011'))
+        host3 = HostOrganizationFactory(**valid_host_data(zip_code='94200'))
 
         # Too far
-        HostOrganizationFactory(type=HostOrganization.Type.COMMUNE, zip_code='33000', start_date='2020-11-20')
-        HostOrganizationFactory(type=HostOrganization.Type.COMMUNE, zip_code='92330', start_date='2020-11-20')
-        HostOrganizationFactory(type=HostOrganization.Type.COMMUNE, zip_code='94700', start_date='2020-11-20')
+        HostOrganizationFactory(**valid_host_data(zip_code='33000'))
+        HostOrganizationFactory(**valid_host_data(zip_code='92330'))
+        HostOrganizationFactory(**valid_host_data(zip_code='94700'))
 
-        # Not ready
-        HostOrganizationFactory(
-            type=HostOrganization.Type.COMMUNE,
-            zip_code='33000',
-            start_date='2021-01-01',
-        )
+        # Start date does not work
+        HostOrganizationFactory(**valid_host_data(start_date='2020-11-01'))
 
         # Too many matchings
-        host_busy = HostOrganizationFactory(type=HostOrganization.Type.COMMUNE, zip_code='75015', start_date='2020-11-20')
+        host_busy = HostOrganizationFactory(**valid_host_data())
         for i in range(Matcher.MAX_MATCHINGS):
             MatchingFactory(host=host_busy)
 
@@ -47,26 +48,33 @@ class CoachTestCase(TestCase):
     def test_host_matching(self):
         host = HostOrganizationFactory(type=HostOrganization.Type.COMMUNE, zip_code='75013', start_date='2020-11-20')
 
-        coach1 = CoachFactory(situation_graduated=True, zip_code='75015', max_distance=5, start_date='2020-11-15')
-        coach2 = CoachFactory(has_experience=True, zip_code='75013', max_distance=5, start_date='2020-11-15')
-        coach3 = CoachFactory(situation_learning=True, zip_code='94200', max_distance=5, start_date='2020-11-15')
+        def valid_coach_data(**overrides):
+            default = dict(
+                situation_graduated=True, zip_code='75015', max_distance=5, start_date='2020-11-15',
+            )
+            default.update(overrides)
+            return default
+        coach1 = CoachFactory(**valid_coach_data())
+        coach2 = CoachFactory(**valid_coach_data(situation_graduated=False, has_experience=True, zip_code='75013'))
+        coach3 = CoachFactory(**valid_coach_data(situation_graduated=False, situation_learning=True, zip_code='94200'))
 
         # Too far
-        CoachFactory(situation_graduated=True, zip_code='33000', max_distance=5, start_date='2020-11-15')
-        CoachFactory(situation_graduated=True, zip_code='92330', max_distance=5, start_date='2020-11-15')
-        CoachFactory(situation_graduated=True, zip_code='94700', max_distance=5, start_date='2020-11-15')
+        CoachFactory(**valid_coach_data(zip_code='33000'))
+        CoachFactory(**valid_coach_data(zip_code='92330'))
+        CoachFactory(**valid_coach_data(zip_code='94700'))
 
         # Bad situation
-        CoachFactory(situation_job=True, zip_code='75015', max_distance=5, start_date='2020-11-15')
+        CoachFactory(**valid_coach_data(situation_graduated=False, situation_job=True))
 
         # Start Date does not work
-        CoachFactory(situation_graduated=True, zip_code='75013', max_distance=5, start_date='2020-11-30')
+        CoachFactory(**valid_coach_data(start_date='2020-11-30'))
 
         # Too many matchings
-        coach_busy = CoachFactory(situation_graduated=True, zip_code='75015', max_distance=5, start_date='2020-11-15')
+        coach_busy = CoachFactory(**valid_coach_data())
         for i in range(Matcher.MAX_MATCHINGS):
             MatchingFactory(coach=coach_busy)
 
+        # Run test
         matcher = Matcher()
         matchings = matcher.get_matchings_for_host(host)
         self.assertEqual(
