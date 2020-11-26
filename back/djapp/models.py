@@ -37,6 +37,8 @@ class Coach(models.Model):
     email_confirmation_key = models.CharField(max_length=50, default=random_key_50, unique=True)
     email_confirmed = models.DateTimeField(null=True, blank=True)
 
+    blocked = models.DateTimeField(null=True)
+
     # computed
     location = gis_models.PointField(geography=True)
 

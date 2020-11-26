@@ -20,6 +20,9 @@ class Matcher:
         qs = models.Coach.objects.all()
         # Filter on situation
         qs = qs.filter(Q(situation_graduated=True) | Q(has_experience=True) | Q(situation_learning=True))
+        # Filter on state
+        # Email should be confirmed and coach should not be blocked
+        qs = qs.exclude(email_confirmed=None).filter(blocked=None)
         # Filter on matchings
         qs = qs.annotate(nb_matchings=Count('matchings'))
         qs = qs.filter(nb_matchings__lt=self.MAX_MATCHINGS)

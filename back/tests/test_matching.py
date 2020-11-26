@@ -14,6 +14,7 @@ class CoachTestCase(TestCase):
             zip_code='75013',
             max_distance=5,
             start_date='2020-11-15',
+            email_confirmed='2020-01-01',
         )
 
         def valid_host_data(**overrides):
@@ -51,6 +52,7 @@ class CoachTestCase(TestCase):
         def valid_coach_data(**overrides):
             default = dict(
                 situation_graduated=True, zip_code='75015', max_distance=5, start_date='2020-11-15',
+                email_confirmed='2020-01-01',
             )
             default.update(overrides)
             return default
@@ -68,6 +70,12 @@ class CoachTestCase(TestCase):
 
         # Start Date does not work
         CoachFactory(**valid_coach_data(start_date='2020-11-30'))
+
+        # Email not confirmed
+        CoachFactory(**valid_coach_data(email_confirmed=None))
+
+        # Blocked
+        CoachFactory(**valid_coach_data(blocked='2020-01-01'))
 
         # Too many matchings
         coach_busy = CoachFactory(**valid_coach_data())
