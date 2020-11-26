@@ -101,5 +101,15 @@ export class ApiService {
       );
   }
 
+  confirmCoachEmail(key: string,
+                    messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
+  ): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/coach.confirm_email`, {key})
+      .pipe(
+        tap({error: (error) => this.errorHandler(error, messages)}),
+        map((json: any) => ApiAdapter.api2app(json)),
+        shareReplay(1),
+      );
+  }
 
 }

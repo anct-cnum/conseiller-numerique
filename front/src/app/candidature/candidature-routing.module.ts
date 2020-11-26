@@ -6,6 +6,7 @@ import {BasePageComponent} from './components/base-page/base-page.component';
 import {PageFormCoachSuccessComponent} from './components/page-form-coach-success/page-form-coach-success.component';
 import {PageMatchingComponent} from './components/page-matching/page-matching.component';
 import {PageFormHostSuccessComponent} from './components/page-form-host-success/page-form-host-success.component';
+import {PageCoachConfirmEmailComponent} from './components/page-coach-confirm-email/page-coach-confirm-email.component';
 
 
 const routes: Routes = [
@@ -17,26 +18,37 @@ const routes: Routes = [
         path: 'conseiller/new',
         component: PageFormCoachComponent,
       },
+
       {
         path: 'conseiller/success',
         component: PageFormCoachSuccessComponent,
       },
+
+      {
+        path: 'conseiller/confirmation/email/:key',
+        component: PageCoachConfirmEmailComponent,
+      },
+
       {
         path: 'structure/new',
         component: PageFormHostOrganizationComponent,
       },
+
       {
         path: 'structure/success',
         component: PageFormHostSuccessComponent,
       },
+
       {
         path: 'conseiller',
         redirectTo: 'conseiller/new',
       },
+
       {
         path: 'structure',
         redirectTo: 'structure/new',
       },
+
       {
         path: '',
         redirectTo: 'conseiller',

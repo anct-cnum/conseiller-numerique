@@ -27,6 +27,7 @@ import {
   RECAPTCHA_LANGUAGE
 } from 'ng-recaptcha';
 import {environment} from '@env';
+import { PageCoachConfirmEmailComponent } from './components/page-coach-confirm-email/page-coach-confirm-email.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import {environment} from '@env';
     FormFieldZipcodeComponent,
     FormControlPrettyDateChoiceComponent,
     FooterComponent,
+    PageCoachConfirmEmailComponent,
   ],
 
   imports: [

@@ -1,8 +1,8 @@
 import datetime
 import logging
+from urllib.parse import urljoin
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
@@ -132,3 +132,7 @@ def matching_host_reject(request, key):
     matching.host_rejected = timezone.now()
     matching.save()
     return HttpResponse('<p>Merci de nous avoir tenu informé. Nous prenons en compte votre retour</p>')
+
+
+def redirect_coach_confirm_email(request, key):
+    return redirect(urljoin(settings.FRONT_URL, f'/candidature/conseiller/confirmation/email/{key}'))

@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="col mt-5 text-center">
+    <p>
+      Appuyez sur le bouton pour confirmer votre email
+    </p>
+    <p *ngIf="!isConfirmed">
+      <button class="btn btn-primary" (click)="clickConfirm()">Confirmer</button>
+    </p>
+    <p *ngIf="error" class="alert alert-danger">
+      Impossible de valider l'email, le lien a expiré ou est invalide.
+    </p>
+    <p *ngIf="isConfirmed" class="alert alert-success">
+      Votre email a été confirmé et votre candidature est maintenant active. Vous recevrez un email quand une structure
+      sera prête à vous accueillir.
+    </p>
+  </div>
+</div>

@@ -64,4 +64,4 @@ def build_matching_host_reject_url(matching: models.Matching):
 
 
 def build_confirm_coach_url(coach: models.Coach):
-    return urljoin(settings.FRONT_URL, f'/candidature/coach/confirm/email/{coach.email_confirmation_key}')
+    return urljoin(settings.SITE_URL, reverse('redirect-coach-confirm-email', kwargs={'key': coach.email_confirmation_key}))
