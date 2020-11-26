@@ -98,6 +98,7 @@ class CoachTestCase(TestCase):
         coach = CoachFactory(
             first_name='John', last_name='Doe',
             situation_graduated=True, zip_code='33000', max_distance=5, start_date='2020-11-15',
+            email_confirmed='2020-01-01',
         )
 
         matcher = Matcher()
