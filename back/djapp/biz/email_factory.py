@@ -10,7 +10,7 @@ from djapp import models
 def send_coach_confirmation(coach: models.Coach):
     context = {
         'firstname': coach.first_name,
-        'confirmemail': build_confirm_coach_url(coach),
+        'confirmurl': build_confirm_coach_url(coach),
     }
     Email('confirmation_coach').send(coach.email, context)
 
