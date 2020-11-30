@@ -1,25 +1,38 @@
+import logging
 import requests
 from django.contrib.gis.geos import Point
 
 
-class InvalidZipCode(Exception):
+logger = logging.getLogger(__name__)
+
+
+class ApiException(Exception):
+    pass
+
+
+class InvalidZipCode(ApiException):
     def __init__(self):
         super().__init__('Code postal invalide')
 
 
+class InvalidCommuneCode(ApiException):
+    pass
+
+
 class GeoGouvApi:
-    def get_zipcode_info(self, zipcode):
-        url = 'https://geo.api.gouv.fr/communes?codePostal={zipcode}&fields=nom,code,codesPostaux,centre,population'
+    def search_commune_by_zipcode(self, zipcode):
+        url = 'https://geo.api.gouv.fr/communes?codePostal={zipcode}&fields=nom,code,codesPostaux,centre,population,codeDepartement,codeRegion'
         url = url.format(zipcode=zipcode)
         res = requests.get(url)
         data = res.json()
-        if not data:
-            raise InvalidZipCode()
-        else:
-            return data[0]
+        return data
 
-
-def compute_location_from_zip_code(zip_code):
-    api = GeoGouvApi()
-    data = api.get_zipcode_info(zip_code)
-    return Point(x=data['centre']['coordinates'][0], y=data['centre']['coordinates'][1])
+    def get_commune(self, code):
+        url = 'https://geo.api.gouv.fr/communes/{code}?fields=centre,nom,code,codesPostaux,codeDepartement,codeRegion'
+        url = url.format(code=code)
+        res = requests.get(url)
+        if res.status_code != 200:
+            logger.error('Cannot get commune: %s - %r', res.status_code, res.content)
+            raise ApiException(res.status_code)
+        data = res.json()
+        return data

@@ -18,7 +18,20 @@ class User(AbstractUser):
     pass
 
 
-class Coach(models.Model):
+class ObjectWithLocationModel(models.Model):
+    class Meta:
+        abstract = True
+
+    # Location
+    zip_code = models.CharField(max_length=10)
+    commune_code = models.CharField(max_length=10)
+    geo_name = models.CharField(max_length=250)
+    region_code = models.CharField(max_length=10)
+    departement_code = models.CharField(max_length=10)
+    location = gis_models.PointField(geography=True)
+
+
+class Coach(ObjectWithLocationModel):
 
     situation_looking = models.BooleanField()
     situation_job = models.BooleanField()
@@ -26,7 +39,6 @@ class Coach(models.Model):
     situation_graduated = models.BooleanField()
     formation = models.CharField(max_length=200, blank=True)
     has_experience = models.BooleanField()
-    zip_code = models.CharField(max_length=10)
     max_distance = models.IntegerField()
     start_date = models.DateField()
     first_name = models.CharField(max_length=100)
@@ -34,13 +46,11 @@ class Coach(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20, blank=True)
 
+    # State
     email_confirmation_key = models.CharField(max_length=50, default=random_key_50, unique=True)
     email_confirmed = models.DateTimeField(null=True, blank=True)
 
     blocked = models.DateTimeField(null=True)
-
-    # computed
-    location = gis_models.PointField(geography=True)
 
     updated = models.DateField(auto_now=True)
     created = models.DateTimeField(default=timezone.now)
@@ -49,7 +59,7 @@ class Coach(models.Model):
         return '{first_name} {last_name} ({zip_code})'.format(**self.__dict__)
 
 
-class HostOrganization(models.Model):
+class HostOrganization(ObjectWithLocationModel):
     class Type(models.TextChoices):
         COMMUNE = 'COMMUNE', 'Commune'
         DEPARTEMENT = 'DEPARTEMENT', 'Département'
@@ -59,7 +69,6 @@ class HostOrganization(models.Model):
         PRIVATE = 'PRIVATE', 'Entreprise privée'
     type = models.CharField(max_length=20, choices=Type.choices)
     has_candidate = models.BooleanField()
-    zip_code = models.CharField(max_length=10)
     start_date = models.DateField()
     name = models.CharField(max_length=250)
     contact_first_name = models.CharField(max_length=100)
@@ -67,9 +76,6 @@ class HostOrganization(models.Model):
     contact_job = models.CharField(max_length=100)
     contact_email = models.EmailField()
     contact_phone = models.CharField(max_length=20, blank=True)
-
-    # computed
-    location = gis_models.PointField(geography=True)
 
     updated = models.DateField(auto_now=True)
     created = models.DateTimeField(default=timezone.now)

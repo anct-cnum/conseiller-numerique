@@ -1,3 +1,4 @@
+from django.contrib.gis.geos import Point
 from django.core import mail
 from django.test import TestCase
 
@@ -109,3 +110,46 @@ class CoachTestCase(TestCase):
         self.assertEqual(mail.outbox[0].to, [coach.email])
         self.assertEqual(mail.outbox[1].subject, 'John Doe est disponible pour le poste de conseiller numérique')
         self.assertEqual(mail.outbox[1].to, [host.contact_email])
+
+    def test_quimper_does_not_match_with_brest(self):
+        coach = CoachFactory(
+            situation_graduated=True,
+            geo_name='Brest',
+            zip_code='29200',
+            commune_code='29019',
+            departement_code='29',
+            region_code='53',
+            location=Point([-4.5058, 48.4059]),
+            start_date='2020-11-15',
+            email_confirmed='2020-01-01',
+        )
+
+        host_brest = HostOrganizationFactory(
+            type=HostOrganization.Type.COMMUNE,
+            geo_name='Brest',
+            zip_code='29200',
+            commune_code='29019',
+            departement_code='29',
+            region_code='53',
+            location=Point([-4.5058, 48.4059]),
+            start_date='2020-11-20',
+        )
+
+        host_quimper = HostOrganizationFactory(
+            type=HostOrganization.Type.COMMUNE,
+            geo_name='Quimper',
+            zip_code='75015',
+            commune_code='29232',
+            departement_code='29',
+            region_code='53',
+            location=Point([-4.0916, 47.9914]),
+            start_date='2020-11-20',
+        )
+
+        # Run test
+        matcher = Matcher()
+        matchings = matcher.get_matchings_for_coach(coach)
+        self.assertEqual(
+            [host_brest],
+            [host for _, host in matchings],
+        )

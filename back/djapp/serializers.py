@@ -1,20 +1,17 @@
+import logging
+
+from django.contrib.gis.geos import Point
 from rest_framework import serializers
+from rest_framework_gis.fields import GeometryField
 
 from . import models
-from .biz.geo_gouv_api import compute_location_from_zip_code, InvalidZipCode
+from .biz.geo_gouv_api import GeoGouvApi, InvalidCommuneCode
 
 
-class ZipCodeMixin:
-    def validate(self, attrs):
-        zip_code = attrs['zip_code']
-        try:
-            attrs['location'] = compute_location_from_zip_code(zip_code)
-        except InvalidZipCode:
-            raise serializers.ValidationError({'zip_code': 'Code postal invalide'})
-        return attrs
+logger = logging.getLogger(__name__)
 
 
-class CoachSerializer(ZipCodeMixin, serializers.ModelSerializer):
+class CoachSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Coach
         fields = (
@@ -24,7 +21,6 @@ class CoachSerializer(ZipCodeMixin, serializers.ModelSerializer):
             'situation_graduated',
             'formation',
             'has_experience',
-            'zip_code',
             'max_distance',
             'start_date',
             'first_name',
@@ -33,17 +29,22 @@ class CoachSerializer(ZipCodeMixin, serializers.ModelSerializer):
             'phone',
 
             'location',
+            'zip_code',
+            'commune_code',
+            'geo_name',
+            'region_code',
+            'departement_code',
+
             'updated',
             'created',
         )
         read_only_fields = (
-            'location',
             'updated',
             'created',
         )
 
 
-class HostOrganizationSerializer(ZipCodeMixin, serializers.ModelSerializer):
+class HostOrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.HostOrganization
         fields = (
@@ -51,7 +52,6 @@ class HostOrganizationSerializer(ZipCodeMixin, serializers.ModelSerializer):
             'has_candidate',
             'start_date',
             'name',
-            'zip_code',
             'contact_first_name',
             'contact_last_name',
             'contact_job',
@@ -59,11 +59,16 @@ class HostOrganizationSerializer(ZipCodeMixin, serializers.ModelSerializer):
             'contact_phone',
 
             'location',
+            'zip_code',
+            'commune_code',
+            'geo_name',
+            'region_code',
+            'departement_code',
+
             'updated',
             'created',
         )
         read_only_fields = (
-            'location',
             'updated',
             'created',
         )
