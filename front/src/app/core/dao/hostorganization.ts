@@ -1,3 +1,4 @@
+import {GeoPoint} from "./geo";
 
 
 export interface HostOrganizationInput {
@@ -5,13 +6,19 @@ export interface HostOrganizationInput {
   hasCandidate: boolean;
   startDate: Date;
   name: string;
-  zipCode: string;
   contactFirstName: string;
   contactLastName: string;
   contactJob: string;
   contactEmail: string;
   contactPhone: string;
   recaptcha: string;
+
+  geoName: string;
+  zipCode: string;
+  communeCode: string;
+  departementCode: string;
+  regionCode: string;
+  location: GeoPoint;
 }
 
 
@@ -20,7 +27,6 @@ export interface HostOrganizationOutput {
   hasCandidate: boolean;
   startDate: Date;
   name: string;
-  zipCode: string;
   contactFirstName: string;
   contactLastName: string;
   contactJob: string;
@@ -29,4 +35,11 @@ export interface HostOrganizationOutput {
 
   updated: Date;
   created: Date;
+
+  geoName: string;
+  zipCode: string;
+  communeCode: string;
+  departementCode: string;
+  regionCode: string;
+  location: GeoPoint;
 }

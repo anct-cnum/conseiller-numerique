@@ -2,10 +2,12 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
 import {DEFAULT_MESSAGE_CONFIG, MessageConfig} from './api.service';
-import {concat, forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {map, shareReplay, tap} from 'rxjs/operators';
-import {GeoCommune, ZipCodeWithName} from 'app/core/dao/geocommune';
+import {GeoCommune, ZipCodeWithCommune} from 'app/core/dao/geocommune';
+import {api2geoPoint} from './utils';
 
+const API_FIELDS_QS = 'fields=nom,code,codesPostaux,centre,population,codeDepartement,codeRegion';
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +34,10 @@ export class GeogouvService {
     }
   }
 
-  getCommunesByZipCode(zipCode: string,
-                       messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
+  searchCommunesByZipCode(zipCode: string,
+                          messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
   ): Observable<GeoCommune[]> {
-    return this.http.get(`https://geo.api.gouv.fr/communes?codePostal=${zipCode}&fields=nom,code,codesPostaux,centre`)
+    return this.http.get(`https://geo.api.gouv.fr/communes?codePostal=${zipCode}&${API_FIELDS_QS}`)
       .pipe(
         tap({error: (error) => this.errorHandler(error, messages)}),
         map((jsonList: any) => jsonList.map(json => this.adapt2app_GeoCommune(json))),
@@ -43,10 +45,10 @@ export class GeogouvService {
       );
   }
 
-  getCommunesByName(name: string,
-                    messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
+  searchCommunesByName(name: string,
+                       messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
   ): Observable<GeoCommune[]> {
-    return this.http.get(`https://geo.api.gouv.fr/communes?nom=${name}&fields=nom,code,codesPostaux,centre`)
+    return this.http.get(`https://geo.api.gouv.fr/communes?nom=${name}&${API_FIELDS_QS}`)
       .pipe(
         tap({error: (error) => this.errorHandler(error, messages)}),
         map((jsonList: any) => jsonList.map(json => this.adapt2app_GeoCommune(json))),
@@ -54,12 +56,12 @@ export class GeogouvService {
       );
   }
 
-  autocompleteZipCodes(term: string,
+  autocompleteCommunes(term: string,
                        messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
-  ): Observable<ZipCodeWithName[]> {
+  ): Observable<ZipCodeWithCommune[]> {
     return forkJoin([
-        this.getCommunesByZipCode(term),
-        this.getCommunesByName(term),
+        this.searchCommunesByZipCode(term),
+        this.searchCommunesByName(term),
       ]
     ).pipe(
       map(([res1, res2]) => this.flatCommunes([...res1, ...res2])),
@@ -69,18 +71,19 @@ export class GeogouvService {
   adapt2app_GeoCommune(json: any): GeoCommune {
     return {
       name: json.nom,
+      code: json.code,
       zipCodes: json.codesPostaux,
+      departementCode: json.codeDepartement,
+      regionCode: json.codeRegion,
+      center: api2geoPoint(json.centre),
     };
   }
 
-  flatCommunes(communes: GeoCommune[]): ZipCodeWithName[] {
+  flatCommunes(communes: GeoCommune[]): ZipCodeWithCommune[] {
     const res = [];
     for (const commune of communes) {
       for (const zipCode of commune.zipCodes) {
-        res.push({
-          zipCode: zipCode,
-          name: commune.name,
-        });
+        res.push({ zipCode, commune });
       }
     }
     console.log('zips', res);

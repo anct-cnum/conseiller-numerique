@@ -3,13 +3,13 @@ import {concat, Observable, of, Subject} from 'rxjs';
 import {catchError, distinctUntilChanged, map, switchMap, tap} from 'rxjs/operators';
 import {GeogouvService} from 'app/core/services/api/geogouv.service';
 import {FormGroup} from '@angular/forms';
-import {ZipCodeWithName} from 'app/core/dao/geocommune';
+import {GeoCommune, ZipCodeWithCommune} from 'app/core/dao/geocommune';
 
 
-export interface OptionZipCode {
-  code: string;
+export interface OptionCommune {
   label: string;
-  name: string;
+  commune: GeoCommune;
+  zipCode: string;
 }
 
 
@@ -34,7 +34,7 @@ export class FormFieldZipcodeComponent implements OnInit {
   @Input()
   helpText: string;
 
-  zipCodes$: Observable<OptionZipCode[]>;
+  zipCodes$: Observable<OptionCommune[]>;
   zipCodesLoading = false;
   zipCodesInput$ = new Subject<string>();
 
@@ -52,11 +52,11 @@ export class FormFieldZipcodeComponent implements OnInit {
       this.zipCodesInput$.pipe(
         distinctUntilChanged(),
         tap(() => this.zipCodesLoading = true),
-        switchMap(term => term?.length < 3 ? [] : this.geoApi.autocompleteZipCodes(term).pipe(
-          map(zipCodes => zipCodes.slice(0, 20).map((zipCodeWithName: ZipCodeWithName): OptionZipCode => ({
-              label: zipCodeWithName.zipCode + ' ' + zipCodeWithName.name,
-              code: zipCodeWithName.zipCode,
-              name: zipCodeWithName.name,
+        switchMap(term => term?.length < 3 ? [] : this.geoApi.autocompleteCommunes(term).pipe(
+          map(zipCodes => zipCodes.slice(0, 20).map((zipCodeWithCommune: ZipCodeWithCommune): OptionCommune => ({
+              label: zipCodeWithCommune.zipCode + ' ' + zipCodeWithCommune.commune.name,
+              zipCode: zipCodeWithCommune.zipCode,
+              commune: zipCodeWithCommune.commune,
             })
           )),
           catchError((err) => {

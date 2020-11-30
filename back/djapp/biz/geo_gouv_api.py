@@ -20,16 +20,16 @@ class InvalidCommuneCode(ApiException):
 
 
 class GeoGouvApi:
+    FIELDS_QS = 'fields=nom,code,codesPostaux,centre,population,codeDepartement,codeRegion'
+
     def search_commune_by_zipcode(self, zipcode):
-        url = 'https://geo.api.gouv.fr/communes?codePostal={zipcode}&fields=nom,code,codesPostaux,centre,population,codeDepartement,codeRegion'
-        url = url.format(zipcode=zipcode)
+        url = f'https://geo.api.gouv.fr/communes?codePostal={zipcode}&{self.FIELDS_QS}'
         res = requests.get(url)
         data = res.json()
         return data
 
     def get_commune(self, code):
-        url = 'https://geo.api.gouv.fr/communes/{code}?fields=centre,nom,code,codesPostaux,codeDepartement,codeRegion'
-        url = url.format(code=code)
+        url = f'https://geo.api.gouv.fr/communes/{code}?{self.FIELDS_QS}'
         res = requests.get(url)
         if res.status_code != 200:
             logger.error('Cannot get commune: %s - %r', res.status_code, res.content)

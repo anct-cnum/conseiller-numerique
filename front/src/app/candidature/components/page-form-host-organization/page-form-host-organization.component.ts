@@ -8,6 +8,7 @@ import {HostOrganizationInput} from 'app/core/dao/hostorganization';
 import {isArray} from 'app/utils/utils';
 import {phoneValidator} from '../page-form-coach/page-form-coach.component';
 import {ToastrService} from 'ngx-toastr';
+import {OptionCommune} from '../form-field-zipcode/form-field-zipcode.component';
 
 
 @Component({
@@ -59,18 +60,25 @@ export class PageFormHostOrganizationComponent implements OnInit {
       return;
     }
 
+    const optionCommune: OptionCommune = this.form.value.zipCode;
     const resource: HostOrganizationInput = {
       type: this.form.value.type,
       hasCandidate: this.form.value.hasCandidate,
       startDate: this.form.value.startDate.date,
       name: this.form.value.name,
-      zipCode: this.form.value.zipCode.code,
       contactJob: this.form.value.contactJob,
       contactFirstName: this.form.value.contactFirstName,
       contactLastName: this.form.value.contactLastName,
       contactEmail: this.form.value.contactEmail,
       contactPhone: this.form.value.contactPhone,
       recaptcha: this.form.value.recaptcha,
+
+      geoName: optionCommune.commune.name,
+      zipCode: optionCommune.zipCode,
+      communeCode: optionCommune.commune.code,
+      departementCode: optionCommune.commune.departementCode,
+      regionCode: optionCommune.commune.regionCode,
+      location: optionCommune.commune.center,
     };
 
     this.ladda = true;

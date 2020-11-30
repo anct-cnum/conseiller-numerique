@@ -1,5 +1,7 @@
 import { DateStruct } from 'app/core/dao/date';
 import { padNumber, isString, isObject } from 'app/utils/utils';
+import {GeoPoint, GeoJsonPoint} from "../../dao/geo";
+import {RawConfigFile} from "tslint/lib/configuration";
 
 
 /**
@@ -69,4 +71,30 @@ export function isDateStruct(o: any) : boolean {
   }
   let keys = new Set(Object.keys(o));
   return keys.has('year') && keys.has('month') && keys.has('day');
+}
+
+
+export function isGeoJsonPoint(o: any): boolean {
+  return o?.type === 'Point';
+}
+
+
+export function isGeoPoint(o: any): boolean {
+  return o && o.hasOwnProperty('longitude')  && o.hasOwnProperty('latitude');
+}
+
+
+export function api2geoPoint(o: any): GeoPoint {
+  return {
+    longitude: o.coordinates[0],
+    latitude: o.coordinates[1],
+  };
+}
+
+
+export function geoPoint2api(o: GeoPoint): GeoJsonPoint {
+  return {
+    type: 'Point',
+    coordinates: [o.longitude, o.latitude],
+  };
 }

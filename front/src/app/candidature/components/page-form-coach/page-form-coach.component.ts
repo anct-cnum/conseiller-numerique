@@ -7,6 +7,7 @@ import {isArray} from 'app/utils/utils';
 import {ActivatedRoute, Router} from '@angular/router';
 import {environment} from '@env';
 import {ToastrService} from 'ngx-toastr';
+import {OptionCommune} from '../form-field-zipcode/form-field-zipcode.component';
 
 
 function requiredIfFieldTrue(otherFieldName: string): ValidatorFn {
@@ -94,6 +95,8 @@ export class PageFormCoachComponent implements OnInit {
       return;
     }
 
+    const optionCommune: OptionCommune = this.form.value.zipCode;
+
     const resource: CoachInput = {
       situationLooking: this.form.value.situation.looking,
       situationJob: this.form.value.situation.job,
@@ -102,13 +105,19 @@ export class PageFormCoachComponent implements OnInit {
       formation: this.form.value.formation,
       hasExperience: this.form.value.hasExperience,
       startDate: this.form.value.startDate.date,
-      zipCode: this.form.value.zipCode.code,
       maxDistance: this.form.value.maxDistance,
       firstName: this.form.value.firstName,
       lastName: this.form.value.lastName,
       email: this.form.value.email,
       phone: this.form.value.phone,
       recaptcha: this.form.value.recaptcha,
+
+      geoName: optionCommune.commune.name,
+      zipCode: optionCommune.zipCode,
+      communeCode: optionCommune.commune.code,
+      departementCode: optionCommune.commune.departementCode,
+      regionCode: optionCommune.commune.regionCode,
+      location: optionCommune.commune.center,
     };
 
     this.ladda = true;

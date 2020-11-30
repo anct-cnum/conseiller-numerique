@@ -1,3 +1,4 @@
+import {GeoPoint} from './geo';
 
 
 export interface CoachInput {
@@ -7,7 +8,6 @@ export interface CoachInput {
   situationGraduated: boolean;
   formation: string;
   hasExperience: boolean;
-  zipCode: string;
   maxDistance: number;
   startDate: Date;
   firstName: string;
@@ -15,6 +15,13 @@ export interface CoachInput {
   email: string;
   phone: string;
   recaptcha: string;
+
+  geoName: string;
+  zipCode: string;
+  communeCode: string;
+  departementCode: string;
+  regionCode: string;
+  location: GeoPoint;
 }
 
 
@@ -26,7 +33,6 @@ export interface CoachOutput {
   situationGraduated: boolean;
   formation: string;
   hasExperience: boolean;
-  zipCode: string;
   maxDistance: number;
   startDate: Date;
   firstName: string;
@@ -36,4 +42,11 @@ export interface CoachOutput {
 
   updated: Date;
   created: Date;
+
+  geoName: string;
+  zipCode: string;
+  communeCode: string;
+  departementCode: string;
+  regionCode: string;
+  location: GeoPoint;
 }
