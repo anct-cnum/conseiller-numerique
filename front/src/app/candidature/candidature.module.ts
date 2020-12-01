@@ -28,6 +28,8 @@ import {
 } from 'ng-recaptcha';
 import {environment} from '@env';
 import { PageCoachConfirmEmailComponent } from './components/page-coach-confirm-email/page-coach-confirm-email.component';
+import {PageHostConfirmEmailComponent} from './components/page-host-confirm-email/page-host-confirm-email.component';
+import { WidgetConfirmEmailComponent } from './components/widget-confirm-email/widget-confirm-email.component';
 
 
 @NgModule({
@@ -47,6 +49,8 @@ import { PageCoachConfirmEmailComponent } from './components/page-coach-confirm-
     FormControlPrettyDateChoiceComponent,
     FooterComponent,
     PageCoachConfirmEmailComponent,
+    PageHostConfirmEmailComponent,
+    WidgetConfirmEmailComponent,
   ],
 
   imports: [

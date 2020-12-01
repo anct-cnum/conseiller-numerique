@@ -20,6 +20,7 @@ def send_host_confirmation(host: models.HostOrganization):
         'contactfirstname': host.contact_first_name,
         'contactlastname': host.contact_first_name,
         'name': host.name,
+        'confirmurl': build_confirm_host_url(host),
     }
     Email('confirmation_host').send(host.contact_email, context)
 
@@ -65,3 +66,7 @@ def build_matching_host_reject_url(matching: models.Matching):
 
 def build_confirm_coach_url(coach: models.Coach):
     return urljoin(settings.SITE_URL, reverse('redirect-coach-confirm-email', kwargs={'key': coach.email_confirmation_key}))
+
+
+def build_confirm_host_url(host: models.HostOrganization):
+    return urljoin(settings.SITE_URL, reverse('redirect-host-confirm-email', kwargs={'key': host.email_confirmation_key}))

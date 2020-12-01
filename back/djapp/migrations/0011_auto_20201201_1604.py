@@ -4,6 +4,13 @@ from django.db import migrations, models
 import djapp.models
 
 
+def gen_key(apps, schema_editor):
+    HostOrganization = apps.get_model('djapp', 'HostOrganization')
+    for m in HostOrganization.objects.all():
+        m.email_confirmation_key = djapp.models.random_key_50()
+        m.save(update_fields=['email_confirmation_key'])
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -19,7 +26,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='hostorganization',
             name='email_confirmation_key',
-            field=models.CharField(default=djapp.models.random_key_50, max_length=50, unique=True),
+            field=models.CharField(default='', max_length=50),
         ),
         migrations.AddField(
             model_name='hostorganization',
@@ -30,5 +37,11 @@ class Migration(migrations.Migration):
             model_name='hostorganization',
             name='validated',
             field=models.DateTimeField(null=True),
+        ),
+        migrations.RunPython(gen_key, migrations.RunPython.noop),
+        migrations.AlterField(
+            model_name='hostorganization',
+            name='email_confirmation_key',
+            field=models.CharField(default=djapp.models.random_key_50, max_length=50, unique=True),
         ),
     ]

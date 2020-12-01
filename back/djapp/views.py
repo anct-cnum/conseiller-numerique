@@ -146,3 +146,7 @@ def matching_host_reject(request, key):
 
 def redirect_coach_confirm_email(request, key):
     return redirect(urljoin(settings.FRONT_URL, f'/candidature/conseiller/confirmation/email/{key}'))
+
+
+def redirect_host_confirm_email(request, key):
+    return redirect(urljoin(settings.FRONT_URL, f'/candidature/structure/confirmation/email/{key}'))

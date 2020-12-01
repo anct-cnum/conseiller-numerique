@@ -7,6 +7,7 @@ import {PageFormCoachSuccessComponent} from './components/page-form-coach-succes
 import {PageMatchingComponent} from './components/page-matching/page-matching.component';
 import {PageFormHostSuccessComponent} from './components/page-form-host-success/page-form-host-success.component';
 import {PageCoachConfirmEmailComponent} from './components/page-coach-confirm-email/page-coach-confirm-email.component';
+import {PageHostConfirmEmailComponent} from './components/page-host-confirm-email/page-host-confirm-email.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,11 @@ const routes: Routes = [
       {
         path: 'structure/success',
         component: PageFormHostSuccessComponent,
+      },
+
+      {
+        path: 'structure/confirmation/email/:key',
+        component: PageHostConfirmEmailComponent,
       },
 
       {

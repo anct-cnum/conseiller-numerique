@@ -41,7 +41,10 @@ else:
         path('api/matchings.coach_reject/<str:key>', views.matching_coach_reject, name='matching-coach-reject'),
         path('api/matchings.host_accept/<str:key>', views.matching_host_accept, name='matching-host-accept'),
         path('api/matchings.host_reject/<str:key>', views.matching_host_reject, name='matching-host-reject'),
-        path('redirect/coach.confirm_email/<str:key>', views.redirect_coach_confirm_email, name='redirect-coach-confirm-email'),
+        path('redirect/coach.confirm_email/<str:key>', views.redirect_coach_confirm_email,
+             name='redirect-coach-confirm-email'),
+        path('redirect/host.confirm_email/<str:key>', views.redirect_host_confirm_email,
+             name='redirect-host-confirm-email'),
     ]
 
 
