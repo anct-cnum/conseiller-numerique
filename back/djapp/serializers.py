@@ -95,5 +95,5 @@ class MatchingReadSerialzier(serializers.ModelSerializer):
         )
 
 
-class CoachConfirmEmailSerializer(serializers.Serializer):
+class ConfirmEmailSerializer(serializers.Serializer):
     key = serializers.CharField(required=True)

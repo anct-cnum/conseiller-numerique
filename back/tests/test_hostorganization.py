@@ -1,7 +1,11 @@
+import datetime
+
 from django.core import mail
+from djapp.views import HostOrganizationConfirmEmailView
+from freezegun import freeze_time
 from rest_framework.test import APITestCase
 
-from tests.factories import CoachFactory
+from tests.factories import CoachFactory, HostOrganizationFactory
 
 
 class HostOrganizationTestCase(APITestCase):
@@ -58,3 +62,29 @@ class HostOrganizationTestCase(APITestCase):
         #self.assertEqual(mail.outbox[1].to, [coach.email])
         #self.assertEqual(mail.outbox[2].subject, 'John Doe est disponible pour le poste de conseiller numérique')
         #self.assertEqual(mail.outbox[2].to, [data['contact_email']])
+
+    def test_confirm_email(self):
+        host = HostOrganizationFactory()
+
+        data = {
+            'key': host.email_confirmation_key,
+        }
+        res = self.client.post('/api/hostorganization.confirm_email', data=data)
+        self.assertEqual(200, res.status_code)
+        res_data = res.json()
+        self.assertEqual({'success': True}, res_data)
+        host.refresh_from_db()
+        self.assertIsNotNone(host.email_confirmed)
+
+    def test_confirm_email_fail_on_expiration(self):
+        creation = datetime.datetime(2020, 8, 22)
+        with freeze_time(creation):
+            coach = CoachFactory()
+
+        data = {
+            'key': coach.email_confirmation_key,
+        }
+        with freeze_time(creation + datetime.timedelta(hours=HostOrganizationConfirmEmailView.EXPIRATION_LINK_HOURS + 1)):
+            res = self.client.post('/api/hostorganization.confirm_email', data=data)
+        self.assertEqual(400, res.status_code)
+        self.assertEqual({'non_field_errors': ["Le lien de confirmation a expiré"]}, res.json())

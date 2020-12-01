@@ -20,9 +20,10 @@ class Matcher:
         qs = models.Coach.objects.all()
         # Filter on situation
         qs = qs.filter(Q(situation_graduated=True) | Q(has_experience=True) | Q(situation_learning=True))
-        # Filter on state
-        # Email should be confirmed and coach should not be blocked
-        qs = qs.exclude(email_confirmed=None).filter(blocked=None)
+        # Email should be confirmed
+        qs = qs.exclude(email_confirmed=None)
+        # Should not be blocked
+        qs = qs.filter(blocked=None)
         # Filter on matchings
         qs = qs.annotate(nb_matchings=Count('matchings'))
         qs = qs.filter(nb_matchings__lt=self.MAX_MATCHINGS)
@@ -32,23 +33,18 @@ class Matcher:
         qs = models.HostOrganization.objects.all()
         # Filter on type
         qs = qs.exclude(type=models.HostOrganization.Type.PRIVATE)
+        # Email should be confirmed
+        qs = qs.exclude(email_confirmed=None)
+        # Should be validated
+        qs = qs.exclude(validated=None)
+        # Should not be blocked
+        qs = qs.filter(blocked=None)
         # Filter on matchings
         qs = qs.annotate(nb_matchings=Count('matchings'))
         qs = qs.filter(nb_matchings__lt=self.MAX_MATCHINGS)
         return qs
 
-    def _matchings(self, coaches, hosts):
-        res = []
-        for coach in coaches:
-            for host in hosts:
-                if coach.start_date <= host.start_date:
-                    distance = coach.location.distance(host.location)
-                    if distance.km < coach.max_distance:
-                        res.append((coach, host, distance.km))
-        res.sort(key=lambda x: x[2])
-        return res
-
-    def get_matchings_for_coach(self, coach: models.Coach):
+    def get_matchings_for_coach(self, coach: models.Coach, limit=None):
         coach = self.get_queryset_coaches().filter(pk=coach.pk).first()
         if not coach:
             return []
@@ -59,11 +55,13 @@ class Matcher:
         qs_hosts = qs_hosts.annotate(distance=Distance('location', coach.location))
         qs_hosts = qs_hosts.order_by('distance')
         res = []
-        for host in qs_hosts[:self.MAX_MATCHINGS-coach.nb_matchings]:
+        if limit is None:
+            limit = self.MAX_MATCHINGS - coach.nb_matchings
+        for host in qs_hosts[:limit]:
             res.append((coach, host))
         return res
 
-    def get_matchings_for_host(self, host: models.HostOrganization, limit=10):
+    def get_matchings_for_host(self, host: models.HostOrganization, limit=None):
         host = self.get_queryset_hosts().filter(pk=host.pk).first()
         if not host:
             return []
@@ -74,7 +72,9 @@ class Matcher:
         qs_coaches = qs_coaches.annotate(distance=Distance('location', host.location))
         qs_coaches = qs_coaches.order_by('distance')
         res = []
-        for coach in qs_coaches[:self.MAX_MATCHINGS-host.nb_matchings]:
+        if limit is None:
+            limit = self.MAX_MATCHINGS - host.nb_matchings
+        for coach in qs_coaches[:limit]:
             res.append((coach, host))
         return res
 

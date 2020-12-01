@@ -13,9 +13,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from djapp.serializers import CoachSerializer, HostOrganizationSerializer, MatchingReadSerialzier, \
-    CoachConfirmEmailSerializer
+    ConfirmEmailSerializer
 from .biz import email_factory
-from .models import Matching, Coach
+from .models import Matching, Coach, HostOrganization
 from .permissions.recaptcha import ReCaptchaPermission
 
 logger = logging.getLogger(__name__)
@@ -47,26 +47,47 @@ class CoachAddView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CoachConfirmEmailView(APIView):
-    authentication_classes = []
-    permission_classes = []
+class BaseConfirmEmailView(APIView):
+    serializer_class = ConfirmEmailSerializer
     EXPIRATION_LINK_HOURS = 120  # confirmation email is 120 hours (5 days)
 
+    def get_queryset(self):
+        raise NotImplementedError
+
+    def get_subject_email(self, subject):
+        raise NotImplementedError
+
     def post(self, request, format=None):
-        serializer = CoachConfirmEmailSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             data = serializer.validated_data
             now = timezone.now()
             expiration_time = now - datetime.timedelta(hours=self.EXPIRATION_LINK_HOURS)
-            coach = Coach.objects.filter(email_confirmation_key=data['key'], created__gte=expiration_time).first()
-            if coach is None:
+            subject = self.get_queryset().filter(email_confirmation_key=data['key'], created__gte=expiration_time).first()
+            if subject is None:
                 logger.warning('Confirm email token has expired or is invalid: %r', data['key'])
                 return Response({'non_field_errors': ["Le lien de confirmation a expiré"]}, status=status.HTTP_400_BAD_REQUEST)
-            logger.info('Confirm email %s for coach %s', coach.email, coach.pk)
-            coach.email_confirmed = now
-            coach.save()
+            logger.info('Confirm email %s for subject %s', self.get_subject_email(subject), subject.pk)
+            subject.email_confirmed = now
+            subject.save()
             return Response({'success': True}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CoachConfirmEmailView(BaseConfirmEmailView):
+    def get_queryset(self):
+        return Coach.objects.all()
+
+    def get_subject_email(self, subject: Coach):
+        return subject.email
+
+
+class HostOrganizationConfirmEmailView(BaseConfirmEmailView):
+    def get_queryset(self):
+        return HostOrganization.objects.all()
+
+    def get_subject_email(self, subject: HostOrganization):
+        return subject.contact_email
 
 
 class HostOrganizationAddView(APIView):
@@ -91,17 +112,6 @@ class MatchingGetView(RetrieveAPIView):
     queryset = Matching.objects.all()
     serializer_class = MatchingReadSerialzier
     lookup_field = 'key'
-
-
-def confirm_email(request, key):
-    EXPIRATION_LINK_HOURS = 72  # confirmation email is 72 hours
-    now = timezone.now()
-    expiration_time = now - datetime.timedelta(hours=EXPIRATION_LINK_HOURS)
-    matching = get_object_or_404(Coach, confirm_email_key=key, created__gte=expiration_time)
-    matching.email_confirmed = timezone.now()
-    matching.save(update_fields=['email_confirmed'])
-    url = settings.FRONT_URL + '/candidature/matching/{}/coach'.format(matching.key)
-    return redirect(url)
 
 
 def matching_coach_accept(request, key):

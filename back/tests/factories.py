@@ -1,3 +1,5 @@
+import functools
+
 import factory
 from django.contrib.gis.geos import Point
 from djapp.biz.geo_gouv_api import GeoGouvApi
@@ -5,10 +7,34 @@ from factory import fuzzy
 from django.utils import timezone
 
 from djapp import models
+from factory.errors import CyclicDefinitionError
+
+
+_GEO_CACHE = {}
+
+
+def decorate_with_geo_cache(func):
+    @functools.wraps(func)
+    def wrapper(self, *args, **kwargs):
+        key = f'{func.__name__}({args}, {kwargs}'
+        if key not in _GEO_CACHE:
+            _GEO_CACHE[key] = func(self, *args, **kwargs)
+        return _GEO_CACHE[key]
+    return wrapper
+
+
+class CachedGeoGouvApi(GeoGouvApi):
+    @decorate_with_geo_cache
+    def get_commune(self, code):
+        return super().get_commune(code)
+
+    @decorate_with_geo_cache
+    def search_commune_by_zipcode(self, zipcode):
+        return super().search_commune_by_zipcode(zipcode)
 
 
 def get_commune_data(commune_code):
-    api = GeoGouvApi()
+    api = CachedGeoGouvApi()
     data = api.get_commune(commune_code)
     return {
         'commune_code': commune_code,
@@ -21,13 +47,13 @@ def get_commune_data(commune_code):
 
 
 def compute_location_from_commune_code(commune_code):
-    api = GeoGouvApi()
+    api = CachedGeoGouvApi()
     data = api.get_commune(commune_code)
     return Point(x=data['centre']['coordinates'][0], y=data['centre']['coordinates'][1])
 
 
 def compute_location_from_zip_code(zip_code):
-    api = GeoGouvApi()
+    api = CachedGeoGouvApi()
     data = api.search_commune_by_zipcode(zip_code)
     # Take first
     data = data[0]
@@ -39,6 +65,21 @@ def compute_location(instance):
         return compute_location_from_commune_code(instance.commune_code)
     elif instance.zip_code:
         return compute_location_from_zip_code(instance.zip_code)
+    else:
+        return compute_location_from_commune_code('33063')  # Bordeaux
+
+
+def compute_commune_code(instance):
+    try:
+        zip_code = instance.zip_code
+    except CyclicDefinitionError:
+        return '33063'
+    else:
+        api = CachedGeoGouvApi()
+        data = api.search_commune_by_zipcode(zip_code)
+        # Take first
+        data = data[0]
+        return data['code']
 
 
 class CoachFactory(factory.django.DjangoModelFactory):
@@ -52,7 +93,7 @@ class CoachFactory(factory.django.DjangoModelFactory):
     formation = ''
     has_experience = False
     zip_code = '33000'
-    commune_code = '33063'
+    commune_code = factory.LazyAttribute(compute_commune_code)
     geo_name = factory.LazyAttribute(lambda a: 'TestLoc(%s)' % a.commune_code)
     region_code = factory.LazyAttribute(lambda a: 'Reg(%s)' % a.commune_code)
     departement_code = factory.LazyAttribute(lambda a: 'Dep(%s)' % a.commune_code)
@@ -74,7 +115,7 @@ class HostOrganizationFactory(factory.django.DjangoModelFactory):
     type = fuzzy.FuzzyChoice([x for x, _ in models.HostOrganization.Type.choices])
     has_candidate = False
     zip_code = '33000'
-    commune_code = '33063'
+    commune_code = factory.LazyAttribute(compute_commune_code)
     geo_name = factory.LazyAttribute(lambda a: 'TestLoc(%s)' % a.commune_code)
     region_code = factory.LazyAttribute(lambda a: 'Reg(%s)' % a.commune_code)
     departement_code = factory.LazyAttribute(lambda a: 'Dep(%s)' % a.commune_code)

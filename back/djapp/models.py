@@ -77,6 +77,16 @@ class HostOrganization(ObjectWithLocationModel):
     contact_email = models.EmailField()
     contact_phone = models.CharField(max_length=20, blank=True)
 
+    # State
+    email_confirmation_key = models.CharField(max_length=50, default=random_key_50, unique=True)
+    email_confirmed = models.DateTimeField(null=True, blank=True)
+
+    # Structure has been validated
+    validated = models.DateTimeField(null=True)
+
+    # Structure has been blocked by staff
+    blocked = models.DateTimeField(null=True)
+
     updated = models.DateField(auto_now=True)
     created = models.DateTimeField(default=timezone.now)
 
