@@ -18,17 +18,51 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(models.Coach)
 class CoachAdmin(admin.ModelAdmin):
-    list_display = ('email', 'first_name', 'last_name', 'zip_code', 'start_date', 'created')
+    list_display = ('email', 'get_contact_name', 'zip_code', 'get_email_confirmed', 'get_is_active', 'start_date', 'created')
     search_fields = ('email', 'first_name', 'last_name', 'zip_code')
     ordering = ('-created',)
+
+    def get_contact_name(self, obj: models.Coach):
+        return f'{obj.first_name.capitalize()} {obj.last_name.upper()}'
+    get_contact_name.short_description = 'Contact'
+
+    def get_email_confirmed(self, obj: models.Coach):
+        return bool(obj.email_confirmed)
+    get_email_confirmed.short_description = 'Email OK ?'
+    get_email_confirmed.boolean = True
+
+    def get_is_active(self, obj: models.Coach):
+        return obj.is_active
+    get_is_active.short_description = 'Actif ?'
+    get_is_active.boolean = True
 
 
 @admin.register(models.HostOrganization)
 class HostOrganizationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'contact_email', 'contact_first_name', 'contact_last_name', 'start_date', 'created')
+    list_display = ('name', 'contact_email', 'get_contact_name', 'zip_code', 'get_email_confirmed', 'get_validated', 'get_is_active',
+                    'start_date', 'created')
     search_fields = ('name', 'contact_email', 'contact_first_name', 'contact_last_name', 'zip_code')
     ordering = ('-created',)
     actions = ('run_matchings',)
+
+    def get_email_confirmed(self, obj: models.HostOrganization):
+        return bool(obj.email_confirmed)
+    get_email_confirmed.short_description = 'Email OK ?'
+    get_email_confirmed.boolean = True
+
+    def get_validated(self, obj: models.HostOrganization):
+        return bool(obj.validated)
+    get_validated.short_description = 'Validé ?'
+    get_validated.boolean = True
+
+    def get_is_active(self, obj: models.HostOrganization):
+        return obj.is_active
+    get_is_active.short_description = 'Actif ?'
+    get_is_active.boolean = True
+
+    def get_contact_name(self, obj):
+        return f'{obj.contact_first_name.capitalize()} {obj.contact_last_name.upper()}'
+    get_contact_name.short_description = 'Contact'
 
     def run_matchings(self, request, queryset):
         n_error = 0

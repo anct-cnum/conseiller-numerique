@@ -50,10 +50,14 @@ class Coach(ObjectWithLocationModel):
     email_confirmation_key = models.CharField(max_length=50, default=random_key_50, unique=True)
     email_confirmed = models.DateTimeField(null=True, blank=True)
 
-    blocked = models.DateTimeField(null=True)
+    blocked = models.DateTimeField(null=True, blank=True)
 
     updated = models.DateField(auto_now=True)
     created = models.DateTimeField(default=timezone.now)
+
+    @property
+    def is_active(self):
+        return bool(self.email_confirmed) and not bool(self.blocked)
 
     def __str__(self):
         return '{first_name} {last_name} ({zip_code})'.format(**self.__dict__)
@@ -82,13 +86,17 @@ class HostOrganization(ObjectWithLocationModel):
     email_confirmed = models.DateTimeField(null=True, blank=True)
 
     # Structure has been validated
-    validated = models.DateTimeField(null=True)
+    validated = models.DateTimeField(null=True, blank=True)
 
     # Structure has been blocked by staff
-    blocked = models.DateTimeField(null=True)
+    blocked = models.DateTimeField(null=True, blank=True)
 
     updated = models.DateField(auto_now=True)
     created = models.DateTimeField(default=timezone.now)
+
+    @property
+    def is_active(self):
+        return bool(self.email_confirmed) and not bool(self.blocked) and bool(self.validated)
 
     def __str__(self):
         return '{name} ({zip_code})'.format(**self.__dict__)
