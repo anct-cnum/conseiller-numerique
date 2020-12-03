@@ -174,13 +174,7 @@
           </div>
         </div>
 
-        <div *ngIf="errorMessages.length > 0" class="alert alert-danger mt-5">
-          <ol>
-            <li *ngFor="let msg of errorMessages">
-              {{ msg }}
-            </li>
-          </ol>
-        </div>
+        <app-form-error-box [errorMessages]="errorMessages"></app-form-error-box>
 
         <div class="text-center mt-5">
           <button [ladda]="ladda" type="submit" class="btn btn-primary">Envoyer votre candidature</button>
@@ -194,7 +188,7 @@
       <br/>
       <pre>{{ form.value | json }}</pre>
       <pre>{{ form.errors | json }}</pre>
-      <pre>{{ getInvalidDetails() | json }}</pre>
+      <pre>{{ formUtils.getInvalidDetails(form) | json }}</pre>
     </div>
 
   </div>

@@ -50,14 +50,26 @@ class Coach(ObjectWithLocationModel):
     email_confirmation_key = models.CharField(max_length=50, default=random_key_50, unique=True)
     email_confirmed = models.DateTimeField(null=True, blank=True)
 
+    # Coach has been blocked by staff
     blocked = models.DateTimeField(null=True, blank=True)
+
+    # Coach unsubscribed from the service
+    unsubscribed = models.DateTimeField(null=True, blank=True)
+
+    # EOF State
+
+    unsubscribe_extras = models.JSONField(default=dict, blank=True)
 
     updated = models.DateField(auto_now=True)
     created = models.DateTimeField(default=timezone.now)
 
     @property
     def is_active(self):
-        return bool(self.email_confirmed) and not bool(self.blocked)
+        return (
+                bool(self.email_confirmed) and
+                not bool(self.blocked) and
+                not bool(self.unsubscribed)
+        )
 
     def __str__(self):
         return '{first_name} {last_name} ({zip_code})'.format(**self.__dict__)
@@ -91,12 +103,24 @@ class HostOrganization(ObjectWithLocationModel):
     # Structure has been blocked by staff
     blocked = models.DateTimeField(null=True, blank=True)
 
+    # Structure unsubscribed from the service
+    unsubscribed = models.DateTimeField(null=True, blank=True)
+
+    # EOF State
+
+    unsubscribe_extras = models.JSONField(default=dict, blank=True)
+
     updated = models.DateField(auto_now=True)
     created = models.DateTimeField(default=timezone.now)
 
     @property
     def is_active(self):
-        return bool(self.email_confirmed) and not bool(self.blocked) and bool(self.validated)
+        return (
+                bool(self.email_confirmed) and
+                not bool(self.blocked) and
+                bool(self.validated) and
+                not bool(self.unsubscribed)
+        )
 
     def __str__(self):
         return '{name} ({zip_code})'.format(**self.__dict__)

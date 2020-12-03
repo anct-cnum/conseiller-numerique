@@ -95,5 +95,10 @@ class MatchingReadSerialzier(serializers.ModelSerializer):
         )
 
 
-class ConfirmEmailSerializer(serializers.Serializer):
+class ActionWithKeySerializer(serializers.Serializer):
     key = serializers.CharField(required=True)
+
+
+class UnsubscribePayloadSerializer(serializers.Serializer):
+    key = serializers.CharField(required=True)
+    extras = serializers.JSONField()

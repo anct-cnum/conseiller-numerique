@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
-import {DEFAULT_MESSAGE_CONFIG, MessageConfig} from './api.service';
 import {forkJoin, Observable} from 'rxjs';
 import {map, shareReplay, tap} from 'rxjs/operators';
 import {GeoCommune, ZipCodeWithCommune} from 'app/core/dao/geocommune';
@@ -19,46 +18,23 @@ export class GeogouvService {
     protected toastrService: ToastrService,
   ) {}
 
-  protected errorHandler(error, messages: MessageConfig): void {
-    if (error.status === 400 && messages.onBadInput) {
-      this.toastrService.error(messages.onBadInput(error));
-    }
-    else if (error.status === 403 && messages.onUnauthorized) {
-      this.toastrService.error(messages.onUnauthorized(error));
-    }
-    else if (error.status === 500 && messages.onServerError) {
-      this.toastrService.error(messages.onServerError(error));
-    }
-    else if (messages.onUnexpectedError) {
-      this.toastrService.error(messages.onUnexpectedError(error));
-    }
-  }
-
-  searchCommunesByZipCode(zipCode: string,
-                          messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
-  ): Observable<GeoCommune[]> {
+  searchCommunesByZipCode(zipCode: string): Observable<GeoCommune[]> {
     return this.http.get(`https://geo.api.gouv.fr/communes?codePostal=${zipCode}&${API_FIELDS_QS}`)
       .pipe(
-        tap({error: (error) => this.errorHandler(error, messages)}),
         map((jsonList: any) => jsonList.map(json => this.adapt2app_GeoCommune(json))),
         shareReplay(1),
       );
   }
 
-  searchCommunesByName(name: string,
-                       messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
-  ): Observable<GeoCommune[]> {
+  searchCommunesByName(name: string): Observable<GeoCommune[]> {
     return this.http.get(`https://geo.api.gouv.fr/communes?nom=${name}&${API_FIELDS_QS}`)
       .pipe(
-        tap({error: (error) => this.errorHandler(error, messages)}),
         map((jsonList: any) => jsonList.map(json => this.adapt2app_GeoCommune(json))),
         shareReplay(1),
       );
   }
 
-  autocompleteCommunes(term: string,
-                       messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
-  ): Observable<ZipCodeWithCommune[]> {
+  autocompleteCommunes(term: string): Observable<ZipCodeWithCommune[]> {
     return forkJoin([
         this.searchCommunesByZipCode(term),
         this.searchCommunesByName(term),

@@ -28,7 +28,8 @@ class Command(BaseCommand):
             path = path.format(local_template_name)
             content = r.content.decode('utf8')\
             # Remove bottom link
-            content = re.sub('Cet email a été envoyé à \[\[EMAIL_TO\]\].*désabonner</a>.', '', content)
+            content = content.replace('[[EMAIL_TO]]', '{{emailto}}')
+            content = content.replace('[[UNSUB_LINK_FR]]', '{{unsubscribeurl}}')
             with open(path, 'w') as f:
                 f.write(content)
         self.stdout.write('Ok.')

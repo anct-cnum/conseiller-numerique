@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from djapp.serializers import CoachSerializer, HostOrganizationSerializer, MatchingReadSerialzier, \
-    ConfirmEmailSerializer
+    ActionWithKeySerializer, UnsubscribePayloadSerializer
 from .biz import email_factory
 from .models import Matching, Coach, HostOrganization
 from .permissions.recaptcha import ReCaptchaPermission
@@ -47,8 +47,51 @@ class CoachAddView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class BaseUnsubscribeView(APIView):
+    serializer_class = UnsubscribePayloadSerializer
+
+    def get_queryset(self):
+        raise NotImplementedError
+
+    def get_subject_email(self, subject):
+        raise NotImplementedError
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            now = timezone.now()
+            data = serializer.validated_data
+            # XXX use something better, like tokenization with itsdangerous
+            subject = self.get_queryset().filter(email_confirmation_key=data['key']).first()
+            if subject is None:
+                logger.warning('Unsubscribe email token is invalid: %r', data['key'])
+                return Response({'non_field_errors': ['Le lien est invalide']}, status=status.HTTP_400_BAD_REQUEST)
+            logger.info('Unsubscribe %s for subject %s', self.get_subject_email(subject), subject.pk)
+            subject.unsubscribed = now
+            subject.unsubscribe_extras = data['extras']
+            subject.save()
+            return Response({'success': True}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CoachUnsubscribeView(BaseUnsubscribeView):
+    def get_queryset(self):
+        return Coach.objects.all()
+
+    def get_subject_email(self, subject: Coach):
+        return subject.email
+
+
+class HostOrganizationUnsubscribeView(BaseUnsubscribeView):
+    def get_queryset(self):
+        return HostOrganization.objects.all()
+
+    def get_subject_email(self, subject: HostOrganization):
+        return subject.contact_email
+
+
 class BaseConfirmEmailView(APIView):
-    serializer_class = ConfirmEmailSerializer
+    serializer_class = ActionWithKeySerializer
     EXPIRATION_LINK_HOURS = 120  # confirmation email is 120 hours (5 days)
 
     def get_queryset(self):
@@ -150,3 +193,11 @@ def redirect_coach_confirm_email(request, key):
 
 def redirect_host_confirm_email(request, key):
     return redirect(urljoin(settings.FRONT_URL, f'/candidature/structure/confirmation/email/{key}'))
+
+
+def redirect_coach_unsubscribe(request, key):
+    return redirect(urljoin(settings.FRONT_URL, f'/candidature/conseiller/unsubscribe/{key}'))
+
+
+def redirect_host_unsubscribe(request, key):
+    return redirect(urljoin(settings.FRONT_URL, f'/candidature/structure/unsubscribe/{key}'))

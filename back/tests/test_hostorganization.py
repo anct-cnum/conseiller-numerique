@@ -40,7 +40,7 @@ class HostOrganizationTestCase(APITestCase):
             'region_code': '75',
         }
 
-        res = self.client.post('/api/hostorganizations.add', data=data, format='json')
+        res = self.client.post('/api/hostorganizations.add', data=data)
 
         self.assertEqual(201, res.status_code)
         res_data = res.json()
@@ -88,3 +88,14 @@ class HostOrganizationTestCase(APITestCase):
             res = self.client.post('/api/hostorganization.confirm_email', data=data)
         self.assertEqual(400, res.status_code)
         self.assertEqual({'non_field_errors': ["Le lien de confirmation a expiré"]}, res.json())
+
+    def test_unsubscribe(self):
+        host = HostOrganizationFactory()
+        data = {
+            'key': host.email_confirmation_key,
+            'extras': {'hello': 'world'},
+        }
+        res = self.client.post('/api/hostorganization.unsubscribe', data=data)
+        self.assertEqual(200, res.status_code)
+        host.refresh_from_db()
+        self.assertIsNotNone(host.unsubscribed)

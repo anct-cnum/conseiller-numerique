@@ -1,0 +1,9 @@
+<div>
+  <div *ngIf="errorMessages.length > 0" class="alert alert-danger mt-5">
+    <ol>
+      <li *ngFor="let msg of errorMessages">
+        {{ msg }}
+      </li>
+    </ol>
+  </div>
+</div>

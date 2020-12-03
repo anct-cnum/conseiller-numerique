@@ -28,7 +28,7 @@ def valid_coach_data(**overrides):
     return default
 
 
-class CoachTestCase(TestCase):
+class MatchingTestCase(TestCase):
 
     def test_coach_matching(self):
         coach = CoachFactory(
@@ -59,6 +59,9 @@ class CoachTestCase(TestCase):
 
         # Blocked
         HostOrganizationFactory(name='Blocked', **valid_host_data(blocked='2020-01-01'))
+
+        # Unsubscribed
+        HostOrganizationFactory(name='Unsubscribed', **valid_host_data(unsubscribed='2020-01-01'))
 
         # Too many matchings
         host_busy = HostOrganizationFactory(name='Too many matchings', **valid_host_data())
@@ -101,6 +104,9 @@ class CoachTestCase(TestCase):
 
         # Blocked
         CoachFactory(**valid_coach_data(blocked='2020-01-01'))
+
+        # Unsubscribed
+        CoachFactory(**valid_coach_data(first_name='Unsubscribed', unsubscribed='2020-01-01'))
 
         # Too many matchings
         coach_busy = CoachFactory(**valid_coach_data())

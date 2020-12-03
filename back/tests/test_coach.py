@@ -46,7 +46,7 @@ class CoachTestCase(APITestCase):
             'region_code': '75',
         }
 
-        res = self.client.post('/api/coaches.add', data=data, format='json')
+        res = self.client.post('/api/coaches.add', data=data)
 
         self.assertEqual(201, res.status_code)
         res_data = res.json()
@@ -95,3 +95,15 @@ class CoachTestCase(APITestCase):
             res = self.client.post('/api/coach.confirm_email', data=data)
         self.assertEqual(400, res.status_code)
         self.assertEqual({'non_field_errors': ["Le lien de confirmation a expiré"]}, res.json())
+
+    def test_unsubscribe(self):
+        coach = CoachFactory()
+        data = {
+            'key': coach.email_confirmation_key,
+            'extras': {'hello': 'world'},
+        }
+        res = self.client.post('/api/coach.unsubscribe', data=data)
+        self.assertEqual(200, res.status_code)
+        coach.refresh_from_db()
+        self.assertIsNotNone(coach.unsubscribed)
+
