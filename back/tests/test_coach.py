@@ -6,7 +6,7 @@ from djapp.models import HostOrganization
 from djapp.views import CoachConfirmEmailView
 from freezegun import freeze_time
 from rest_framework.test import APITestCase
-from tests.factories import HostOrganizationFactory, CoachFactory
+from tests.factories import HostOrganizationFactory, CoachFactory, MatchingFactory, ActiveCoachFactory
 
 
 class CoachTestCase(APITestCase):
@@ -97,7 +97,9 @@ class CoachTestCase(APITestCase):
         self.assertEqual({'non_field_errors': ["Le lien de confirmation a expiré"]}, res.json())
 
     def test_unsubscribe(self):
-        coach = CoachFactory()
+        coach = ActiveCoachFactory()
+        matching = MatchingFactory(coach=coach)
+        assert matching.is_active  # Be sure our factory output an active matching
         data = {
             'key': coach.email_confirmation_key,
             'extras': {'hello': 'world'},
@@ -106,4 +108,6 @@ class CoachTestCase(APITestCase):
         self.assertEqual(200, res.status_code)
         coach.refresh_from_db()
         self.assertIsNotNone(coach.unsubscribed)
-
+        self.assertFalse(coach.is_active)
+        matching.refresh_from_db()
+        self.assertFalse(matching.is_active)

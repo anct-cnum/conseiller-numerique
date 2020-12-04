@@ -147,3 +147,7 @@ class Matching(models.Model):
     host_rejected = models.DateTimeField(null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def is_active(self):
+        return self.coach.is_active and self.host.is_active

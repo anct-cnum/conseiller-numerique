@@ -16,9 +16,11 @@ export class ApiAdapterInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    request = request.clone({
-      body: ApiAdapter.app2api(request.body),
-    });
+    if (request.method !== 'GET') {
+      request = request.clone({
+        body: ApiAdapter.app2api(request.body),
+      });
+    }
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {
         console.log('event api adapter', event);

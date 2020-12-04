@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
 import {MatchingOutput} from 'app/core/dao/matching';
 import {ActivatedRoute} from '@angular/router';
-import {CoachOutput} from "../../../core/dao/coach";
-import {environment} from "@env";
+import {environment} from '@env';
+import {HttpErrorResponse} from '@angular/common/http';
 
 
 @Component({
@@ -15,6 +15,7 @@ export class PageMatchingComponent implements OnInit {
   isLoading: boolean;
   matching: MatchingOutput;
   mode: string;
+  errorNotFound: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,6 +24,7 @@ export class PageMatchingComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
+    this.errorNotFound = false;
     this.route.params.subscribe(
       params => {
         this.mode = params.mode;
@@ -32,8 +34,12 @@ export class PageMatchingComponent implements OnInit {
               this.matching = matching;
               this.isLoading = false;
             },
-            error => {
+            (error: HttpErrorResponse) => {
               console.error('Error getting page-matching', error);
+              if (error.status === 404) {
+                this.errorNotFound = true;
+              }
+              this.isLoading = false;
             }
           );
         }

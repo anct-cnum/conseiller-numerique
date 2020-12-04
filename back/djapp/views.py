@@ -3,7 +3,7 @@ import logging
 from urllib.parse import urljoin
 
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from rest_framework import status
@@ -56,6 +56,9 @@ class BaseUnsubscribeView(APIView):
     def get_subject_email(self, subject):
         raise NotImplementedError
 
+    def deactivate_matching(self, matching: Matching):
+        raise NotImplementedError
+
     def post(self, request, format=None):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -69,6 +72,10 @@ class BaseUnsubscribeView(APIView):
             logger.info('Unsubscribe %s for subject %s', self.get_subject_email(subject), subject.pk)
             subject.unsubscribed = now
             subject.unsubscribe_extras = data['extras']
+            for matching in subject.matchings.all():
+                logger.info('Deactivate matching %s', matching.pk)
+                self.deactivate_matching(matching)
+                matching.save()
             subject.save()
             return Response({'success': True}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -81,6 +88,9 @@ class CoachUnsubscribeView(BaseUnsubscribeView):
     def get_subject_email(self, subject: Coach):
         return subject.email
 
+    def deactivate_matching(self, matching: Matching):
+        matching.coach_rejected = timezone.now()
+
 
 class HostOrganizationUnsubscribeView(BaseUnsubscribeView):
     def get_queryset(self):
@@ -88,6 +98,9 @@ class HostOrganizationUnsubscribeView(BaseUnsubscribeView):
 
     def get_subject_email(self, subject: HostOrganization):
         return subject.contact_email
+
+    def deactivate_matching(self, matching: Matching):
+        matching.host_rejected = timezone.now()
 
 
 class BaseConfirmEmailView(APIView):
@@ -156,9 +169,17 @@ class MatchingGetView(RetrieveAPIView):
     serializer_class = MatchingReadSerialzier
     lookup_field = 'key'
 
+    def get_object(self):
+        instance = super().get_object()
+        if not instance.is_active:
+            raise Http404
+        return instance
+
 
 def matching_coach_accept(request, key):
     matching = get_object_or_404(Matching, key=key)
+    if not matching.is_active:
+        return HttpResponse('Ce besoin est désactivé, aucune action n\'est désormais possible')
     matching.coach_accepted = timezone.now()
     matching.save()
     url = settings.FRONT_URL + '/candidature/matching/{}/coach'.format(matching.key)
@@ -167,6 +188,8 @@ def matching_coach_accept(request, key):
 
 def matching_coach_reject(request, key):
     matching = get_object_or_404(Matching, key=key)
+    if not matching.is_active:
+        return HttpResponse('Ce besoin est désactivé, aucune action n\'est désormais possible')
     matching.coach_rejected = timezone.now()
     matching.save()
     return HttpResponse('<p>Merci de nous avoir tenu informé. Nous prenons en compte votre retour</p>')
@@ -174,6 +197,8 @@ def matching_coach_reject(request, key):
 
 def matching_host_accept(request, key):
     matching = get_object_or_404(Matching, key=key)
+    if not matching.is_active:
+        return HttpResponse('Ce besoin est désactivé, aucune action n\'est désormais possible')
     matching.host_accepted = timezone.now()
     matching.save()
     url = settings.FRONT_URL + '/candidature/matching/{}/host'.format(matching.key)
@@ -182,6 +207,8 @@ def matching_host_accept(request, key):
 
 def matching_host_reject(request, key):
     matching = get_object_or_404(Matching, key=key)
+    if not matching.is_active:
+        return HttpResponse('Ce besoin est désactivé, aucune action n\'est désormais possible')
     matching.host_rejected = timezone.now()
     matching.save()
     return HttpResponse('<p>Merci de nous avoir tenu informé. Nous prenons en compte votre retour</p>')

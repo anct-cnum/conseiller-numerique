@@ -3,6 +3,14 @@
 
     <h1>Contact</h1>
 
+    <div *ngIf="isLoading">
+      Chargement...
+    </div>
+
+    <div *ngIf="errorNotFound">
+      Ce besoin a été désactivé, aucune action n'est désormais possible.
+    </div>
+
     <div *ngIf="matching">
       <div *ngIf="mode === 'host'">
         <ng-container *ngTemplateOutlet="tplCoach; context: {coach: matching.coach}"></ng-container>

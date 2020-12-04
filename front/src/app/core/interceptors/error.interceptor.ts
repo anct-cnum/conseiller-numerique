@@ -46,6 +46,9 @@ export class ErrorInterceptor implements HttpInterceptor {
     else if (err.status === 403) {
       return 'Droits insuffisant pour effectuer cette action';
     }
+    else if (err.status === 404) {
+      return 'Non trouvé';
+    }
     else if (err.status === 500) {
       return `Une erreur est survenue : ${err.message}`;
     }
