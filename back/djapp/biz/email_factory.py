@@ -18,7 +18,7 @@ def send_coach_confirmation(coach: models.Coach):
 def send_host_confirmation(host: models.HostOrganization):
     context = {
         'contactfirstname': host.contact_first_name,
-        'contactlastname': host.contact_first_name,
+        'contactlastname': host.contact_last_name,
         'name': host.name,
         'confirmurl': build_confirm_host_url(host),
     }
