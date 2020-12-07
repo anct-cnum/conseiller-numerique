@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div *ngIf="debug">
+    <div *ngIf="debug" class="mt-5">
       <p>Mode : {{ mode }}</p>
       <pre>{{ matching | json }}</pre>
     </div>
@@ -50,10 +50,39 @@
     <span *ngIf="coach.situationJob">En emploi.</span>
     <span *ngIf="coach.situationLearning">En formation.</span>
   </p>
+
+  <div *ngIf="!setInterviewResultDone">
+    <p>
+      Suite à votre entretien avec le candidat, souhaitez-vous le recruter ?
+    </p>
+    <p class="d-md-flex justify-content-center">
+      <button class="btn btn-secondary m-2" [ladda]="isLoading" (click)="setInterviewResult(false)">
+        Le candidat ne convenait pas
+      </button>
+      <button class="btn btn-primary m-2" [ladda]="isLoading" (click)="setInterviewResult(true)">
+        Recruter le candidat
+      </button>
+    </p>
+  </div>
+  <div *ngIf="setInterviewResultDone">
+    Merci de nous avoir tenu informés !
+    <br/>
+    A bientôt,
+    <br/>
+    L'équipe conseiller numérique
+  </div>
+
+  <div *ngIf="matching.hostInterviewResultOk !== null">
+    Votre retour concernant ce candidat&nbsp;:
+    <b>
+      <span *ngIf="matching.hostInterviewResultOk">À recruter</span>
+      <span *ngIf="!matching.hostInterviewResultOk">Refusé</span>
+    </b>
+  </div>
+
 </ng-template>
 
 <ng-template #tplHost let-host="host">
-
   <p>
     Vous pouvez contacter {{ host.contactFirstName }} {{ host.contactLastName }}
     au sein de {{ host.name }} ({{ host.zipCode }}) par email {{ host.contactEmail }}

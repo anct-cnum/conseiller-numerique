@@ -141,10 +141,29 @@ class Matching(models.Model):
         related_query_name='matchings',
     )
 
-    coach_accepted = models.DateTimeField(null=True, blank=True)
-    coach_rejected = models.DateTimeField(null=True, blank=True)
-    host_accepted = models.DateTimeField(null=True, blank=True)
-    host_rejected = models.DateTimeField(null=True, blank=True)
+    old_coach_accepted = models.DateTimeField(null=True, blank=True)
+    old_coach_rejected = models.DateTimeField(null=True, blank=True)
+    old_host_accepted = models.DateTimeField(null=True, blank=True)
+    old_host_rejected = models.DateTimeField(null=True, blank=True)
+
+    # ----- COACH -----
+    # 1st phase : after receiving the basic informations of the matching,
+    # does the coach want to contact the host ?
+    coach_contact_ok = models.BooleanField(null=True, blank=True)
+    coach_contact_datetime = models.DateTimeField(null=True, blank=True)
+    # ----- END COACH -----
+
+    # ----- HOST -----
+    # 1st phase : after receiving the basic informations of the matching,
+    # does the host want to contact the coach ?
+    host_contact_ok = models.BooleanField(null=True, blank=True)
+    host_contact_datetime = models.DateTimeField(null=True, blank=True)
+
+    # 2nd phase : after meeting the candidat,
+    # does the host want to recruit coach ?
+    host_interview_result_ok = models.BooleanField(null=True, blank=True)
+    host_interview_result_datetime = models.DateTimeField(null=True, blank=True)
+    # ----- END HOST -----
 
     created = models.DateTimeField(auto_now_add=True)
 

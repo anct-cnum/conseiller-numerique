@@ -12,8 +12,8 @@ import {
 import {MatchingOutput} from 'app/core/dao/matching';
 import {Unsubscribepayload} from 'app/core/dao/unsubscribepayload';
 import {isArray} from 'app/utils/utils';
-import {FormGroup} from '@angular/forms';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
+import {SetInterviewResultPayload} from 'app/core/dao/setinterviewresultpayload';
 
 
 @Injectable({
@@ -52,6 +52,10 @@ export class ApiService {
 
   unsubscribeHostOrganization(payload: Unsubscribepayload): Observable<any> {
     return this.http.post(`${environment.apiUrl}/api/hostorganization.unsubscribe`, payload);
+  }
+
+  setInterviewResult(payload: SetInterviewResultPayload): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/matching.set_interview_result`, payload);
   }
 
   flattenErrors(err: HttpErrorResponse): string[] {
