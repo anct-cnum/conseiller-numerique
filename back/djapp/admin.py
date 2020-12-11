@@ -92,7 +92,7 @@ class HostOrganizationAdmin(admin.ModelAdmin):
 
 @admin.register(models.Matching)
 class Matching(admin.ModelAdmin):
-    list_display = ('id', 'coach', 'get_coach_experience', 'host', 'coach_contact_ok', 'host_contact_ok', 'host_interview_result_ok', 'created')
+    list_display = ('id', 'coach', 'get_coach_experience', 'host', 'coach_contact_ok', 'host_contact_ok', 'host_meeting_ok', 'created')
     search_fields = ('coach__email', 'coach__first_name', 'coach__last_name', 'host__name', 'host__contact_first_name', 'host__contact_last_name')
     ordering = ('-created',)
     list_select_related = ('coach', 'host')
