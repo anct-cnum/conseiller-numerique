@@ -154,12 +154,17 @@ class Matching(models.Model):
     # ----- END COACH -----
 
     # ----- HOST -----
-    # 1st phase : after receiving the basic informations of the matching,
+    # 1st phase : after receiving the information of the coach,
     # does the host want to contact the coach ?
     host_contact_ok = models.BooleanField(null=True, blank=True)
     host_contact_datetime = models.DateTimeField(null=True, blank=True)
 
-    # 2nd phase : after meeting the candidat,
+    # 2nd phase : after seeing the profile & contact info of the coach,
+    # does the host have setup a meeting with the coach ?
+    host_meeting_ok = models.BooleanField(null=True, blank=True)
+    host_meeting_datetime = models.DateTimeField(null=True, blank=True)
+
+    # 3nd phase : after meeting the candidat,
     # does the host want to recruit coach ?
     host_interview_result_ok = models.BooleanField(null=True, blank=True)
     host_interview_result_datetime = models.DateTimeField(null=True, blank=True)

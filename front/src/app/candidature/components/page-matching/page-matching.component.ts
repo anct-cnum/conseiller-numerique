@@ -16,7 +16,7 @@ export class PageMatchingComponent implements OnInit {
   matching: MatchingOutput;
   mode: string;
   errorNotFound: boolean;
-  setInterviewResultDone: boolean;
+  setMeetingDone: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -64,14 +64,14 @@ export class PageMatchingComponent implements OnInit {
     return !environment.production || this.route.snapshot.queryParams.debug === '1';
   }
 
-  setInterviewResult(result: boolean): void {
+  setMeeting(value: boolean): void {
     this.isLoading = true;
-    this.setInterviewResultDone = false;
-    this.api.setInterviewResult({key: this.matching.key, result}).subscribe(
+    this.setMeetingDone = false;
+    this.api.setMeeting({key: this.matching.key, value}).subscribe(
       _ => {
         this.isLoading = false;
-        this.setInterviewResultDone = true;
-        this.matching.hostInterviewResultOk = result;
+        this.setMeetingDone = true;
+        this.matching.hostMeetingOk = value;
       },
       err => {
         this.isLoading = false;

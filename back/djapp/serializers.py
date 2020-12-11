@@ -86,6 +86,7 @@ class MatchingReadSerialzier(serializers.ModelSerializer):
             'host',
             'coach_contact_ok',
             'host_contact_ok',
+            'host_meeting_ok',
             'host_interview_result_ok',
             'created',
         )
@@ -103,6 +104,6 @@ class UnsubscribePayloadSerializer(serializers.Serializer):
     extras = serializers.JSONField()
 
 
-class MatchingSetInterviewResultSerializer(serializers.Serializer):
+class MatchingSetStateSerializer(serializers.Serializer):
     key = serializers.CharField(required=True)
-    result = serializers.BooleanField(required=True)
+    value = serializers.BooleanField(required=True)

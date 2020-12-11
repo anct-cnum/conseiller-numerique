@@ -9,6 +9,7 @@ export interface MatchingOutput {
   host: HostOrganizationOutput;
   coachContactOk: boolean;
   hostContactOk: boolean;
+  hostMeetingOk: boolean;
   hostInterviewResultOk: boolean;
   created: Date;
 }

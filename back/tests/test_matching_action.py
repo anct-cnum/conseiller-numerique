@@ -85,11 +85,35 @@ class MatchingActionsTestCase(APITestCase):
         res = self.client.get('/api/matchings.host_reject/{}'.format(matching.key))
         self._assert_deactivated(matching, res)
 
+    def test_set_meeting_ok(self):
+        matching = MatchingFactory()
+        data = {
+            'key': matching.key,
+            'value': True,
+        }
+        res = self.client.post('/api/matching.set_meeting', data)
+        self.assertEqual(200, res.status_code)
+        matching.refresh_from_db()
+        self.assertIs(matching.host_meeting_ok, True)
+        self.assertIsNotNone(matching.host_meeting_datetime)
+
+    def test_set_meeting_nok(self):
+        matching = MatchingFactory()
+        data = {
+            'key': matching.key,
+            'value': False,
+        }
+        res = self.client.post('/api/matching.set_meeting', data)
+        self.assertEqual(200, res.status_code)
+        matching.refresh_from_db()
+        self.assertIs(matching.host_meeting_ok, False)
+        self.assertIsNotNone(matching.host_meeting_datetime)
+
     def test_set_interview_result_ok(self):
         matching = MatchingFactory()
         data = {
             'key': matching.key,
-            'result': True,
+            'value': True,
         }
         res = self.client.post('/api/matching.set_interview_result', data)
         self.assertEqual(200, res.status_code)
@@ -101,7 +125,7 @@ class MatchingActionsTestCase(APITestCase):
         matching = MatchingFactory()
         data = {
             'key': matching.key,
-            'result': False,
+            'value': False,
         }
         res = self.client.post('/api/matching.set_interview_result', data)
         self.assertEqual(200, res.status_code)

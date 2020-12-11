@@ -51,32 +51,33 @@
     <span *ngIf="coach.situationLearning">En formation.</span>
   </p>
 
-  <div *ngIf="!setInterviewResultDone">
+  <div *ngIf="!setMeetingDone">
     <p>
-      Suite à votre entretien avec le candidat, souhaitez-vous le recruter ?
+      Suite à votre première prise de contact avec le candidat&nbsp;:
     </p>
     <p class="d-md-flex justify-content-center">
-      <button class="btn btn-secondary m-2" [ladda]="isLoading" (click)="setInterviewResult(false)">
-        Le candidat ne convenait pas
+      <button class="btn btn-secondary m-2" [ladda]="isLoading" (click)="setMeeting(false)">
+        Je ne donne pas suite
       </button>
-      <button class="btn btn-primary m-2" [ladda]="isLoading" (click)="setInterviewResult(true)">
-        Recruter le candidat
+      <button class="btn btn-primary m-2" [ladda]="isLoading" (click)="setMeeting(true)">
+        J'organise un entretien
       </button>
     </p>
   </div>
-  <div *ngIf="setInterviewResultDone">
+  <div *ngIf="setMeetingDone" class="alert alert-success">
     Merci de nous avoir tenu informés !
     <br/>
     A bientôt,
     <br/>
     L'équipe conseiller numérique
+    <br/>
   </div>
 
-  <div *ngIf="matching.hostInterviewResultOk !== null">
-    Votre retour concernant ce candidat&nbsp;:
+  <div *ngIf="matching.hostMeetingOk !== null">
+    Votre dernier retour concernant ce candidat&nbsp;:
     <b>
-      <span *ngIf="matching.hostInterviewResultOk">À recruter</span>
-      <span *ngIf="!matching.hostInterviewResultOk">Refusé</span>
+      <span *ngIf="matching.hostMeetingOk">Organisation d'un entretien</span>
+      <span *ngIf="!matching.hostMeetingOk">Refusé</span>
     </b>
   </div>
 

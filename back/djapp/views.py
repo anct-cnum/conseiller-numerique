@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from djapp.serializers import CoachSerializer, HostOrganizationSerializer, MatchingReadSerialzier, \
-    ActionWithKeySerializer, UnsubscribePayloadSerializer, MatchingSetInterviewResultSerializer
+    ActionWithKeySerializer, UnsubscribePayloadSerializer, MatchingSetStateSerializer
 from .biz import email_factory
 from .models import Matching, Coach, HostOrganization
 from .permissions.recaptcha import ReCaptchaPermission
@@ -90,8 +90,9 @@ class HostOrganizationUnsubscribeView(BaseUnsubscribeView):
         return subject.contact_email
 
 
-class MatchingSetInterviewResultView(APIView):
-    serializer_class = MatchingSetInterviewResultSerializer
+class BaseMatchingSetStateView(APIView):
+    serializer_class = MatchingSetStateSerializer
+    field = None
 
     def post(self, request, format=None):
         serializer = self.serializer_class(data=request.data)
@@ -99,12 +100,22 @@ class MatchingSetInterviewResultView(APIView):
             data = serializer.validated_data
             # XXX use something better, like tokenization with itsdangerous
             matching = get_object_or_404(Matching, key=data['key'])
-            logger.info('Set interview result %s for matching %s', data['result'], matching.pk)
-            matching.host_interview_result_ok = data['result']
-            matching.host_interview_result_datetime = timezone.now()
+            logger.info(f'Set {self.field} %s for matching %s', data['value'], matching.pk)
+            setattr(matching, f'{self.field}_ok', data['value'])
+            setattr(matching, f'{self.field}_datetime', timezone.now())
             matching.save()
             return Response({'success': True}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MatchingSetMeetingView(BaseMatchingSetStateView):
+    serializer_class = MatchingSetStateSerializer
+    field = 'host_meeting'
+
+
+class MatchingSetInterviewResultView(BaseMatchingSetStateView):
+    serializer_class = MatchingSetStateSerializer
+    field = 'host_interview_result'
 
 
 class BaseConfirmEmailView(APIView):

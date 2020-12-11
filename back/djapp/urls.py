@@ -39,6 +39,7 @@ else:
         path('api/hostorganization.confirm_email', views.HostOrganizationConfirmEmailView.as_view()),
         path('api/hostorganization.unsubscribe', views.HostOrganizationUnsubscribeView.as_view()),
         path('api/matchings.get_by_key/<str:key>', views.MatchingGetView.as_view()),
+        path('api/matching.set_meeting', views.MatchingSetMeetingView.as_view()),
         path('api/matching.set_interview_result', views.MatchingSetInterviewResultView.as_view()),
         path('api/matchings.coach_accept/<str:key>', views.matching_coach_accept, name='matching-coach-accept'),
         path('api/matchings.coach_reject/<str:key>', views.matching_coach_reject, name='matching-coach-reject'),

@@ -13,7 +13,7 @@ import {MatchingOutput} from 'app/core/dao/matching';
 import {Unsubscribepayload} from 'app/core/dao/unsubscribepayload';
 import {isArray} from 'app/utils/utils';
 import {Observable} from 'rxjs';
-import {SetInterviewResultPayload} from 'app/core/dao/setinterviewresultpayload';
+import {SetMatchingStatePayload} from 'app/core/dao/setmatchingstatepayload';
 
 
 @Injectable({
@@ -54,7 +54,11 @@ export class ApiService {
     return this.http.post(`${environment.apiUrl}/api/hostorganization.unsubscribe`, payload);
   }
 
-  setInterviewResult(payload: SetInterviewResultPayload): Observable<any> {
+  setMeeting(payload: SetMatchingStatePayload): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/matching.set_meeting`, payload);
+  }
+
+  setInterviewResult(payload: SetMatchingStatePayload): Observable<any> {
     return this.http.post(`${environment.apiUrl}/api/matching.set_interview_result`, payload);
   }
 
