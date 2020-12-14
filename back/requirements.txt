@@ -8,6 +8,7 @@ django-ipware
 django-request-id
 djangorestframework
 djangorestframework-gis
+djangorestframework-simplejwt
 django-filter
 factory_boy
 flake8

@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 
 from . import views
+from . import jwt
 
 
 urlpatterns = [
@@ -41,6 +42,7 @@ else:
         path('api/matchings.get_by_key/<str:key>', views.MatchingGetView.as_view()),
         path('api/matching.set_meeting', views.MatchingSetMeetingView.as_view()),
         path('api/matching.set_interview_result', views.MatchingSetInterviewResultView.as_view()),
+        path('api/auth/token', jwt.CnumTokenObtainPairView.as_view(), name='token_obtain_pair'),
         path('api/matchings.coach_accept/<str:key>', views.matching_coach_accept, name='matching-coach-accept'),
         path('api/matchings.coach_reject/<str:key>', views.matching_coach_reject, name='matching-coach-reject'),
         path('api/matchings.host_accept/<str:key>', views.matching_host_accept, name='matching-host-accept'),

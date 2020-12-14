@@ -12,6 +12,7 @@ export class ApiAdapterInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Only intercept api requests
     if (!request.url.startsWith(environment.apiUrl)) {
       return next.handle(request);
     }

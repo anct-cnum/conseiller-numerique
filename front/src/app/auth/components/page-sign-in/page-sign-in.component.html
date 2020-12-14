@@ -1,0 +1,16 @@
+<div>
+  <h2>
+    Connectez-vous à votre compte
+  </h2>
+  <div>
+    <form [formGroup]="form"
+          *ngIf="form"
+          (ngSubmit)="login()">
+      <input formControlName="email" />
+      <br/>
+      <input formControlName="password" />
+      <br/>
+      <button [ladda]="ladda$ | async" type="submit" class="btn btn-primary">Connexion</button>
+    </form>
+  </div>
+</div>
