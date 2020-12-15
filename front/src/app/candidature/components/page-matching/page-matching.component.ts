@@ -32,7 +32,13 @@ export class PageMatchingComponent implements OnInit {
         if (params.key) {
           this.api.getMatchingByKey(params.key).subscribe(
             matching => {
-              this.matching = matching;
+              if (this.mode === 'coach' && !matching.hostMeetingOk) {
+                this.errorNotFound = true;
+                this.matching = null;
+              }
+              else {
+                this.matching = matching;
+              }
               this.isLoading = false;
             },
             (error: HttpErrorResponse) => {
