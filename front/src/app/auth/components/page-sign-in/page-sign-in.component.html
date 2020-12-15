@@ -1,16 +1,37 @@
-<div>
-  <h2>
-    Connectez-vous à votre compte
-  </h2>
-  <div>
-    <form [formGroup]="form"
-          *ngIf="form"
-          (ngSubmit)="login()">
-      <input formControlName="email" />
-      <br/>
-      <input formControlName="password" />
-      <br/>
-      <button [ladda]="ladda$ | async" type="submit" class="btn btn-primary">Connexion</button>
-    </form>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+  <div class="mt-5">
+    <h2>
+      Connectez-vous à votre compte
+    </h2>
+    <div class="mt-3">
+      <form [formGroup]="form"
+            *ngIf="form"
+            (ngSubmit)="login()">
+
+        <app-form-field-input
+          label="Email"
+          key="email"
+          [required]="true"
+          [type]="'email'"
+          [form]="form"
+        >
+        </app-form-field-input>
+
+        <app-form-field-input
+          label="Mot de passe"
+          key="password"
+          [required]="true"
+          [type]="'password'"
+          [form]="form"
+        >
+        </app-form-field-input>
+
+        <app-form-error-box [errorMessages]="errorMessages"></app-form-error-box>
+
+        <button [ladda]="ladda$ | async" type="submit" class="btn btn-primary">Connexion</button>
+      </form>
+    </div>
   </div>
+</div>
 </div>

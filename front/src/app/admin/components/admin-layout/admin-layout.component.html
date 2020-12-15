@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="'/admin'">
+      <img src="/assets/img/logo-rf-conseiller-numerique.png" height="55" alt="" loading="lazy">
+    </a>
+    <button class="navbar-toggler" (click)="isNavbarDisplay = !isNavbarDisplay" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div [ngbCollapse]="!isNavbarDisplay" class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="'conseillers'">Conseillers</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="'structures'">Structures</a>
+        </li>
+
+        <li *ngIf="loggedInUser$ | async as user else connectTpl">
+          <a class="nav-link cursor-pointer" (click)="logout()">Deconnexion</a>
+        </li>
+        <ng-template #connectTpl>
+          <a class="nav-link" [routerLink]="'/auth/login'">Connexion</a>
+        </ng-template>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

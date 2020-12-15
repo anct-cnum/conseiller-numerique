@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormErrorBoxComponent } from './form-error-box.component';
+import { AdminLayoutComponent } from './admin-layout.component';
 
-describe('FormErrorBoxComponent', () => {
-  let component: FormErrorBoxComponent;
-  let fixture: ComponentFixture<FormErrorBoxComponent>;
+describe('AdminLayoutComponent', () => {
+  let component: AdminLayoutComponent;
+  let fixture: ComponentFixture<AdminLayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FormErrorBoxComponent ]
+      declarations: [ AdminLayoutComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FormErrorBoxComponent);
+    fixture = TestBed.createComponent(AdminLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

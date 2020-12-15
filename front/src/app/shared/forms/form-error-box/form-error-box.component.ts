@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 
+
 @Component({
   selector: 'app-form-error-box',
   templateUrl: './form-error-box.component.html',

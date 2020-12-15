@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageCoachListComponent } from './page-coach-list.component';
+import { PageCoachListComponent } from 'app/admin/modules/coach/components/page-coach-list/page-coach-list.component';
 
 describe('PageCoachListComponent', () => {
   let component: PageCoachListComponent;

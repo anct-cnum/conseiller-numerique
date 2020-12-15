@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormFieldErrorsComponent } from './form-field-errors.component';
+import { FormFieldErrorsComponent } from 'app/shared/forms/form-field-errors/form-field-errors.component';
 
 describe('FormFieldErrorsComponent', () => {
   let component: FormFieldErrorsComponent;

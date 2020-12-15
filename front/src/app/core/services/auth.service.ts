@@ -60,11 +60,11 @@ export class AuthService {
   }
   */
 
-  public logout(): void {
+  public logout(redirectUrl = ''): void {
     sessionStorage.clear();
     this._token$.next(null);
     this._user$.next(null);
-    this._router.navigateByUrl('');
+    this._router.navigateByUrl(redirectUrl).then(() => window.location.reload());
   }
 
   /**
