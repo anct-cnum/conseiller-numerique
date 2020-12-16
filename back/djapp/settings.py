@@ -316,6 +316,8 @@ RECAPTCHA_SECRET_KEY = config.getstr('recaptcha.secret_key')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_RENDERER_CLASSES': [
@@ -326,6 +328,8 @@ REST_FRAMEWORK = {
     ],
     'UNICODE_JSON': True,
 }
+if config.getbool('api.browsable', False):
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
 
 
 SIMPLE_JWT = {

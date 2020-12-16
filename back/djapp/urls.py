@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include, re_path
+from djapp.backoffice.urls import urlpatterns as bo_urlpatterns
 
 from . import views
 from . import jwt
@@ -30,9 +31,11 @@ urlpatterns = [
 if settings.MAINTENANCE:
     urlpatterns += [
         re_path('api/.*', views.api_maintenance),
+        re_path('bo/.*', views.api_maintenance),
     ]
 else:
     urlpatterns += [
+        path('bo/', include(bo_urlpatterns)),
         path('api/coaches.add', views.CoachAddView.as_view()),
         path('api/coach.confirm_email', views.CoachConfirmEmailView.as_view()),
         path('api/coach.unsubscribe', views.CoachUnsubscribeView.as_view()),

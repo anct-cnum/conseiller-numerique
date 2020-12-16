@@ -12,6 +12,7 @@ import localeFr from '@angular/common/locales/fr';
 import localeFrExtra from '@angular/common/locales/extra/fr';
 import { ErrorInterceptor } from 'app/core/interceptors/error.interceptor';
 import { ApiAdapterInterceptor } from 'app/core/interceptors/api-adapter.interceptor';
+import {JwtInterceptor} from "app/core/interceptors/jwt.interceptor";
 
 
 // the second parameter 'fr' is optional
@@ -30,6 +31,7 @@ registerLocaleData(localeFr, 'fr', localeFrExtra);
   providers: [
     {provide: LOCALE_ID, useValue: 'fr' },
     {provide: HTTP_INTERCEPTORS, useClass: ApiAdapterInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
   ],
 })
