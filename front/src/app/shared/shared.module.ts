@@ -6,6 +6,8 @@ import {FormFieldErrorsComponent} from './forms/form-field-errors/form-field-err
 import {FormFieldInputComponent} from './forms/form-field-input/form-field-input.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { IconBooleanComponent } from './table/icon-boolean/icon-boolean.component';
+import {MaterialModule} from "app/material/material.module";
 
 
 @NgModule({
@@ -14,12 +16,14 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     FormFieldErrorsComponent,
     FormFieldInputComponent,
     DateStructPipe,
+    IconBooleanComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    MaterialModule,
   ],
   exports: [
     FormsModule,
@@ -28,6 +32,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     FormErrorBoxComponent,
     FormFieldErrorsComponent,
     FormFieldInputComponent,
+    MaterialModule,
+    IconBooleanComponent,
   ]
 })
 export class SharedModule { }

@@ -6,6 +6,7 @@ class CoachSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Coach
         fields = (
+            'id',
             'situation_looking',
             'situation_job',
             'situation_learning',
@@ -18,6 +19,9 @@ class CoachSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
             'phone',
+            'email_confirmed',
+            'blocked',
+            'is_active',
 
             'location',
             'zip_code',
@@ -30,6 +34,7 @@ class CoachSerializer(serializers.ModelSerializer):
             'created',
         )
         read_only_fields = (
+            'is_active',
             'updated',
             'created',
         )

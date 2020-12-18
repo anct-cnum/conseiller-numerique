@@ -43,8 +43,8 @@ export class AuthService {
         const user = helper.decodeToken<User>(accessToken);
         this._token$.next(accessToken);
         this._user$.next(user);
-        sessionStorage.setItem(KEY_TOKEN, accessToken);
-        sessionStorage.setItem(KEY_USER, JSON.stringify(user));
+        localStorage.setItem(KEY_TOKEN, accessToken);
+        localStorage.setItem(KEY_USER, JSON.stringify(user));
       }),
       finalize(() => this._authenticating$.next(false))
     );
@@ -61,7 +61,7 @@ export class AuthService {
   */
 
   public logout(redirectUrl = ''): void {
-    sessionStorage.clear();
+    localStorage.clear();
     this._token$.next(null);
     this._user$.next(null);
     this._router.navigateByUrl(redirectUrl).then(() => window.location.reload());
@@ -72,12 +72,12 @@ export class AuthService {
    */
 
   private readToken(): void {
-    const token = sessionStorage.getItem(KEY_TOKEN);
+    const token = localStorage.getItem(KEY_TOKEN);
     if (!token) {
       return;
     }
     this.token$.next(token);
-    const sUser = sessionStorage.getItem(KEY_USER);
+    const sUser = localStorage.getItem(KEY_USER);
     if (sUser) {
       let user;
       try {

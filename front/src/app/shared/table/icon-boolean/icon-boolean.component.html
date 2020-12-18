@@ -1,0 +1,6 @@
+<span [ngSwitch]="value">
+  <mat-icon *ngSwitchCase="true" color="primary">check_circle</mat-icon>
+  <mat-icon *ngSwitchCase="false" color="warn">remove_circle</mat-icon>
+  <mat-icon *ngSwitchDefault>help</mat-icon>
+</span>
+
