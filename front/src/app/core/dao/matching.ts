@@ -7,9 +7,9 @@ export interface MatchingOutput {
   key: string;
   coach: CoachOutput;
   host: HostOrganizationOutput;
-  coachAccepted: Date;
-  coachRejected: Date;
-  hostAccepted: Date;
-  hostRejected: Date;
+  coachContactOk: boolean;
+  hostContactOk: boolean;
+  hostMeetingOk: boolean;
+  hostInterviewResultOk: boolean;
   created: Date;
 }

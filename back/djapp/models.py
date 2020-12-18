@@ -50,14 +50,26 @@ class Coach(ObjectWithLocationModel):
     email_confirmation_key = models.CharField(max_length=50, default=random_key_50, unique=True)
     email_confirmed = models.DateTimeField(null=True, blank=True)
 
+    # Coach has been blocked by staff
     blocked = models.DateTimeField(null=True, blank=True)
+
+    # Coach unsubscribed from the service
+    unsubscribed = models.DateTimeField(null=True, blank=True)
+
+    # EOF State
+
+    unsubscribe_extras = models.JSONField(default=dict, blank=True)
 
     updated = models.DateField(auto_now=True)
     created = models.DateTimeField(default=timezone.now)
 
     @property
     def is_active(self):
-        return bool(self.email_confirmed) and not bool(self.blocked)
+        return (
+                bool(self.email_confirmed) and
+                not bool(self.blocked) and
+                not bool(self.unsubscribed)
+        )
 
     def __str__(self):
         return '{first_name} {last_name} ({zip_code})'.format(**self.__dict__)
@@ -91,12 +103,24 @@ class HostOrganization(ObjectWithLocationModel):
     # Structure has been blocked by staff
     blocked = models.DateTimeField(null=True, blank=True)
 
+    # Structure unsubscribed from the service
+    unsubscribed = models.DateTimeField(null=True, blank=True)
+
+    # EOF State
+
+    unsubscribe_extras = models.JSONField(default=dict, blank=True)
+
     updated = models.DateField(auto_now=True)
     created = models.DateTimeField(default=timezone.now)
 
     @property
     def is_active(self):
-        return bool(self.email_confirmed) and not bool(self.blocked) and bool(self.validated)
+        return (
+                bool(self.email_confirmed) and
+                not bool(self.blocked) and
+                bool(self.validated) and
+                not bool(self.unsubscribed)
+        )
 
     def __str__(self):
         return '{name} ({zip_code})'.format(**self.__dict__)
@@ -117,9 +141,37 @@ class Matching(models.Model):
         related_query_name='matchings',
     )
 
-    coach_accepted = models.DateTimeField(null=True, blank=True)
-    coach_rejected = models.DateTimeField(null=True, blank=True)
-    host_accepted = models.DateTimeField(null=True, blank=True)
-    host_rejected = models.DateTimeField(null=True, blank=True)
+    old_coach_accepted = models.DateTimeField(null=True, blank=True)
+    old_coach_rejected = models.DateTimeField(null=True, blank=True)
+    old_host_accepted = models.DateTimeField(null=True, blank=True)
+    old_host_rejected = models.DateTimeField(null=True, blank=True)
+
+    # ----- COACH -----
+    # 1st phase : after receiving the basic informations of the matching,
+    # does the coach want to contact the host ?
+    coach_contact_ok = models.BooleanField(null=True, blank=True)
+    coach_contact_datetime = models.DateTimeField(null=True, blank=True)
+    # ----- END COACH -----
+
+    # ----- HOST -----
+    # 1st phase : after receiving the information of the coach,
+    # does the host want to contact the coach ?
+    host_contact_ok = models.BooleanField(null=True, blank=True)
+    host_contact_datetime = models.DateTimeField(null=True, blank=True)
+
+    # 2nd phase : after seeing the profile & contact info of the coach,
+    # does the host have setup a meeting with the coach ?
+    host_meeting_ok = models.BooleanField(null=True, blank=True)
+    host_meeting_datetime = models.DateTimeField(null=True, blank=True)
+
+    # 3nd phase : after meeting the candidat,
+    # does the host want to recruit coach ?
+    host_interview_result_ok = models.BooleanField(null=True, blank=True)
+    host_interview_result_datetime = models.DateTimeField(null=True, blank=True)
+    # ----- END HOST -----
 
     created = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def is_active(self):
+        return self.coach.is_active and self.host.is_active

@@ -9,6 +9,7 @@ import {isArray} from 'app/utils/utils';
 import {phoneValidator} from '../page-form-coach/page-form-coach.component';
 import {ToastrService} from 'ngx-toastr';
 import {OptionCommune} from '../form-field-zipcode/form-field-zipcode.component';
+import {FormUtilsService} from 'app/core/services/utils/form-utils.service';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class PageFormHostOrganizationComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private toast: ToastrService,
+    public formUtils: FormUtilsService,
   ) {}
 
   ngOnInit(): void {
@@ -51,17 +53,31 @@ export class PageFormHostOrganizationComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('formValue', this.form.value);
-    this.form.markAllAsTouched();
-    if (!this.form.valid) {
-      window.scroll({top: 0, left: 0, behavior: 'smooth'});
-      this.toast.error('Votre formulaire contient des erreurs');
-      console.warn('form is invalid');
+    if (!this.formUtils.preSubmitFormChecks(this.form)) {
       return;
     }
 
+    const resource = this._generateHostOrganizationInput();
+
+    this.ladda = true;
+    this.api.postHostingOrganizationApplication(resource).subscribe(
+      application => {
+        this.errorMessages = [];
+        this.ladda = false;
+        console.log('result', application);
+        this.router.navigate(['..', 'success'], {relativeTo: this.route});
+      },
+      error => {
+        console.error('Error', error);
+        this.errorMessages = this.api.flattenErrors(error);
+        this.ladda = false;
+      }
+    );
+  }
+
+  private _generateHostOrganizationInput(): HostOrganizationInput {
     const optionCommune: OptionCommune = this.form.value.zipCode;
-    const resource: HostOrganizationInput = {
+    return {
       type: this.form.value.type,
       hasCandidate: this.form.value.hasCandidate,
       startDate: this.form.value.startDate.date,
@@ -80,50 +96,6 @@ export class PageFormHostOrganizationComponent implements OnInit {
       regionCode: optionCommune.commune.regionCode,
       location: optionCommune.commune.center,
     };
-
-    this.ladda = true;
-    this.api.postHostingOrganizationApplication(resource).subscribe(
-      application => {
-        this.errorMessages = [];
-        this.ladda = false;
-        console.log('result', application);
-        this.router.navigate(['..', 'success'], {relativeTo: this.route});
-      },
-      error => {
-        this.errorMessages = [];
-        this.ladda = false;
-        for (const [key, value] of Object.entries(error.error)) {
-          let prefix = key + ' : ';
-          if (key === 'non_field_errors') {
-            prefix = '';
-          }
-          if (isArray(value)) {
-            for (const msg of (value as any[])) {
-              this.errorMessages.push(prefix + msg);
-            }
-          }
-          else {
-            this.errorMessages.push(prefix + value);
-          }
-        }
-        console.error(error);
-      }
-    );
-  }
-
-  // TODO refactor with page-coach-form
-  getInvalidDetails(): any[] {
-    const invalid = [];
-    const controls = this.form.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        invalid.push({
-          name,
-          errors: controls[name].errors,
-        });
-      }
-    }
-    return invalid;
   }
 
   // TODO refactor with page-coach-form

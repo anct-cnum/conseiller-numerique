@@ -28,8 +28,11 @@ import {
 } from 'ng-recaptcha';
 import {environment} from '@env';
 import { PageCoachConfirmEmailComponent } from './components/page-coach-confirm-email/page-coach-confirm-email.component';
-import {PageHostConfirmEmailComponent} from './components/page-host-confirm-email/page-host-confirm-email.component';
+import { PageHostConfirmEmailComponent } from './components/page-host-confirm-email/page-host-confirm-email.component';
 import { WidgetConfirmEmailComponent } from './components/widget-confirm-email/widget-confirm-email.component';
+import { PageHostUnsubscribeComponent } from './components/page-host-unsubscribe/page-host-unsubscribe.component';
+import { PageCoachUnsubscribeComponent } from './components/page-coach-unsubscribe/page-coach-unsubscribe.component';
+import { FormErrorBoxComponent } from './components/form-error-box/form-error-box.component';
 
 
 @NgModule({
@@ -51,6 +54,9 @@ import { WidgetConfirmEmailComponent } from './components/widget-confirm-email/w
     PageCoachConfirmEmailComponent,
     PageHostConfirmEmailComponent,
     WidgetConfirmEmailComponent,
+    PageHostUnsubscribeComponent,
+    PageCoachUnsubscribeComponent,
+    FormErrorBoxComponent,
   ],
 
   imports: [

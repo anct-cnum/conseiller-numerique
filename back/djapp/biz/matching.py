@@ -16,32 +16,34 @@ class Matcher:
     def __init__(self):
         pass
 
-    def get_queryset_coaches(self):
-        qs = models.Coach.objects.all()
-        # Filter on situation
-        qs = qs.filter(Q(situation_graduated=True) | Q(has_experience=True) | Q(situation_learning=True))
+    def _apply_common_filters(self, qs):
         # Email should be confirmed
         qs = qs.exclude(email_confirmed=None)
         # Should not be blocked
         qs = qs.filter(blocked=None)
+        # Should not be unsubscribed
+        qs = qs.filter(unsubscribed=None)
         # Filter on matchings
         qs = qs.annotate(nb_matchings=Count('matchings'))
         qs = qs.filter(nb_matchings__lt=self.MAX_MATCHINGS)
+        return qs
+
+    def get_queryset_coaches(self):
+        qs = models.Coach.objects.all()
+        # Filter on situation
+        qs = qs.filter(Q(situation_graduated=True) | Q(has_experience=True) | Q(situation_learning=True))
+        # Common filters
+        qs = self._apply_common_filters(qs)
         return qs
 
     def get_queryset_hosts(self):
         qs = models.HostOrganization.objects.all()
         # Filter on type
         qs = qs.exclude(type=models.HostOrganization.Type.PRIVATE)
-        # Email should be confirmed
-        qs = qs.exclude(email_confirmed=None)
         # Should be validated
         qs = qs.exclude(validated=None)
-        # Should not be blocked
-        qs = qs.filter(blocked=None)
-        # Filter on matchings
-        qs = qs.annotate(nb_matchings=Count('matchings'))
-        qs = qs.filter(nb_matchings__lt=self.MAX_MATCHINGS)
+        # Common filters
+        qs = self._apply_common_filters(qs)
         return qs
 
     def get_matchings_for_coach(self, coach: models.Coach, limit=None):

@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="col mt-5">
+    <h1>Desinscription</h1>
+    <p>
+      Dites-nous si la plateforme vous a aidé à recruter un conseiller numérique.
+    </p>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!isConfirmed">
+      <div class="form-group">
+        <p>
+          Vous désactivez votre besoin de recrutement pour le motif&nbsp;:
+        </p>
+        <app-form-field-errors [field]="form.controls.reason"></app-form-field-errors>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" formControlName="reason" id="reason0" [value]="'candidat-trouve'">
+          <label class="form-check-label" for="reason0">
+            J'ai trouvé un bon candidat
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" formControlName="reason" id="reason1" [value]="'recrutement-annule-ou-reporte'">
+          <label class="form-check-label" for="reason1">
+            Recrutement annulé ou reporté
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" formControlName="reason" id="reason2" [value]="'plus-besoin'">
+          <label class="form-check-label" for="reason2">
+            Suite à la disparition du besoin
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" formControlName="reason" id="reason3" [value]="'candiats-non-adequats'">
+          <label class="form-check-label" for="reason3">
+            Faute de candidat adéquat
+          </label>
+        </div>
+      </div>
+
+      <app-form-error-box [errorMessages]="errorMessages"></app-form-error-box>
+
+      <div class="text-center mt-5">
+        <button [ladda]="ladda" type="submit" class="btn btn-primary">Confirmer la desinscription</button>
+      </div>
+
+    </form>
+
+    <p *ngIf="isConfirmed" class="alert alert-success">
+      Votre candidature a été désactivée avec succès.
+    </p>
+
+    <div *ngIf="debug">
+      status: {{ form.status }}
+      <br/>
+      <pre>{{ form.value | json }}</pre>
+      <pre>{{ form.errors | json }}</pre>
+    </div>
+
+  </div>
+</div>
+

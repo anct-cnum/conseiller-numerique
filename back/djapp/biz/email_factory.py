@@ -11,6 +11,8 @@ def send_coach_confirmation(coach: models.Coach):
     context = {
         'firstname': coach.first_name,
         'confirmurl': build_confirm_coach_url(coach),
+        'unsubscribeurl': build_unsubscribe_coach_url(coach),
+        'emailto': coach.email,
     }
     Email('confirmation_coach').send(coach.email, context)
 
@@ -21,6 +23,8 @@ def send_host_confirmation(host: models.HostOrganization):
         'contactlastname': host.contact_last_name,
         'name': host.name,
         'confirmurl': build_confirm_host_url(host),
+        'unsubscribeurl': build_unsubscribe_host_url(host),
+        'emailto': host.contact_email,
     }
     Email('confirmation_host').send(host.contact_email, context)
 
@@ -39,10 +43,14 @@ def send_matching(matching: models.Matching):
     coach_context = dict(**context, **{
         'coachaccepturl': build_matching_coach_accept_url(matching),
         'coachrejecturl': build_matching_coach_reject_url(matching),
+        'unsubscribeurl': build_unsubscribe_coach_url(matching.coach),
+        'emailto': matching.coach.email,
     })
     host_context = dict(**context, **{
         'hostaccepturl': build_matching_host_accept_url(matching),
         'hostrejecturl': build_matching_host_reject_url(matching),
+        'unsubscribeurl': build_unsubscribe_host_url(matching.host),
+        'emailto': matching.host.contact_email,
     })
     Email('matching_coach').send(matching.coach.email, coach_context)
     Email('matching_host').send(matching.host.contact_email, host_context)
@@ -70,3 +78,11 @@ def build_confirm_coach_url(coach: models.Coach):
 
 def build_confirm_host_url(host: models.HostOrganization):
     return urljoin(settings.SITE_URL, reverse('redirect-host-confirm-email', kwargs={'key': host.email_confirmation_key}))
+
+
+def build_unsubscribe_coach_url(coach: models.Coach):
+    return urljoin(settings.SITE_URL, reverse('redirect-coach-unsubscribe', kwargs={'key': coach.email_confirmation_key}))
+
+
+def build_unsubscribe_host_url(host: models.HostOrganization):
+    return urljoin(settings.SITE_URL, reverse('redirect-host-unsubscribe', kwargs={'key': host.email_confirmation_key}))

@@ -1,44 +1,19 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import {map, shareReplay, tap} from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 import { environment } from '@env';
-import {Observable} from 'rxjs';
 import {CoachInput, CoachOutput} from 'app/core/dao/coach';
-import {ApiAdapter} from './adapter';
 import {
   HostOrganizationInput,
   HostOrganizationOutput
 } from 'app/core/dao/hostorganization';
 import {MatchingOutput} from 'app/core/dao/matching';
-
-
-export interface MessageConfig {
-  onBadInput?: (error) => string;
-  onUnauthorized?: (error) => string;
-  onServerError?: (error) => string;
-  onUnexpectedError?: (error) => string;
-}
-
-
-export const DEFAULT_MESSAGE_CONFIG: MessageConfig = {
-  // 400
-  onBadInput: (error) => {
-    if (error.error.non_field_errors && error.error.non_field_errors.length > 0) {
-      const msg = error.error.non_field_errors[0];
-      return msg.slice(0, 150);
-    }
-    return 'Entrée invalide';
-  },
-  // 403
-  onUnauthorized: (error) => 'Droits insuffisant pour effectuer cette action',
-  // 500
-  onServerError: (error) => `Une erreur est survenue : ${error.message}`,
-  // default
-  onUnexpectedError: (error) => `Une erreur est survenue : ${error.message}`,
-};
+import {Unsubscribepayload} from 'app/core/dao/unsubscribepayload';
+import {isArray} from 'app/utils/utils';
+import {Observable} from 'rxjs';
+import {SetMatchingStatePayload} from 'app/core/dao/setmatchingstatepayload';
 
 
 @Injectable({
@@ -51,75 +26,63 @@ export class ApiService {
     protected toastrService: ToastrService,
   ) {}
 
-  protected errorHandler(error, messages: MessageConfig): void {
-    if (error.status === 400 && messages.onBadInput) {
-      this.toastrService.error(messages.onBadInput(error));
+  postCoachApplication(resource: CoachInput): Observable<CoachOutput> {
+    return this.http.post<CoachOutput>(`${environment.apiUrl}/api/coaches.add`, resource);
+  }
+
+  postHostingOrganizationApplication(resource: HostOrganizationInput): Observable<HostOrganizationOutput> {
+    return this.http.post<HostOrganizationOutput>(`${environment.apiUrl}/api/hostorganizations.add`, resource);
+  }
+
+  getMatchingByKey(key: string): Observable<MatchingOutput> {
+    return this.http.get<MatchingOutput>(`${environment.apiUrl}/api/matchings.get_by_key/${key}`);
+  }
+
+  confirmCoachEmail(key: string): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/coach.confirm_email`, {key});
+  }
+
+  confirmHostEmail(key: string): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/hostorganization.confirm_email`, {key});
+  }
+
+  unsubscribeCoach(payload: Unsubscribepayload): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/coach.unsubscribe`, payload);
+  }
+
+  unsubscribeHostOrganization(payload: Unsubscribepayload): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/hostorganization.unsubscribe`, payload);
+  }
+
+  setMeeting(payload: SetMatchingStatePayload): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/matching.set_meeting`, payload);
+  }
+
+  setInterviewResult(payload: SetMatchingStatePayload): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/matching.set_interview_result`, payload);
+  }
+
+  flattenErrors(err: HttpErrorResponse): string[] {
+    const errorMessages = [];
+    if (err.status === 400) {
+      console.log('error to flatten:', err.error);
+      for (const [key, value] of Object.entries(err.error)) {
+        let prefix = key + ' : ';
+        if (key === 'non_field_errors') {
+          prefix = '';
+        }
+        if (isArray(value)) {
+          for (const msg of (value as any[])) {
+            errorMessages.push(prefix + msg);
+          }
+        } else {
+          errorMessages.push(prefix + value);
+        }
+      }
     }
-    else if (error.status === 403 && messages.onUnauthorized) {
-      this.toastrService.error(messages.onUnauthorized(error));
+    else {
+      errorMessages.push('Erreur');
     }
-    else if (error.status === 500 && messages.onServerError) {
-      this.toastrService.error(messages.onServerError(error));
-    }
-    else if (messages.onUnexpectedError) {
-      this.toastrService.error(messages.onUnexpectedError(error));
-    }
-  }
-
-  postCoachApplication(resource: CoachInput,
-                       messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
-  ): Observable<CoachOutput> {
-    const data = ApiAdapter.app2api(resource);
-    return this.http.post(`${environment.apiUrl}/api/coaches.add`, data)
-      .pipe(
-        tap({error: (error) => this.errorHandler(error, messages)}),
-        map((json: any) => ApiAdapter.api2app(json)),
-        shareReplay(1),
-      );
-  }
-
-  postHostingOrganizationApplication(resource: HostOrganizationInput,
-                                     messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
-  ): Observable<HostOrganizationOutput> {
-    const data = ApiAdapter.app2api(resource);
-    return this.http.post(`${environment.apiUrl}/api/hostorganizations.add`, data)
-      .pipe(
-        tap({error: (error) => this.errorHandler(error, messages)}),
-        map((json: any) => ApiAdapter.api2app(json)),
-        shareReplay(1),
-      );
-  }
-
-  getMatchingByKey(key: string,
-                   messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
-  ): Observable<MatchingOutput> {
-    return this.http.get(`${environment.apiUrl}/api/matchings.get_by_key/${key}`)
-      .pipe(
-        tap({error: (error) => this.errorHandler(error, messages)}),
-        map((json: any) => ApiAdapter.api2app(json)),
-        shareReplay(1),
-      );
-  }
-
-  confirmCoachEmail(key: string,
-                    messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
-  ): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/api/coach.confirm_email`, {key})
-      .pipe(
-        tap({error: (error) => this.errorHandler(error, messages)}),
-        map((json: any) => ApiAdapter.api2app(json)),
-        shareReplay(1),
-      );
-  }
-
-  confirmHostEmail(key: string,
-                   messages: MessageConfig = DEFAULT_MESSAGE_CONFIG,
-  ): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/api/hostorganization.confirm_email`, {key})
-      .pipe(
-        tap({error: (error) => this.errorHandler(error, messages)}),
-        map((json: any) => ApiAdapter.api2app(json)),
-        shareReplay(1),
-      );
+    return errorMessages;
   }
 }

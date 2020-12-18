@@ -5,7 +5,6 @@ print('TESTING')
 
 SITE_URL = 'http://testserver.local'
 
-TEST_REQUEST_DEFAULT_FORMAT = 'json'
-TEST_REQUEST_RENDERER_CLASSES = [
-    'rest_framework.renderers.JSONRenderer',
-]
+REST_FRAMEWORK.update({
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+})

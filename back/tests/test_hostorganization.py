@@ -5,7 +5,7 @@ from djapp.views import HostOrganizationConfirmEmailView
 from freezegun import freeze_time
 from rest_framework.test import APITestCase
 
-from tests.factories import CoachFactory, HostOrganizationFactory
+from tests.factories import CoachFactory, HostOrganizationFactory, MatchingFactory, ActiveHostOrganizationFactory
 
 
 class HostOrganizationTestCase(APITestCase):
@@ -40,7 +40,7 @@ class HostOrganizationTestCase(APITestCase):
             'region_code': '75',
         }
 
-        res = self.client.post('/api/hostorganizations.add', data=data, format='json')
+        res = self.client.post('/api/hostorganizations.add', data=data)
 
         self.assertEqual(201, res.status_code)
         res_data = res.json()
@@ -88,3 +88,19 @@ class HostOrganizationTestCase(APITestCase):
             res = self.client.post('/api/hostorganization.confirm_email', data=data)
         self.assertEqual(400, res.status_code)
         self.assertEqual({'non_field_errors': ["Le lien de confirmation a expiré"]}, res.json())
+
+    def test_unsubscribe(self):
+        host = ActiveHostOrganizationFactory()
+        matching = MatchingFactory(host=host)
+        assert matching.is_active  # Be sure our factory output an active matching
+        data = {
+            'key': host.email_confirmation_key,
+            'extras': {'hello': 'world'},
+        }
+        res = self.client.post('/api/hostorganization.unsubscribe', data=data)
+        self.assertEqual(200, res.status_code)
+        host.refresh_from_db()
+        self.assertIsNotNone(host.unsubscribed)
+        self.assertFalse(host.is_active)
+        matching.refresh_from_db()
+        self.assertFalse(matching.is_active)

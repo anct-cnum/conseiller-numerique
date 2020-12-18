@@ -108,6 +108,10 @@ class CoachFactory(factory.django.DjangoModelFactory):
     location = factory.LazyAttribute(compute_location)
 
 
+class ActiveCoachFactory(CoachFactory):
+    email_confirmed = timezone.now()
+
+
 class HostOrganizationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.HostOrganization
@@ -131,9 +135,14 @@ class HostOrganizationFactory(factory.django.DjangoModelFactory):
     location = factory.LazyAttribute(compute_location)
 
 
+class ActiveHostOrganizationFactory(HostOrganizationFactory):
+    email_confirmed = timezone.now()
+    validated = timezone.now()
+
+
 class MatchingFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Matching
 
-    coach = factory.SubFactory(CoachFactory)
-    host = factory.SubFactory(HostOrganizationFactory)
+    coach = factory.SubFactory(ActiveCoachFactory)
+    host = factory.SubFactory(ActiveHostOrganizationFactory)

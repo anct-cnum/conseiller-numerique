@@ -84,10 +84,10 @@ class MatchingReadSerialzier(serializers.ModelSerializer):
             'key',
             'coach',
             'host',
-            'coach_accepted',
-            'coach_rejected',
-            'host_accepted',
-            'host_rejected',
+            'coach_contact_ok',
+            'host_contact_ok',
+            'host_meeting_ok',
+            'host_interview_result_ok',
             'created',
         )
         read_only_fields = (
@@ -95,5 +95,15 @@ class MatchingReadSerialzier(serializers.ModelSerializer):
         )
 
 
-class ConfirmEmailSerializer(serializers.Serializer):
+class ActionWithKeySerializer(serializers.Serializer):
     key = serializers.CharField(required=True)
+
+
+class UnsubscribePayloadSerializer(serializers.Serializer):
+    key = serializers.CharField(required=True)
+    extras = serializers.JSONField()
+
+
+class MatchingSetStateSerializer(serializers.Serializer):
+    key = serializers.CharField(required=True)
+    value = serializers.BooleanField(required=True)

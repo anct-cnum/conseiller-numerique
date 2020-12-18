@@ -3,6 +3,14 @@
 
     <h1>Contact</h1>
 
+    <div *ngIf="isLoading">
+      Chargement...
+    </div>
+
+    <div *ngIf="errorNotFound">
+      Ce besoin a été désactivé, aucune action n'est désormais possible.
+    </div>
+
     <div *ngIf="matching">
       <div *ngIf="mode === 'host'">
         <ng-container *ngTemplateOutlet="tplCoach; context: {coach: matching.coach}"></ng-container>
@@ -13,7 +21,7 @@
       </div>
     </div>
 
-    <div *ngIf="debug">
+    <div *ngIf="debug" class="mt-5">
       <p>Mode : {{ mode }}</p>
       <pre>{{ matching | json }}</pre>
     </div>
@@ -42,10 +50,40 @@
     <span *ngIf="coach.situationJob">En emploi.</span>
     <span *ngIf="coach.situationLearning">En formation.</span>
   </p>
+
+  <div *ngIf="!setMeetingDone">
+    <p>
+      Suite à votre première prise de contact avec le candidat&nbsp;:
+    </p>
+    <p class="d-md-flex justify-content-center">
+      <button class="btn btn-secondary m-2" [ladda]="isLoading" (click)="setMeeting(false)">
+        Je ne donne pas suite
+      </button>
+      <button class="btn btn-primary m-2" [ladda]="isLoading" (click)="setMeeting(true)">
+        J'organise un entretien
+      </button>
+    </p>
+  </div>
+  <div *ngIf="setMeetingDone" class="alert alert-success">
+    Merci de nous avoir tenu informés !
+    <br/>
+    A bientôt,
+    <br/>
+    L'équipe conseiller numérique
+    <br/>
+  </div>
+
+  <div *ngIf="matching.hostMeetingOk !== null">
+    Votre dernier retour concernant ce candidat&nbsp;:
+    <b>
+      <span *ngIf="matching.hostMeetingOk">Organisation d'un entretien</span>
+      <span *ngIf="!matching.hostMeetingOk">Refusé</span>
+    </b>
+  </div>
+
 </ng-template>
 
 <ng-template #tplHost let-host="host">
-
   <p>
     Vous pouvez contacter {{ host.contactFirstName }} {{ host.contactLastName }}
     au sein de {{ host.name }} ({{ host.zipCode }}) par email {{ host.contactEmail }}
