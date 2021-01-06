@@ -20,7 +20,7 @@ call('cp deploy/buildpacks dist/angular-app/.buildpacks')
 call('cp deploy/servers.conf.erb dist/angular-app/servers.conf.erb')
 
 print('Build archive...')
-call('tar --transform "s/^dist\/angular-app/master/" -czvf dist/angular-app.tar.gz dist/angular-app')
+call('gtar --transform "s/^dist\/angular-app/master/" -czvf dist/angular-app.tar.gz dist/angular-app')
 
 print('Upload archive ...')
 call('scalingo --app {env}-cnum-front deploy dist/angular-app.tar.gz'.format(env=env))
