@@ -52,6 +52,8 @@ class HostOrganizationSerializer(serializers.ModelSerializer):
             'has_candidate',
             'start_date',
             'name',
+            'siret',
+            'coaches_requested',
             'contact_first_name',
             'contact_last_name',
             'contact_job',
