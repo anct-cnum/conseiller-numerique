@@ -87,6 +87,8 @@ class HostOrganization(ObjectWithLocationModel):
     has_candidate = models.BooleanField()
     start_date = models.DateField()
     name = models.CharField(max_length=250)
+    siret = models.CharField(max_length=14, null=True)
+    coaches_requested = models.IntegerField(null=True)
     contact_first_name = models.CharField(max_length=100)
     contact_last_name = models.CharField(max_length=100)
     contact_job = models.CharField(max_length=100)
