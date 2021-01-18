@@ -6,6 +6,6 @@ import {Injectable} from '@angular/core';
 })
 export class ConstantsService {
 
-  landingUrl = 'https://conseiller-numerique.anct.gouv.fr';
+  landingUrl = 'https://conseiller-numerique.gouv.fr';
 
 }
