@@ -105,6 +105,9 @@ class UnsubscribePayloadSerializer(serializers.Serializer):
     key = serializers.CharField(required=True)
     extras = serializers.JSONField()
 
+class DisponiblePayloadSerializer(serializers.Serializer):
+    key = serializers.CharField(required=True)
+    disponible = serializers.BooleanField(required=True)
 
 class MatchingSetStateSerializer(serializers.Serializer):
     key = serializers.CharField(required=True)

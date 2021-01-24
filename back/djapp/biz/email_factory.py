@@ -55,6 +55,14 @@ def send_matching(matching: models.Matching):
     Email('matching_coach').send(matching.coach.email, coach_context)
     Email('matching_host').send(matching.host.contact_email, host_context)
 
+def send_voiture_balais(coach: models.Coach):
+    context = {
+        'firstname': coach.first_name,
+        'yesurl': build_voiture_balais_url(coach, 'oui'),
+        'nourl': build_voiture_balais_url(coach, 'non'),
+        'emailto': coach.email,
+    }
+    Email('voiture_balais').send(coach.email, context)
 
 def build_matching_coach_accept_url(matching: models.Matching):
     return urljoin(settings.SITE_URL, reverse('matching-coach-accept', kwargs={'key': matching.key}))
@@ -86,3 +94,6 @@ def build_unsubscribe_coach_url(coach: models.Coach):
 
 def build_unsubscribe_host_url(host: models.HostOrganization):
     return urljoin(settings.SITE_URL, reverse('redirect-host-unsubscribe', kwargs={'key': host.email_confirmation_key}))
+
+def build_voiture_balais_url(coach: models.Coach, disponible: str):
+    return urljoin(settings.SITE_URL, reverse('redirect-coach-voiture-balais', kwargs={'key': coach.email_confirmation_key, 'disponible': disponible}))

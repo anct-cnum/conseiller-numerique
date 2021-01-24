@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="col mt-5">
+    <h1>TODO</h1>
+
+    <p *ngIf="ladda && disponible === 'oui'" class="alert alert-success">
+      Vous êtes toujours disponible.
+    </p>
+
+    <p *ngIf="ladda && disponible === 'non'" class="alert alert-success">
+      Vous n'êtes plus disponible.
+    </p>
+
+    <div *ngIf="debug">
+      status: {{ form.status }}
+      <br/>
+      <pre>{{ form.value | json }}</pre>
+      <pre>{{ form.errors | json }}</pre>
+    </div>
+
+  </div>
+</div>
+
