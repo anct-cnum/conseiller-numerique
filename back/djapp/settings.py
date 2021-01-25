@@ -27,7 +27,7 @@ if 'POSTGRESQL_ADDON_URI' in os.environ:
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-config = getconf.ConfigGetter('djapp', ['./local_settings.ini'])
+config = getconf.ConfigGetter('djapp', ['./local_settings.dev.ini'])
 
 ENV = config.getstr('djapp.env')
 FRONT_URL = config.getstr('djapp.front_url')
