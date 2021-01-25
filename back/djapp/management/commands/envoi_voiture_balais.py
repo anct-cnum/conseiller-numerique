@@ -13,9 +13,7 @@ class Command(BaseCommand):
         offset = options['offset']
         limit = options['limit']
         for coach in models.Coach.objects.order_by('id').all()[offset:limit]:
-            print("coucou")
             matchings = models.Matching.objects.all().filter(coach=coach).count()
-            print(matchings)
             if matchings == 0:
                 email_factory.send_voiture_balais(coach)
         self.stdout.write('Ok.')
