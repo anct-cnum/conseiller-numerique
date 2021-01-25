@@ -2,13 +2,15 @@
   <div class="col mt-5">
     <h1>Êtes-vous toujours disponible?</h1>
 
-    <p *ngIf="ladda && disponible === 'oui'" class="alert alert-success">
+    <br />
+
+    <p *ngIf="showYes" class="alert alert-success">
       Vous êtes toujours disponible.
     </p>
 
-    <p *ngIf="ladda && disponible === 'non'" class="alert alert-success">
+    <div *ngIf="showNo" class="alert alert-success">
       Vous n'êtes plus disponible.
-    </p>
+    </div>
 
     <div *ngIf="debug">
       status: {{ form.status }}
