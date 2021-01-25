@@ -17,8 +17,6 @@ export class PageCoachDisponibleComponent implements OnInit {
   ladda: boolean;
   key: string;
   disponible: string;
-  showNo: boolean;
-  showYes: boolean;
 
   constructor(
     private api: ApiService,
@@ -44,8 +42,6 @@ export class PageCoachDisponibleComponent implements OnInit {
           res => {
             this.errorMessages = [];
             this.ladda = false;
-            this.showYes = this.disponible === "oui";
-            this.showNo = this.disponible === "non";
             console.log('result', res);
           },
           error => {
