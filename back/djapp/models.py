@@ -69,7 +69,8 @@ class Coach(ObjectWithLocationModel):
         return (
                 bool(self.email_confirmed) and
                 not bool(self.blocked) and
-                not bool(self.unsubscribed)
+                not bool(self.unsubscribed) and
+                self.disponible
         )
 
     def __str__(self):
