@@ -91,6 +91,7 @@ class MatchingReadSerialzier(serializers.ModelSerializer):
             'host_meeting_ok',
             'host_interview_result_ok',
             'created',
+            'disponible'
         )
         read_only_fields = (
             'created',
@@ -99,7 +100,6 @@ class MatchingReadSerialzier(serializers.ModelSerializer):
 
 class ActionWithKeySerializer(serializers.Serializer):
     key = serializers.CharField(required=True)
-
 
 class UnsubscribePayloadSerializer(serializers.Serializer):
     key = serializers.CharField(required=True)
@@ -112,3 +112,4 @@ class DisponiblePayloadSerializer(serializers.Serializer):
 class MatchingSetStateSerializer(serializers.Serializer):
     key = serializers.CharField(required=True)
     value = serializers.BooleanField(required=True)
+

@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from djapp.serializers import CoachSerializer, HostOrganizationSerializer, MatchingReadSerialzier, \
-    ActionWithKeySerializer, UnsubscribePayloadSerializer, MatchingSetStateSerializer
+    ActionWithKeySerializer, UnsubscribePayloadSerializer, MatchingSetStateSerializer, DisponiblePayloadSerializer
 from .biz import email_factory
 from .models import Matching, Coach, HostOrganization
 from .permissions.recaptcha import ReCaptchaPermission
@@ -160,14 +160,14 @@ class HostOrganizationConfirmEmailView(BaseConfirmEmailView):
         return subject.contact_email
 
 class CoachDisponibleView(APIView):
-    serializer_class = ActionWithKeySerializer
+    serializer_class = DisponiblePayloadSerializer
 
     def post(self, request, format=None):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             data = serializer.validated_data
-            subject = Coach.objects.all().get_queryset().filter(email_confirmation_key=data['key'], created__gte=expiration_time).first()
-            subject.disponible = data.disponible
+            subject = Coach.objects.all().filter(email_confirmation_key=data['key']).first()
+            subject.disponible = data['disponible']
             subject.save()
             return Response({'success': True}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
