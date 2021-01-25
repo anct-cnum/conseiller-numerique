@@ -4,7 +4,9 @@ import {GeoPoint} from "./geo";
 export interface HostOrganizationInput {
   type: string;
   hasCandidate: boolean;
+  coachesRequested: number;
   startDate: Date;
+  siret: string;
   name: string;
   contactFirstName: string;
   contactLastName: string;

@@ -16,6 +16,9 @@
       <div *ngSwitchCase="'phone'">
         Numéro de téléphone invalide
       </div>
+      <div *ngSwitchCase="'pattern'">
+        Le SIRET est composé de 14 chiffres
+      </div>
       <div *ngSwitchDefault>
         {{ error.key }} {{ error.value | json }}
       </div>
