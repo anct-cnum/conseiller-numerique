@@ -57,7 +57,7 @@ export class PageFormHostOrganizationComponent implements OnInit {
 
   onCheckboxChange(e) {
     if (e.target.checked) {
-      this.form.patchValue({ 'coachesRequested': 0});
+      this.form.patchValue({ coachesRequested: 0});
     }
   }
 
