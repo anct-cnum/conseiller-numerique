@@ -39,8 +39,11 @@ export class PageFormHostOrganizationComponent implements OnInit {
     this.form = this.formBuilder.group({
       type: [null, Validators.required],
       hasCandidate: [null, Validators.required],
+      coachesRequested: [null, Validators.required],
+      checkboxCoachesRequestedConfirm: [false],
       zipCode: [null, Validators.required],
       startDate: [null, Validators.required],
+      siret: ['', Validators.required],
       name: ['', Validators.required],
       contactFirstName: ['', Validators.required],
       contactLastName: ['', Validators.required],
@@ -50,6 +53,12 @@ export class PageFormHostOrganizationComponent implements OnInit {
       checkboxConfirm: [false, Validators.requiredTrue],
       recaptcha: [null, Validators.required],
     });
+  }
+
+  onCheckboxChange(e) {
+    if (e.target.checked) {
+      this.form.patchValue({ 'coachesRequested': 0});
+    }
   }
 
   onSubmit(): void {
@@ -80,7 +89,9 @@ export class PageFormHostOrganizationComponent implements OnInit {
     return {
       type: this.form.value.type,
       hasCandidate: this.form.value.hasCandidate,
+      coachesRequested: this.form.value.coachesRequested,
       startDate: this.form.value.startDate.date,
+      siret: this.form.value.siret,
       name: this.form.value.name,
       contactJob: this.form.value.contactJob,
       contactFirstName: this.form.value.contactFirstName,
