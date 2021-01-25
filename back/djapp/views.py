@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from djapp.serializers import CoachSerializer, HostOrganizationSerializer, MatchingReadSerialzier, \
-    ActionWithKeySerializer, UnsubscribePayloadSerializer, MatchingSetStateSerializer
+    ActionWithKeySerializer, UnsubscribePayloadSerializer, MatchingSetStateSerializer, DisponiblePayloadSerializer
 from .biz import email_factory
 from .models import Matching, Coach, HostOrganization
 from .permissions.recaptcha import ReCaptchaPermission
@@ -152,7 +152,6 @@ class CoachConfirmEmailView(BaseConfirmEmailView):
     def get_subject_email(self, subject: Coach):
         return subject.email
 
-
 class HostOrganizationConfirmEmailView(BaseConfirmEmailView):
     def get_queryset(self):
         return HostOrganization.objects.all()
@@ -160,6 +159,18 @@ class HostOrganizationConfirmEmailView(BaseConfirmEmailView):
     def get_subject_email(self, subject: HostOrganization):
         return subject.contact_email
 
+class CoachDisponibleView(APIView):
+    serializer_class = DisponiblePayloadSerializer
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            data = serializer.validated_data
+            subject = Coach.objects.all().filter(email_confirmation_key=data['key']).first()
+            subject.disponible = data['disponible']
+            subject.save()
+            return Response({'success': True}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class HostOrganizationAddView(APIView):
     authentication_classes = []
@@ -247,3 +258,6 @@ def redirect_coach_unsubscribe(request, key):
 
 def redirect_host_unsubscribe(request, key):
     return redirect(urljoin(settings.FRONT_URL, f'/candidature/structure/unsubscribe/{key}'))
+
+def redirect_coach_voiture_balais(request, key, disponible):
+    return redirect(urljoin(settings.FRONT_URL, f'/candidature/conseiller/disponibilite/{key}/{disponible}'))

@@ -11,6 +11,7 @@ import {
 } from 'app/core/dao/hostorganization';
 import {MatchingOutput} from 'app/core/dao/matching';
 import {Unsubscribepayload} from 'app/core/dao/unsubscribepayload';
+import {Disponiblepayload} from 'app/core/dao/disponiblepayload';
 import {isArray} from 'app/utils/utils';
 import {Observable} from 'rxjs';
 import {SetMatchingStatePayload} from 'app/core/dao/setmatchingstatepayload';
@@ -48,6 +49,10 @@ export class ApiService {
 
   unsubscribeCoach(payload: Unsubscribepayload): Observable<any> {
     return this.http.post(`${environment.apiUrl}/api/coach.unsubscribe`, payload);
+  }
+
+  disponibleCoach(payload: Disponiblepayload): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/coach.disponible`, payload);
   }
 
   unsubscribeHostOrganization(payload: Unsubscribepayload): Observable<any> {

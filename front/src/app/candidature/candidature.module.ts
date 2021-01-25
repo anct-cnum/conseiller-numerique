@@ -33,7 +33,7 @@ import { WidgetConfirmEmailComponent } from './components/widget-confirm-email/w
 import { PageHostUnsubscribeComponent } from './components/page-host-unsubscribe/page-host-unsubscribe.component';
 import { PageCoachUnsubscribeComponent } from './components/page-coach-unsubscribe/page-coach-unsubscribe.component';
 import { FormErrorBoxComponent } from './components/form-error-box/form-error-box.component';
-
+import { PageCoachDisponibleComponent } from './components/page-coach-disponible/page-coach-disponible.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +57,7 @@ import { FormErrorBoxComponent } from './components/form-error-box/form-error-bo
     PageHostUnsubscribeComponent,
     PageCoachUnsubscribeComponent,
     FormErrorBoxComponent,
+    PageCoachDisponibleComponent
   ],
 
   imports: [

@@ -35,6 +35,7 @@ else:
         path('api/coaches.add', views.CoachAddView.as_view()),
         path('api/coach.confirm_email', views.CoachConfirmEmailView.as_view()),
         path('api/coach.unsubscribe', views.CoachUnsubscribeView.as_view()),
+        path('api/coach.disponible', views.CoachDisponibleView.as_view()),
         path('api/hostorganizations.add', views.HostOrganizationAddView.as_view()),
         path('api/hostorganization.confirm_email', views.HostOrganizationConfirmEmailView.as_view()),
         path('api/hostorganization.unsubscribe', views.HostOrganizationUnsubscribeView.as_view()),
@@ -53,6 +54,8 @@ else:
              name='redirect-coach-unsubscribe'),
         path('redirect/host.unsubscribe/<str:key>', views.redirect_host_unsubscribe,
              name='redirect-host-unsubscribe'),
+        path('redirect/coach.voiture_balais/<str:key>/<str:disponible>', views.redirect_coach_voiture_balais,
+             name='redirect-coach-voiture-balais'),        
     ]
 
 

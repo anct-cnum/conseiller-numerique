@@ -10,6 +10,7 @@ import {PageCoachConfirmEmailComponent} from './components/page-coach-confirm-em
 import {PageHostConfirmEmailComponent} from './components/page-host-confirm-email/page-host-confirm-email.component';
 import {PageHostUnsubscribeComponent} from "app/candidature/components/page-host-unsubscribe/page-host-unsubscribe.component";
 import {PageCoachUnsubscribeComponent} from "app/candidature/components/page-coach-unsubscribe/page-coach-unsubscribe.component";
+import {PageCoachDisponibleComponent} from "app/candidature/components/page-coach-disponible/page-coach-disponible.component";
 
 
 const routes: Routes = [
@@ -35,6 +36,11 @@ const routes: Routes = [
       {
         path: 'conseiller/unsubscribe/:key',
         component: PageCoachUnsubscribeComponent,
+      },
+
+      {
+        path: 'conseiller/disponibilite/:key/:disponible',
+        component: PageCoachDisponibleComponent,
       },
 
       {
