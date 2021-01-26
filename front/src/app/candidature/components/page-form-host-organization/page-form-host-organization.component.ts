@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import {ApiService} from 'app/core/services/api/api.service';
+import {ApiEntreprise} from 'app/core/services/api/api.entreprise';
 import {ActivatedRoute, Router} from '@angular/router';
 import {environment} from '@env';
 import {HostOrganizationInput} from 'app/core/dao/hostorganization';
@@ -27,6 +28,7 @@ export class PageFormHostOrganizationComponent implements OnInit {
     private calendar: NgbCalendar,
     private formBuilder: FormBuilder,
     private api: ApiService,
+    private apiEntreprise: ApiEntreprise,
     private router: Router,
     private route: ActivatedRoute,
     private toast: ToastrService,
@@ -55,10 +57,30 @@ export class PageFormHostOrganizationComponent implements OnInit {
     });
   }
 
-  onCheckboxChange(e) {
+  onCheckboxChange(e): void {
     if (e.target.checked) {
       this.form.patchValue({ coachesRequested: 0});
     }
+  }
+
+  onSiretChange(e): void {
+    this.form.controls['name'].disable();
+    this.form.patchValue({ name: 'Recherche dans le répertoire Sirene en cours...'});
+    this.apiEntreprise.checkSiret(e.target.value).subscribe(
+      result => {
+        this.form.patchValue({
+          name: result.raison_sociale,
+//          zipCode: result.code_postal,
+//          value: result.code_postal,
+        });
+        this.form.controls['name'].enable();
+      },
+      error => {
+        this.form.patchValue({ name: ''});
+        this.form.controls['name'].enable();
+        this.form.controls['siret'].setErrors({'siret': ''});
+      }
+      );
   }
 
   onSubmit(): void {
@@ -73,7 +95,6 @@ export class PageFormHostOrganizationComponent implements OnInit {
       application => {
         this.errorMessages = [];
         this.ladda = false;
-        console.log('result', application);
         this.router.navigate(['..', 'success'], {relativeTo: this.route});
       },
       error => {

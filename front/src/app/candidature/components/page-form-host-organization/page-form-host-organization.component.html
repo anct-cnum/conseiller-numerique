@@ -127,7 +127,7 @@
         <li class="py-3">
           <div class="form-group">
             <label for="inputOrganizationSiret"><h5>Quel est le numéro SIRET de votre structure ? <span class="text-danger">*</span></h5></label>
-            <input type="text" class="form-control" formControlName="siret" id="inputOrganizationSiret" pattern="[0-9]{14}" maxlength="14">
+            <input type="text" class="form-control" formControlName="siret" id="inputOrganizationSiret" pattern="[0-9]{14}" maxlength="14" (blur)="onSiretChange($event)">
             <app-form-field-errors [field]="form.controls.siret"></app-form-field-errors>
           </div>
         </li>
