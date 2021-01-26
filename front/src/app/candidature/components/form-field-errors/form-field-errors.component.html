@@ -19,6 +19,9 @@
       <div *ngSwitchCase="'pattern'">
         Le SIRET est composé de 14 chiffres
       </div>
+      <div *ngSwitchCase="'siret'">
+        Le SIRET n'a pas été trouvé dans le répertoire Sirene : vérifiez qu'il est correct (14 chiffres), et n'hésitez pas à nous contacter.
+      </div>
       <div *ngSwitchDefault>
         {{ error.key }} {{ error.value | json }}
       </div>
