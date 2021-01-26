@@ -45,7 +45,7 @@ class Coach(ObjectWithLocationModel):
     last_name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=20, blank=True)
-    disponible = models.BooleanField()
+    disponible = models.BooleanField(default=True)
 
     # State
     email_confirmation_key = models.CharField(max_length=50, default=random_key_50, unique=True)
