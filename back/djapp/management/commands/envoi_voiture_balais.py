@@ -12,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         offset = options['offset']
         limit = options['limit']
-        for coach in models.Coach.objects.order_by(‘id’).all()[offset:offset+limit]:
+        for coach in models.Coach.objects.order_by('id').all()[offset:offset+limit]:
             matchings = models.Matching.objects.all().filter(coach=coach).count()
             if matchings == 0:
                 email_factory.send_voiture_balais(coach)
