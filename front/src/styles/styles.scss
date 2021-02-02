@@ -1,4 +1,5 @@
 @import 'bootstrap_custom';
+@import '../assets/css/all.min.css';
 
 $fa-font-path : '~@fortawesome/fontawesome-free/webfonts';
 @import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
@@ -33,6 +34,30 @@ label {
   text-decoration: underline;
 }
 
+/*
+* Logo
+*/
+.rf-sur-mesure {
+  flex: none;
+  padding-right: 0;
+}
+.logo-conseiller-numerique {
+  height: 67px;
+  margin-left: 1.25rem;
+  border-left: 1px solid silver;
+}
+
+.logo-conseiller-numerique img:first-child {
+  height: 52px;
+  margin-top: 0.88em;
+  font-weight: lighter!important;
+}
+
+/* Surcharge pour le libellé RF */
+.rf-logo__title {
+	font-size: 1.22em!important;
+	letter-spacing: -.06em!important;
+}
 
 /*
  * Other
