@@ -1,7 +1,7 @@
 <div class="container">
   <div class="col mt-5">
 
-    <h1 class="text-center text-primary font-weight-bold" style="font-size: 55px">Je souhaite engager<br/>un conseiller numérique</h1>
+    <h1 class="text-center text-primary font-weight-bold" style="font-size: 55px">Je souhaite engager<br/>un conseiller numérique France Services</h1>
 
     <form class="form mt-5" [formGroup]="form" (ngSubmit)="onSubmit()">
       <ol>
@@ -54,7 +54,7 @@
         </li>
 
         <li class="py-3">
-          <h5>Avez-vous déjà identifié un candidat pour le poste de conseiller numérique ?  <span class="text-danger">*</span></h5>
+          <h5>Avez-vous déjà identifié un candidat pour le poste de conseiller numérique France Services ?  <span class="text-danger">*</span></h5>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" formControlName="hasCandidate" id="inputHasApplicanteYes" [value]="true">
             <label class="form-check-label" for="inputHasApplicanteYes">
@@ -68,14 +68,14 @@
             </label>
           </div>
           <div class="small text-muted">
-            Si oui, merci d’inviter votre futur conseiller numérique à s’inscrire sur la plateforme.
+            Si oui, merci d’inviter votre futur conseiller numérique France Services à s’inscrire sur la plateforme.
           </div>
           <app-form-field-errors [field]="form.controls.hasCandidate"></app-form-field-errors>
         </li>
 
         <li class="py-3">
           <div class="form-group">
-            <label for="inputOrganizationCoachesRequested"><h5>Combien de conseillers numériques souhaitez-vous accueillir ? <span class="text-danger">*</span></h5></label>
+            <label for="inputOrganizationCoachesRequested"><h5>Combien de conseillers numériques France Services souhaitez-vous accueillir ? <span class="text-danger">*</span></h5></label>
             <select class="form-control" [attr.disabled]="form.value.checkboxCoachesRequestedConfirm ? 'disabled' : null" formControlName="coachesRequested" id="inputOrganizationCoachesRequested">
               <option ng-value="1">1</option>
               <option ng-value="2">2</option>
@@ -119,7 +119,7 @@
         </li>
 
         <li class="py-3">
-          <h5>À partir de quand êtes vous prêt à accueillir votre conseiller numérique ? <span class="text-danger">*</span></h5>
+          <h5>À partir de quand êtes vous prêt à accueillir votre conseiller numérique France Services ? <span class="text-danger">*</span></h5>
           <app-form-field-errors [field]="form.controls.startDate"></app-form-field-errors>
           <app-form-control-prettydatechoice formControlName="startDate"></app-form-control-prettydatechoice>
         </li>
@@ -197,7 +197,7 @@
             <br/>
             • Signer dans les 15 jours suivants un contrat avec ce candidat,
             <br/>
-            • Laisser partir le conseiller numérique en formation initiale ou continue.
+            • Laisser partir le conseiller numérique France Services en formation initiale ou continue.
             <br/>
             • Mettre à sa disposition les moyens et équipements pour réaliser sa mission (ordinateur, téléphone portable, voiture si nécessaire).
           </div>
@@ -216,7 +216,7 @@
           <div class="offset-md-2 col-md-8" *ngIf="form.controls.startDate.value && form.controls.zipCode.value">
             <h5>En résumé</h5>
             <p class="text-primary">
-              Vous cherchez à engager un conseiller numérique à partir
+              Vous cherchez à engager un conseiller numérique France Services à partir
               du {{ form.controls.startDate.value?.date | date:"dd/MM/yyyy" }}
               à {{ form.controls.zipCode.value?.name }}.
             </p>
