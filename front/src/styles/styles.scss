@@ -40,24 +40,24 @@ label {
 .rf-sur-mesure {
   flex: none;
   padding-right: 0;
+  height: 75px;
 }
 .logo-conseiller-numerique {
-  height: 67px;
+  height: 75px;
   margin-left: 1.25rem;
   border-left: 1px solid silver;
 }
 
 .logo-conseiller-numerique img:first-child {
-  height: 52px;
-  margin-top: 0.88em;
+  height: 54px;
+  margin-top: 1.2em;
   font-weight: lighter!important;
 }
 
-/* Surcharge pour le libellé RF */
-.rf-logo__title {
-	font-size: 1.22em!important;
-	letter-spacing: -.06em!important;
+.header__logo-rf {
+	height: 78px;
 }
+
 
 /*
  * Other
