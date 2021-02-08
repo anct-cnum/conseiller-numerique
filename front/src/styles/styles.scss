@@ -1,5 +1,4 @@
 @import 'bootstrap_custom';
-@import '../assets/css/all.min.css';
 
 $fa-font-path : '~@fortawesome/fontawesome-free/webfonts';
 @import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
@@ -53,6 +52,7 @@ label {
   margin-top: 1.2em;
   font-weight: lighter!important;
 }
+
 
 .header__logo-rf {
 	height: 78px;
