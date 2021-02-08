@@ -33,6 +33,31 @@ label {
   text-decoration: underline;
 }
 
+/*
+* Logo
+*/
+.rf-sur-mesure {
+  flex: none;
+  padding-right: 0;
+  height: 75px;
+}
+.logo-conseiller-numerique {
+  height: 75px;
+  margin-left: 1.25rem;
+  border-left: 1px solid silver;
+}
+
+.logo-conseiller-numerique img:first-child {
+  height: 54px;
+  margin-top: 1.2em;
+  font-weight: lighter!important;
+}
+
+
+.header__logo-rf {
+	height: 78px;
+}
+
 
 /*
  * Other

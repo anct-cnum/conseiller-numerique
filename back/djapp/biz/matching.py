@@ -31,7 +31,7 @@ class Matcher:
     def get_queryset_coaches(self):
         qs = models.Coach.objects.all()
         # Filter on situation
-        qs = qs.filter(Q(situation_graduated=True) | Q(has_experience=True) | Q(situation_learning=True))
+        # qs = qs.filter(Q(situation_graduated=True) | Q(has_experience=True) | Q(situation_learning=True))
         # Common filters
         qs = self._apply_common_filters(qs)
         return qs
@@ -41,7 +41,7 @@ class Matcher:
         # Filter on type
         qs = qs.exclude(type=models.HostOrganization.Type.PRIVATE)
         # Should be validated
-        qs = qs.exclude(validated=None)
+        # qs = qs.exclude(validated=None)
         # Common filters
         qs = self._apply_common_filters(qs)
         return qs

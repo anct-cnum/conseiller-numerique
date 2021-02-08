@@ -1,8 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container">
-    <a class="navbar-brand" [href]="c.landingUrl">
-      <img src="/assets/img/logo-rf-conseiller-numerique.png" height="55" alt="" loading="lazy">
-    </a>
+    <div class="rf-header__brand rf-sur-mesure">
+      <a href="#" title="République française" style="box-shadow: none;">
+        <img src="assets/img/logoRF.svg" width="96" alt="République Française. Liberté Égalité Fraternité." class="header__logo-rf">
+      </a>
+  </div>
+  <div class="rf-header__operator logo-conseiller-numerique">
+      <img src="assets/img/logo-conseiller-numerique.svg" alt="logo conseiller numérique France Services">
+  </div>
     <button class="navbar-toggler" (click)="isNavbarDisplay = !isNavbarDisplay" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
