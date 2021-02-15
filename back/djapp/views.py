@@ -120,7 +120,7 @@ class MatchingSetInterviewResultView(BaseMatchingSetStateView):
 
 class BaseConfirmEmailView(APIView):
     serializer_class = ActionWithKeySerializer
-    EXPIRATION_LINK_HOURS = 120  # confirmation email is 120 hours (5 days)
+    EXPIRATION_LINK_HOURS = 4320  # confirmation email is 4320 hours (24%*30*65 hours =~ 6 months)
 
     def get_queryset(self):
         raise NotImplementedError
