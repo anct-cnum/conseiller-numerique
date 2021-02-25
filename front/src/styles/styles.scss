@@ -136,6 +136,20 @@ h5 .badge {
   transform: scale(0.5, 0.5);
 }
 
+.nav-linkCustom {
+padding: 1.25rem 1rem;
+margin: 0;
+width: auto;
+font-weight: 400;
+line-height: 1rem;
+color: #1e1e1e;
+font-size: 16px!important;
+}
+
+.nav-linkCustom:hover {
+  background-color: rgba(224, 224, 224, 0.5)!important;
+}
+
 
 /**
  * Toastr
