@@ -145,3 +145,9 @@ h5 .badge {
     opacity:1;
 }
 
+@media (max-width: 48em) {
+  div.rf-footer__content {
+    justify-content: flex-start!important;
+  }
+
+}
