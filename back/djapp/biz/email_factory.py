@@ -16,6 +16,14 @@ def send_coach_confirmation(coach: models.Coach):
     }
     Email('confirmation_coach').send(coach.email, context)
 
+def send_coach_pix(coach: models.Coach):
+    context = {
+        'firstname': coach.first_name,
+        'pixurl': build_coach_pix_url(coach),
+        'unsubscribeurl': build_unsubscribe_coach_url(coach),
+        'emailto': coach.email,
+    }
+    Email('coach_pix').send(coach.email, context)
 
 def send_host_confirmation(host: models.HostOrganization):
     context = {
@@ -27,7 +35,6 @@ def send_host_confirmation(host: models.HostOrganization):
         'emailto': host.contact_email,
     }
     Email('confirmation_host').send(host.contact_email, context)
-
 
 def send_matching(matching: models.Matching):
     context = {
@@ -83,6 +90,8 @@ def build_matching_host_reject_url(matching: models.Matching):
 def build_confirm_coach_url(coach: models.Coach):
     return urljoin(settings.SITE_URL, reverse('redirect-coach-confirm-email', kwargs={'key': coach.email_confirmation_key}))
 
+def build_coach_pix_url(coach: models.Coach):
+    return urljoin(settings.SITE_URL, reverse('redirect-coach-confirm-email', kwargs={'key': coach.email_confirmation_key}))
 
 def build_confirm_host_url(host: models.HostOrganization):
     return urljoin(settings.SITE_URL, reverse('redirect-host-confirm-email', kwargs={'key': host.email_confirmation_key}))
