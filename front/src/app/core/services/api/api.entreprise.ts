@@ -17,7 +17,7 @@ export class ApiEntreprise {
   ) {}
 
   checkSiret(siret: string): Observable<any> {
-    return this.http.get(`${environment.apiSiretUrl}/api/siret/${siret}`);
+    return this.http.get(`${environment.apiSiretUrl}/siret/${siret}`);
   }
 }
 
