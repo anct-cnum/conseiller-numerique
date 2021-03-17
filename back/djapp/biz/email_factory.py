@@ -91,7 +91,7 @@ def build_confirm_coach_url(coach: models.Coach):
     return urljoin(settings.SITE_URL, reverse('redirect-coach-confirm-email', kwargs={'key': coach.email_confirmation_key}))
 
 def build_coach_pix_url(coach: models.Coach):
-    return urljoin(settings.SITE_URL, reverse('redirect-coach-confirm-email', kwargs={'key': coach.email_confirmation_key}))
+    return 'app.pix.fr/campagnes/SYAUCQ998?participantExternalId=' + str(coach.id)
 
 def build_confirm_host_url(host: models.HostOrganization):
     return urljoin(settings.SITE_URL, reverse('redirect-host-confirm-email', kwargs={'key': host.email_confirmation_key}))
