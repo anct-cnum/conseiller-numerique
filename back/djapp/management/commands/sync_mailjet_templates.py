@@ -15,6 +15,7 @@ class Command(BaseCommand):
         token = options['token']
         ids = [
             ('1839650', 'confirmation_coach_body'),  # Conseiller - Confirmation
+#            ('1839650', 'coach_pix_body'),  # Conseiller - Pix
             ('1839792', 'matching_coach_body'),  # Conseiller - Matching
             ('1839724', 'confirmation_host_body'),  # Structure - Confirmation
             ('1839752', 'matching_host_body'),  # Structure - Matching
