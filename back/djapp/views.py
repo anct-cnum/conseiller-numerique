@@ -40,6 +40,7 @@ class CoachAddView(APIView):
         if serializer.is_valid():
             coach = serializer.save()
             email_factory.send_coach_confirmation(coach)
+            email_factory.send_coach_pix(coach)
             # matcher = Matcher()
             # matchings = matcher.get_matchings_for_coach(coach)
             # process_matchings(request, matchings)
