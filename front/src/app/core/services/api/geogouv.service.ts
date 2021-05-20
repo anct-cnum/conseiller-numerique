@@ -19,7 +19,11 @@ export class GeogouvService {
   ) {}
 
   searchCommunesByZipCode(zipCode: string): Observable<GeoCommune[]> {
-    return this.http.get(`https://geo.api.gouv.fr/communes?codePostal=${zipCode}&${API_FIELDS_QS}`)
+    let url = `https://geo.api.gouv.fr/communes?codePostal=${zipCode}&${API_FIELDS_QS}`;
+    if (zipCode === '97150') {
+      url = 'https://conseiller-numerique.cellar-c2.services.clever-cloud.com/geo/saint-martin.json';
+    }
+    return this.http.get(url)
       .pipe(
         map((jsonList: any) => jsonList.map(json => this.adapt2app_GeoCommune(json))),
         shareReplay(1),
@@ -27,7 +31,11 @@ export class GeogouvService {
   }
 
   searchCommunesByName(name: string): Observable<GeoCommune[]> {
-    return this.http.get(`https://geo.api.gouv.fr/communes?nom=${name}&${API_FIELDS_QS}`)
+    let url = `https://geo.api.gouv.fr/communes?nom=${name}&${API_FIELDS_QS}`;
+    if (name !== null && name.toLowerCase() === 'saint-martin') {
+      url = 'https://conseiller-numerique.cellar-c2.services.clever-cloud.com/geo/saint-martin.json';
+    }
+    return this.http.get(url)
       .pipe(
         map((jsonList: any) => jsonList.map(json => this.adapt2app_GeoCommune(json))),
         shareReplay(1),
