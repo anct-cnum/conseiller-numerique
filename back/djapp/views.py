@@ -15,6 +15,7 @@ from rest_framework.views import APIView
 from djapp.serializers import CoachSerializer, HostOrganizationSerializer, MatchingReadSerialzier, \
     ActionWithKeySerializer, UnsubscribePayloadSerializer, MatchingSetStateSerializer, DisponiblePayloadSerializer
 from .biz import email_factory
+from .biz import duplicate
 from .models import Matching, Coach, HostOrganization
 from .permissions.recaptcha import ReCaptchaPermission
 
@@ -36,6 +37,9 @@ class CoachAddView(APIView):
     permission_classes = [ReCaptchaPermission]
 
     def post(self, request, format=None):
+        alreadyExist = duplicate.verify_duplicate_coach({ 'email': request.data['email'], 'zip_code': request.data['zip_code'] })
+        if alreadyExist :
+            return Response('Coach already created', status=status.HTTP_409_CONFLICT)
         serializer = CoachSerializer(data=request.data)
         if serializer.is_valid():
             coach = serializer.save()
@@ -178,6 +182,9 @@ class HostOrganizationAddView(APIView):
     permission_classes = [ReCaptchaPermission]
 
     def post(self, request, format=None):
+        alreadyExist = duplicate.verify_duplicate_host_organization({ 'siret': request.data['siret'], 'contact_email': request.data['contact_email'], 'zip_code': request.data['zip_code'] })
+        if alreadyExist :
+            return Response('Host Organisation already created', status=status.HTTP_409_CONFLICT)
         serializer = HostOrganizationSerializer(data=request.data)
         if serializer.is_valid():
             host = serializer.save()
