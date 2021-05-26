@@ -296,10 +296,10 @@ DEFAULT_FROM_EMAIL = config.getstr('emails.sender')
 EMAIL_BACKEND = config.getstr('emails.backend')
 EMAIL_WHITELIST = config.getlist('emails.whitelist', None)
 
-#EMAIL_HOST = config.getstr('emails.smtp_host')
-#EMAIL_PORT = config.getstr('emails.smtp_port')
-#EMAIL_HOST_USER = config.getstr('emails.smtp_user')
-#EMAIL_HOST_PASSWORD = config.getstr('emails.smtp_password')
+EMAIL_HOST = config.getstr('emails.smtp_host')
+EMAIL_PORT = config.getstr('emails.smtp_port')
+EMAIL_HOST_USER = config.getstr('emails.smtp_user')
+EMAIL_HOST_PASSWORD = config.getstr('emails.smtp_password')
 #EMAIL_HOST = 'smtp-relay.sendinblue.com'
 #EMAIL_PORT = '587'
 #EMAIL_HOST_USER = 'thomas.recouvreux+anct@nanxia.fr'
