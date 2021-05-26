@@ -300,11 +300,6 @@ EMAIL_HOST = config.getstr('emails.smtp_host')
 EMAIL_PORT = config.getstr('emails.smtp_port')
 EMAIL_HOST_USER = config.getstr('emails.smtp_user')
 EMAIL_HOST_PASSWORD = config.getstr('emails.smtp_password')
-#EMAIL_HOST = 'smtp-relay.sendinblue.com'
-#EMAIL_PORT = '587'
-#EMAIL_HOST_USER = 'thomas.recouvreux+anct@nanxia.fr'
-#EMAIL_HOST_PASSWORD = '0QwZq4TAmaNpn5GR'
-#EMAIL_USE_TLS = True
 
 ANYMAIL = {
     "SENDINBLUE_API_KEY": config.getstr('emails.sendingblue_api_key')
