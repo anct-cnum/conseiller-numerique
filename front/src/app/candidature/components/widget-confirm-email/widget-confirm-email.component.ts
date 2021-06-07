@@ -10,6 +10,7 @@ import {Observable} from 'rxjs';
 export class WidgetConfirmEmailComponent implements OnInit {
 
   @Input() fnConfirm: (key: string) => Observable<any>;
+  @Input() isHost: boolean;
 
   key: string;
   ladda: boolean;

@@ -9,11 +9,14 @@ import {ApiService} from 'app/core/services/api/api.service';
 })
 export class PageHostConfirmEmailComponent implements OnInit {
 
+  isHost: boolean;
+
   constructor(
     private api: ApiService,
   ) { }
 
   ngOnInit(): void {
+    this.isHost = true;
   }
 
   fnConfirm(key: string): Observable<any> {
