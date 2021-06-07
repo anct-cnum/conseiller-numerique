@@ -10,11 +10,14 @@ import {Observable} from 'rxjs';
 })
 export class PageCoachConfirmEmailComponent implements OnInit {
 
+  isHost: boolean;
+
   constructor(
     private api: ApiService,
   ) { }
 
   ngOnInit(): void {
+   this.isHost = false;
   }
 
   fnConfirm(key: string): Observable<any> {
