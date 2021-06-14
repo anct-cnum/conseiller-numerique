@@ -9,9 +9,13 @@
     <p *ngIf="error" class="alert alert-danger">
       Impossible de valider l'email, le lien a expiré ou est invalide.
     </p>
-    <p *ngIf="isConfirmed" class="alert alert-success">
-      Votre email a été confirmé et votre inscription est maintenant active. Vous recevrez un email quand une candidature
-      correspondra à votre recherche.
+    <p *ngIf="isConfirmed && isHost" class="alert alert-success">
+      Votre email a été confirmé et votre inscription est maintenant active.
+      Vous recevrez un mail d'activation de votre espace structure lorsque votre candidature aura été validée.
+    </p>
+    <p *ngIf="isConfirmed && !isHost" class="alert alert-success">
+      Votre email a été confirmé et votre inscription est maintenant active.
+      Vous serez contacté par mail ou par téléphone si une structure est intéressée par votre profil.
     </p>
   </div>
 </div>

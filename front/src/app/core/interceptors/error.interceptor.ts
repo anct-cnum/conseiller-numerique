@@ -49,6 +49,9 @@ export class ErrorInterceptor implements HttpInterceptor {
     else if (err.status === 404) {
       return 'Non trouvé';
     }
+    else if (err.status === 409) {
+      return `Votre inscription a déjà été enregistrée`;
+    }
     else if (err.status === 500) {
       return `Une erreur est survenue : ${err.message}`;
     }
