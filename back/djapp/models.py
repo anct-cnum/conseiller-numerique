@@ -84,6 +84,7 @@ class HostOrganization(ObjectWithLocationModel):
         REGION = 'REGION', 'Région'
         EPCI = 'EPCI', 'EPCI'
         COLLECTIVITE = 'COLLECTIVITE', 'Collectivité'
+        GIP = 'GIP', 'GIP'
         PRIVATE = 'PRIVATE', 'Entreprise privée'
     type = models.CharField(max_length=20, choices=Type.choices)
     has_candidate = models.BooleanField()
