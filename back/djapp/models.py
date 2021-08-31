@@ -28,6 +28,7 @@ class ObjectWithLocationModel(models.Model):
     geo_name = models.CharField(max_length=250)
     region_code = models.CharField(max_length=10)
     departement_code = models.CharField(max_length=10)
+    com_code = models.CharField(max_length=10, null=True)
     location = gis_models.PointField(geography=True)
 
 

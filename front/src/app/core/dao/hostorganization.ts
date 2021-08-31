@@ -20,6 +20,7 @@ export interface HostOrganizationInput {
   communeCode: string;
   departementCode: string;
   regionCode: string;
+  comCode: string;
   location: GeoPoint;
 }
 

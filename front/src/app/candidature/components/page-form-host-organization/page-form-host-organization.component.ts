@@ -126,6 +126,7 @@ export class PageFormHostOrganizationComponent implements OnInit {
       communeCode: optionCommune.commune.code,
       departementCode: optionCommune.commune.departementCode,
       regionCode: optionCommune.commune.regionCode,
+      comCode: optionCommune.commune.code.substr(0,3),
       location: optionCommune.commune.center,
     };
   }

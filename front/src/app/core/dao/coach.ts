@@ -21,6 +21,7 @@ export interface CoachInput {
   communeCode: string;
   departementCode: string;
   regionCode: string;
+  comCode: string;
   location: GeoPoint;
 }
 
