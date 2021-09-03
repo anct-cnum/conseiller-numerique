@@ -34,6 +34,7 @@ class CoachSerializer(serializers.ModelSerializer):
             'geo_name',
             'region_code',
             'departement_code',
+            'com_code',
 
             'updated',
             'created',
@@ -66,6 +67,7 @@ class HostOrganizationSerializer(serializers.ModelSerializer):
             'geo_name',
             'region_code',
             'departement_code',
+            'com_code',
 
             'updated',
             'created',

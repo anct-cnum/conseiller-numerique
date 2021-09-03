@@ -28,6 +28,7 @@ class ObjectWithLocationModel(models.Model):
     geo_name = models.CharField(max_length=250)
     region_code = models.CharField(max_length=10)
     departement_code = models.CharField(max_length=10)
+    com_code = models.CharField(max_length=10, null=True)
     location = gis_models.PointField(geography=True)
 
 
@@ -84,6 +85,7 @@ class HostOrganization(ObjectWithLocationModel):
         REGION = 'REGION', 'Région'
         EPCI = 'EPCI', 'EPCI'
         COLLECTIVITE = 'COLLECTIVITE', 'Collectivité'
+        GIP = 'GIP', 'GIP'
         PRIVATE = 'PRIVATE', 'Entreprise privée'
     type = models.CharField(max_length=20, choices=Type.choices)
     has_candidate = models.BooleanField()
