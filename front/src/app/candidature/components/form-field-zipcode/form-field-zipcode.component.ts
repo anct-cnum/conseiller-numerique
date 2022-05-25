@@ -53,7 +53,7 @@ export class FormFieldZipcodeComponent implements OnInit {
         distinctUntilChanged(),
         tap(() => this.zipCodesLoading = true),
         switchMap(term => term?.length < 3 ? [] : this.geoApi.autocompleteCommunes(term).pipe(
-          map(zipCodes => zipCodes.slice(0, 20).map((zipCodeWithCommune: ZipCodeWithCommune): OptionCommune => ({
+          map(zipCodes => zipCodes.slice(0, 22).map((zipCodeWithCommune: ZipCodeWithCommune): OptionCommune => ({
               label: zipCodeWithCommune.zipCode + ' ' + zipCodeWithCommune.commune.name,
               zipCode: zipCodeWithCommune.zipCode,
               commune: zipCodeWithCommune.commune,
