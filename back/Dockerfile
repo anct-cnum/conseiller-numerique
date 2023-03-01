@@ -8,6 +8,7 @@ WORKDIR /code
 RUN apt-get update
 RUN apt-get install -y gdal-bin
 RUN apt-get install -y vim
+RUN apt-get install libatlas-base-dev
 
 RUN pip install gunicorn
 COPY requirements.txt .
