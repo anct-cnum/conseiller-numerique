@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8000',
   apiSiretUrl: 'http://localhost:8080',
-  reCaptachaSiteKey: '6LczlOMZAAAAAP3h0xt-XlfSlqVQczT_nCxPV-dS',
+  reCaptachaSiteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
 };
 
 /*
