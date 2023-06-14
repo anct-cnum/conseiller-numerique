@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import {ApiService} from 'app/core/services/api/api.service';
 import {ApiEntreprise} from 'app/core/services/api/api.entreprise';
@@ -20,13 +20,13 @@ import {FormUtilsService} from 'app/core/services/utils/form-utils.service';
 })
 export class PageFormHostOrganizationComponent implements OnInit {
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   errorMessages: string[];
   ladda: boolean;
 
   constructor(
     private calendar: NgbCalendar,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private api: ApiService,
     private apiEntreprise: ApiEntreprise,
     private router: Router,
