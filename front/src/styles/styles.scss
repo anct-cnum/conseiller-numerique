@@ -1,14 +1,14 @@
 @import 'bootstrap_custom';
 
-$fa-font-path : '~@fortawesome/fontawesome-free/webfonts';
-@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
-@import "~@fortawesome/fontawesome-free/scss/solid.scss";
-@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+$fa-font-path : '../../../@fortawesome/fontawesome-free/webfonts';
+@import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "@fortawesome/fontawesome-free/scss/solid.scss";
+@import "@fortawesome/fontawesome-free/scss/regular.scss";
 
 
-@import '~ngx-toastr/toastr.css';
-@import "~@ng-select/ng-select/themes/default.theme.css";
-@import "~ladda/dist/ladda-themeless.min.css";
+@import 'ngx-toastr/toastr';
+@import "@ng-select/ng-select/themes/default.theme.css";
+@import "ladda/dist/ladda-themeless.min.css";
 
 
 /*
