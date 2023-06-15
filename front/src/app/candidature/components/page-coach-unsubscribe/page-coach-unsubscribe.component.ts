@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from 'app/core/services/api/api.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {environment} from '@env';
 import {ActivatedRoute} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
@@ -15,7 +15,7 @@ import {FormUtilsService} from 'app/core/services/utils/form-utils.service';
 })
 export class PageCoachUnsubscribeComponent implements OnInit {
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   errorMessages: string[];
   ladda: boolean;
   isConfirmed: boolean;
@@ -23,7 +23,7 @@ export class PageCoachUnsubscribeComponent implements OnInit {
 
   constructor(
     private api: ApiService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private toast: ToastrService,
     public formUtils: FormUtilsService,

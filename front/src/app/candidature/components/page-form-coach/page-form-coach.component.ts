@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {CoachInput} from 'app/core/dao/coach';
 import {ApiService} from 'app/core/services/api/api.service';
 import {isArray} from 'app/utils/utils';
@@ -20,7 +20,7 @@ function requiredIfFieldTrue(otherFieldName: string): ValidatorFn {
 }
 
 
-function atLeastOne(group: FormGroup): {[key: string]: any} | null {
+function atLeastOne(group: UntypedFormGroup): {[key: string]: any} | null {
   for (const control of Object.values(group.controls)) {
     if (control.value) {
       return null;
@@ -50,13 +50,13 @@ export function phoneValidator(control: AbstractControl): {[key: string]: any} |
 })
 export class PageFormCoachComponent implements OnInit {
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   errorMessages: string[];
   ladda: boolean;
 
   constructor(
     private calendar: NgbCalendar,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private api: ApiService,
     private router: Router,
     private route: ActivatedRoute,

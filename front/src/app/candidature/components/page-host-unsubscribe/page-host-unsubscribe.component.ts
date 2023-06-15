@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {ApiService} from 'app/core/services/api/api.service';
 import {ActivatedRoute} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
@@ -14,7 +14,7 @@ import {Unsubscribepayload} from 'app/core/dao/unsubscribepayload';
 })
 export class PageHostUnsubscribeComponent implements OnInit {
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   errorMessages: string[];
   ladda: boolean;
   isConfirmed: boolean;
@@ -22,7 +22,7 @@ export class PageHostUnsubscribeComponent implements OnInit {
 
   constructor(
     private api: ApiService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private toast: ToastrService,
     public formUtils: FormUtilsService,
