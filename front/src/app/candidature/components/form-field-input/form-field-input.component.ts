@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-form-field-input',
@@ -8,7 +8,7 @@ import {FormGroup} from '@angular/forms';
 })
 export class FormFieldInputComponent implements OnInit {
   @Input()
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   @Input()
   key: string;

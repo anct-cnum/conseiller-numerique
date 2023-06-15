@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class FormUtilsService {
     private toastr: ToastrService,
   ) { }
 
-  preSubmitFormChecks(form: FormGroup): boolean {
+  preSubmitFormChecks(form: UntypedFormGroup): boolean {
     console.log('formValue', form.value);
     form.markAllAsTouched();
     if (!form.valid) {
@@ -23,7 +23,7 @@ export class FormUtilsService {
     return true;
   }
 
-  getInvalidDetails(form: FormGroup): any[] {
+  getInvalidDetails(form: UntypedFormGroup): any[] {
     const invalid = [];
     const controls = form.controls;
     for (const name in controls) {

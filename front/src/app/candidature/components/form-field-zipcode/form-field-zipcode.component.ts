@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {concat, Observable, of, Subject} from 'rxjs';
 import {catchError, distinctUntilChanged, map, switchMap, tap} from 'rxjs/operators';
 import {GeogouvService} from 'app/core/services/api/geogouv.service';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {GeoCommune, ZipCodeWithCommune} from 'app/core/dao/geocommune';
 
 
@@ -20,7 +20,7 @@ export interface OptionCommune {
 })
 export class FormFieldZipcodeComponent implements OnInit {
   @Input()
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   @Input()
   key: string;
