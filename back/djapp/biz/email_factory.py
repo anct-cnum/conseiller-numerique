@@ -27,7 +27,7 @@ def send_coach_pix(coach: models.Coach):
 
 def send_host_coordo(host: models.HostOrganization):
     context = {
-        'dsurl': build_host_ds_url(coach),
+        'dsurl': build_host_ds_url(host),
         'contactfirstname': host.contact_first_name,
         'contactlastname': host.contact_last_name,
         'name': host.name,
