@@ -105,7 +105,7 @@ def build_coach_pix_url(coach: models.Coach):
     return 'https://app.pix.fr/campagnes/SYAUCQ998?participantExternalId=' + str(coach.id)
 
 def build_host_ds_url(host: models.HostOrganization):
-    return 'https://www.demarches-simplifiees.fr/commencer/08f58c46-7fb4-4514-b9b6-c6ba1c6ee739?champ_Q2hhbXAtMzI3MTEzNw=' + str(host.id)
+    return 'https://www.demarches-simplifiees.fr/commencer/conseiller-numerique-coordinateur?champ_Q2hhbXAtMzI3MTEzNw=' + str(host.id)
 
 def build_confirm_host_url(host: models.HostOrganization):
     return urljoin(settings.SITE_URL, reverse('redirect-host-confirm-email', kwargs={'key': host.email_confirmation_key}))
