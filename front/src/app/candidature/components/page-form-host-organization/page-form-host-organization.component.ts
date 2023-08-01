@@ -42,7 +42,7 @@ export class PageFormHostOrganizationComponent implements OnInit {
       type: [null, Validators.required],
       hasCandidate: [null, Validators.required],
       coachesRequested: [null, Validators.required],
-      wantsCoordinators: [false, Validators.required],
+      wantsCoordinators: [true, Validators.required],
       coordinatorType: [null],
       checkboxCoachesRequestedConfirm: [false],
       zipCode: [null, Validators.required],
