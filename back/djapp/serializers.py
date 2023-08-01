@@ -68,6 +68,8 @@ class HostOrganizationSerializer(serializers.ModelSerializer):
             'region_code',
             'departement_code',
             'com_code',
+            'coordinator_type',
+            'wants_coordinators',
 
             'updated',
             'created',

@@ -42,6 +42,8 @@ export class PageFormHostOrganizationComponent implements OnInit {
       type: [null, Validators.required],
       hasCandidate: [null, Validators.required],
       coachesRequested: [null, Validators.required],
+      wantsCoordinators: [false, Validators.required],
+      coordinatorType: [null],
       checkboxCoachesRequestedConfirm: [false],
       zipCode: [null, Validators.required],
       startDate: [null, Validators.required],
@@ -59,6 +61,12 @@ export class PageFormHostOrganizationComponent implements OnInit {
 
   onCheckboxChange(e): void {
     if (e.target.checked) {
+      this.form.patchValue({ coachesRequested: 0});
+    }
+  }
+
+  onCoordinatorChange(e): void {
+    if (this.form.value.wantsCoordinators) {
       this.form.patchValue({ coachesRequested: 0});
     }
   }
@@ -110,7 +118,9 @@ export class PageFormHostOrganizationComponent implements OnInit {
     return {
       type: this.form.value.type,
       hasCandidate: this.form.value.hasCandidate,
-      coachesRequested: this.form.value.coachesRequested,
+      coachesRequested: this.form.value.wantsCoordinators ? 1 : this.form.value.coachesRequested,
+      wantsCoordinators: this.form.value.wantsCoordinators,
+      coordinatorType: this.form.value.coordinatorType,
       startDate: this.form.value.startDate.date,
       siret: this.form.value.siret,
       name: this.form.value.name,

@@ -5,6 +5,8 @@ export interface HostOrganizationInput {
   type: string;
   hasCandidate: boolean;
   coachesRequested: number;
+  wantsCoordinators: boolean;
+  coordinatorType: string;
   startDate: Date;
   siret: string;
   name: string;
