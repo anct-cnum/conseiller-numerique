@@ -57,13 +57,13 @@
 
         <li class="py-3">
           <h5>Avez-vous déjà identifié un candidat pour le poste de conseiller numérique ?  <span class="text-danger">*</span></h5>
-          <div class="form-check form-check-inline">
+          <div class="form-check">
             <input class="form-check-input" type="radio" formControlName="hasCandidate" id="inputHasApplicanteYes" [value]="true">
             <label class="form-check-label" for="inputHasApplicanteYes">
               Oui
             </label>
           </div>
-          <div class="form-check form-check-inline">
+          <div class="form-check form-check">
             <input class="form-check-input" type="radio" formControlName="hasCandidate" id="inputHasApplicanteNo" [value]="false">
             <label class="form-check-label" for="inputHasApplicanteNo">
               Non
@@ -77,13 +77,13 @@
 
         <li class="py-3">
           <h5>Candidatez-vous pour un poste de conseiller numérique coordinateur au sein de votre structure ? <span class="text-danger">*</span></h5>
-          <div class="form-check form-check-inline">
+          <div class="form-check">
             <input class="form-check-input" type="radio" formControlName="wantsCoordinators" id="inputWantsCoordinatorYes" (change)="onCoordinatorChange($event)" [value]="true">
             <label class="form-check-label" for="inputWantsCoordinatorYes">
               Oui
             </label>
           </div>
-          <div class="form-check form-check-inline">
+          <div class="form-check">
             <input class="form-check-input" type="radio" formControlName="wantsCoordinators" id="inputWantsCoordinatorNo" (change)="onCoordinatorChange($event)" [value]="false">
             <label class="form-check-label" for="inputWantsCoordinatorNo">
               Non
@@ -93,17 +93,17 @@
         </li>
 
         <li class="py-3" *ngIf="form.controls.wantsCoordinators.value">
-          <h5>Le coordinateur au sein de votre structure occupera son poste : <span class="text-danger">*</span></h5>
-          <div class="form-check form-check-inline">
+          <h5>Le coordinateur : <span class="text-danger">*</span></h5>
+          <div class="form-check">
             <input class="form-check-input" type="radio" formControlName="coordinatorType" id="coordinatorTypeFT" [value]="'FT'">
             <label class="form-check-label" for="coordinatorTypeFT">
-              Temps plein
+              effectuera uniquement des missions de coordination
             </label>
           </div>
-          <div class="form-check form-check-inline">
+          <div class="form-check">
             <input class="form-check-input" type="radio" formControlName="coordinatorType" id="coordinatorTypePT" [value]="'PT'">
             <label class="form-check-label" for="coordinatorTypePT">
-              Temps partagé
+              accompagnera également des publics <div class="small text-muted">Possibilité ouverte uniquement aux coordinateurs positionnés à l'échelon bassin de vie.</div>
             </label>
           </div>
           <app-form-field-errors [field]="form.controls.coordinatorType"></app-form-field-errors>
