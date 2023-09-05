@@ -188,7 +188,11 @@ class HostOrganizationAddView(APIView):
         serializer = HostOrganizationSerializer(data=request.data)
         if serializer.is_valid():
             host = serializer.save()
+            data = serializer.validated_data
             email_factory.send_host_confirmation(host)
+            # Envoi du lien DS pour demandes de coordos
+            if data.get('wants_coordinators', False):
+                email_factory.send_host_coordo(host)
             # matcher = Matcher()
             # matchings = matcher.get_matchings_for_host(host)
             # process_matchings(request, matchings)

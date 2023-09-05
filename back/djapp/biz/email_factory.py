@@ -25,6 +25,17 @@ def send_coach_pix(coach: models.Coach):
     }
     Email('coach_pix').send(coach.email, context)
 
+def send_host_coordo(host: models.HostOrganization):
+    context = {
+        'dsurl': build_host_ds_url(host),
+        'contactfirstname': host.contact_first_name,
+        'contactlastname': host.contact_last_name,
+        'name': host.name,
+        'unsubscribeurl': build_unsubscribe_host_url(host),
+        'emailto': host.contact_email,
+    }
+    Email('host_coordo').send(host.contact_email, context)
+
 def send_host_confirmation(host: models.HostOrganization):
     context = {
         'contactfirstname': host.contact_first_name,
@@ -92,6 +103,9 @@ def build_confirm_coach_url(coach: models.Coach):
 
 def build_coach_pix_url(coach: models.Coach):
     return 'https://app.pix.fr/campagnes/SYAUCQ998?participantExternalId=' + str(coach.id)
+
+def build_host_ds_url(host: models.HostOrganization):
+    return 'https://www.demarches-simplifiees.fr/commencer/conseiller-numerique-coordinateur?champ_Q2hhbXAtMzI3MTEzNw=' + str(host.id)
 
 def build_confirm_host_url(host: models.HostOrganization):
     return urljoin(settings.SITE_URL, reverse('redirect-host-confirm-email', kwargs={'key': host.email_confirmation_key}))

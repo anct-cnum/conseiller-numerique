@@ -88,7 +88,14 @@ class HostOrganization(ObjectWithLocationModel):
         GIP = 'GIP', 'GIP'
         PRIVATE = 'PRIVATE', 'Entreprise privée'
     type = models.CharField(max_length=20, choices=Type.choices)
+    EMPLOYMENT_TYPE_CHOICES = [
+            ('FT', 'Full Time'),
+            ('PT', 'Part Time'),
+            ]
     has_candidate = models.BooleanField()
+    wants_coordinators = models.BooleanField(default=False)
+    coordinator_type = models.CharField(max_length=2,
+                                        choices=EMPLOYMENT_TYPE_CHOICES, blank=True, null=True)
     start_date = models.DateField()
     name = models.CharField(max_length=250)
     siret = models.CharField(max_length=14, null=True)
