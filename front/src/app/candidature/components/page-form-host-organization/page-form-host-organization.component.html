@@ -221,22 +221,42 @@
         </app-form-field-input>
 
         <li class="py-3">
-          <h5>En tant que structure accueillante, vous vous engagez à&nbsp;<span class="text-danger">*</span></h5>
-          <div class="small my-2">
-            • Assurer que le conseiller réalise des activités de montée en compétences du public (ateliers numériques, initiations au numérique), gratuites.
-            <br/>
-            • Qu'il consacre une partie de son temps aux rencontres locales et nationales organisées pour la communauté et la formation continue, etc.
-            <br/>
-            • Qu'il revête une tenue vestimentaire dédiée fournie par l'Etat.
-            <br/>
-            • Tout mettre en oeuvre pour sélectionner le candidat dans un délai maximum d'un mois sur la plateforme.
-            <br/>
-            • Signer dans les 15 jours suivants un contrat avec ce candidat,
-            <br/>
-            • Laisser partir le conseiller numérique en formation initiale ou continue.
-            <br/>
-            • Mettre à sa disposition les moyens et équipements pour réaliser sa mission (ordinateur, téléphone portable, voiture si nécessaire).
-          </div>
+          <span *ngIf="!form.controls.wantsCoordinators.value">
+            <h5>En tant que structure accueillante, dans le cadre d&rsquo;un recrutement d&rsquo;un conseiller num&eacute;rique, vous vous engagez &agrave;&nbsp;<span class="text-danger">*</span></h5>
+            <div class="small my-2">
+              • Assurer que le conseiller r&eacute;alise des activit&eacute;s de mont&eacute;e en comp&eacute;tences du public (ateliers num&eacute;riques, initiations au num&eacute;rique), gratuites.
+              <br/>
+              • Qu&rsquo;il consacre une partie de son temps aux rencontres locales et nationales organis&eacute;es pour la communaut&eacute; et la formation continue, etc.
+              <br/>
+              • Tout mettre en &hearts;uvre pour s&eacute;lectionner le candidat dans un d&eacute;lai maximum d&rsquo;un mois sur la plateforme.
+              <br/>
+              • Signer dans les 15 jours suivants un contrat avec ce candidat,
+              <br/>
+              • Laisser partir le conseiller num&eacute;rique en formation initiale ou continue.
+              <br/>
+              • Mettre &agrave; sa disposition les moyens et &eacute;quipements pour r&eacute;aliser sa mission (ordinateur, t&eacute;l&eacute;phone portable, voiture si n&eacute;cessaire).
+            </div>
+          </span>
+          <span *ngIf="form.controls.wantsCoordinators.value">
+            <h5>En tant que structure accueillante, dans le cadre d&rsquo;un recrutement d&rsquo;un conseiller num&eacute;rique coordinateur, vous vous engagez &agrave;&nbsp;<span class="text-danger">*</span></h5>
+            <div class="small my-2">
+              • Assurer que le conseiller r&eacute;alise des activit&eacute;s visant &agrave;&nbsp;:
+              <br/>
+              • Renforcer le maillage et les synergies territoriales
+              <br/>
+              • &Ecirc;tre le relais principal des employeurs, des Conseillers num&eacute;riques et de l&rsquo;&eacute;quipe d&rsquo;animation nationale
+              <br/>
+              • Imaginer et mettre en place des collaborations sur la base des besoins de la communaut&eacute; des Conseillers num&eacute;riques
+              <br/>
+              • Tout mettre en &hearts;uvre pour s&eacute;lectionner le candidat dans un d&eacute;lai maximum de 6 mois sur la plateforme.
+              <br/>
+              • Signer dans les 15 jours suivants un contrat avec ce candidat,
+              <br/>
+              • Laisser partir le conseiller num&eacute;rique en formation initiale ou continue.
+              <br/>
+              • Mettre &agrave; sa disposition les moyens et &eacute;quipements pour r&eacute;aliser sa mission (ordinateur, t&eacute;l&eacute;phone portable, voiture si n&eacute;cessaire).
+            </div>
+          </span>
           <div class="form-check">
             <input class="form-check-input" type="checkbox" formControlName="checkboxConfirm" id="inputCbConfirmEngagement">
             <label class="form-check-label" for="inputCbConfirmEngagement">
