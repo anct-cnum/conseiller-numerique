@@ -41,7 +41,7 @@ class CoachAddView(APIView):
         if alreadyExist :
             return Response('Coach already created', status=status.HTTP_409_CONFLICT)
         if '@conseiller-numerique.fr' in request.data['email'] :
-            return Response('Email invalid', status=status.HTTP_400_BAD_REQUEST)
+            return Response('Email invalid', status=status.HTTP_409_CONFLICT)
         serializer = CoachSerializer(data=request.data)
         if serializer.is_valid():
             coach = serializer.save()
