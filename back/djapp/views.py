@@ -40,6 +40,8 @@ class CoachAddView(APIView):
         alreadyExist = duplicate.verify_duplicate_coach({ 'email': request.data['email'], 'zip_code': request.data['zip_code'] })
         if alreadyExist :
             return Response('Coach already created', status=status.HTTP_409_CONFLICT)
+        if '@conseiller-numerique.fr' in request.data['email'] :
+            return Response('Email invalid', status=status.HTTP_409_CONFLICT)
         serializer = CoachSerializer(data=request.data)
         if serializer.is_valid():
             coach = serializer.save()
